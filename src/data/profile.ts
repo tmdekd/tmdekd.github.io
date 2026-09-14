@@ -36,14 +36,17 @@ export const profile = {
   skills: [
     {
       group: 'LLM · RAG · Agent',
+      description: '문서와 검색 데이터를 바탕으로 질문에 답하는 AI 서비스 흐름을 설계·구현합니다.',
       items: ['OpenAI API', 'LangChain', 'LangGraph', 'Fine-tuning', 'Reranking', 'Evaluation'],
     },
     {
       group: 'Backend · Data',
+      description: 'AI 기능이 실제 서비스로 동작하도록 API와 데이터 흐름을 구현합니다.',
       items: ['Python', 'FastAPI', 'Django', 'PostgreSQL', 'FAISS', 'VectorDB', 'GraphDB'],
     },
     {
       group: 'Deployment · Operations',
+      description: '개발 환경부터 배포·운영 흐름까지 연결합니다.',
       items: ['Docker', 'AWS', 'RunPod', 'GitHub Actions', 'CI/CD'],
     },
   ],

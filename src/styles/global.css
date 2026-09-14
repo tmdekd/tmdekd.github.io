@@ -46,6 +46,16 @@ button, input, textarea { font: inherit; }
   letter-spacing: 0.11em;
   text-transform: uppercase;
 }
+.section-kicker {
+  margin: 0 0 var(--space-4);
+  color: var(--text-section-kicker);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-section-kicker);
+  font-weight: var(--font-weight-section-kicker);
+  letter-spacing: -0.015em;
+  line-height: 1.4;
+}
+.section-kicker--inverse { color: var(--color-indigo-100); }
 h1, h2, h3, p { margin-top: 0; }
 h1, h2, h3 { line-height: 1.16; letter-spacing: -0.035em; text-wrap: balance; word-break: keep-all; }
 h1 { font-size: clamp(2.75rem, 8vw, 6.8rem); }

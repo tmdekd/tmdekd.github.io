@@ -74,6 +74,25 @@ test('uses clear Korean profile and skill labels without forced heading breaks',
   expect(await page.locator('.section-heading h2').evaluateAll((headings) => headings.some((heading) => heading.querySelector('br')))).toBe(false);
 });
 
+test('uses readable Pretendard section labels for core Korean sections', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+  const labels = page.locator('#career .section-kicker, #projects .section-kicker, #skills .section-kicker, .background-section .section-kicker');
+  await expect(labels).toHaveText(['경력', '프로젝트', '기술 역량', '이력과 활동']);
+  expect(await labels.evaluateAll((elements) => elements.every((element) => {
+    const style = getComputedStyle(element);
+    const size = Number.parseFloat(style.fontSize);
+    return style.fontFamily.includes('Pretendard') && Number(style.fontWeight) >= 700 && size >= 18 && size <= 20;
+  }))).toBe(true);
+});
+
+test('explains what each technical skill group enables', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByText('문서와 검색 데이터를 바탕으로 질문에 답하는 AI 서비스 흐름을 설계·구현합니다.')).toBeVisible();
+  await expect(page.getByText('AI 기능이 실제 서비스로 동작하도록 API와 데이터 흐름을 구현합니다.')).toBeVisible();
+  await expect(page.getByText('개발 환경부터 배포·운영 흐름까지 연결합니다.')).toBeVisible();
+});
+
 test('keeps Korean headings from breaking inside a word', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');

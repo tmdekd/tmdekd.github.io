@@ -5,7 +5,7 @@ import { profile } from '../data/profile';
 <footer id="contact" class="site-footer">
   <div class="container footer-card">
     <div>
-      <p class="eyebrow">연락</p>
+      <p class="section-kicker section-kicker--inverse">연락</p>
       <h2>함께 해결할 문제를 이야기해 주세요.</h2>
     </div>
     <div class="contact-list">
@@ -25,7 +25,6 @@ import { profile } from '../data/profile';
 <style>
   .site-footer { padding: var(--space-8) 0 var(--space-6); }
   .footer-card { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-12); padding: clamp(2rem, 6vw, 5rem); border-radius: var(--radius-xl); background: var(--text-primary); color: var(--bg-surface); }
-  .footer-card .eyebrow { color: var(--color-indigo-100); }
   h2 { margin-bottom: 0; }
   .contact-list { display: grid; align-content: center; gap: var(--space-3); }
   .contact-list a, .contact-list button, .resume { display: grid; grid-template-columns: 5rem 1fr; gap: var(--space-4); padding: var(--space-3) 0; border: 0; border-bottom: 1px solid color-mix(in srgb, var(--bg-surface) 18%, transparent); background: transparent; color: var(--bg-surface); text-align: left; text-decoration: none; }
