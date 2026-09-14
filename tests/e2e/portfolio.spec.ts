@@ -48,10 +48,64 @@ for (const viewport of [
   });
 }
 
-test('home exposes the four projects in approved order', async ({ page }) => {
+test('home shows equal-width project cards in newest-first order', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
-  const names = await page.locator('#projects .project-card h3').allTextContents();
+  const cards = page.locator('#projects .project-card');
+  const names = await cards.locator('h3').allTextContents();
   expect(names).toEqual(['NeuroCare', 'LAWMATE', 'VINO', '요리왕 좌룡']);
+  expect(await cards.evaluateAll((elements) => elements.map((element) => element.getAttribute('data-period')))).toEqual([
+    '2025.08.21 — 2025.08.22',
+    '2025.05.13 — 2025.07.07',
+    '2025.05.09 — 2025.05.12',
+    '2025.04.14 — 2025.04.15',
+  ]);
+  const firstRow = await Promise.all([cards.nth(0).boundingBox(), cards.nth(1).boundingBox()]);
+  expect(firstRow[0]?.width).toBeCloseTo(firstRow[1]?.width ?? 0, 0);
+});
+
+test('uses clear Korean profile and skill labels without forced heading breaks', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByText('전문 분야', { exact: true })).toBeVisible();
+  await expect(page.getByText('주요 경험', { exact: true })).toBeVisible();
+  await expect(page.getByText('기술 역량', { exact: true })).toBeVisible();
+  await expect(page.locator('body')).not.toContainText('Focus');
+  await expect(page.locator('body')).not.toContainText('Based');
+  expect(await page.locator('.section-heading h2').evaluateAll((headings) => headings.some((heading) => heading.querySelector('br')))).toBe(false);
+});
+
+test('keeps Korean headings from breaking inside a word', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+  expect(await page.locator('h1, h2, h3').evaluateAll((headings) => headings.every((heading) => getComputedStyle(heading).wordBreak === 'keep-all'))).toBe(true);
+  expect(await page.locator('.hero-prefix').evaluate((heading) => getComputedStyle(heading).whiteSpace)).toBe('nowrap');
+});
+
+test('summarizes Bytech AI service work for a closed network environment', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByText('전력산업 연구개발 과제·사업의 기획 및 수주 과정에 참여하며, 폐쇄망 환경을 고려한 AI 서비스의 기획·설계·개발을 수행하고 있습니다.')).toBeVisible();
+});
+
+test('opens email guidance and copies the address from the dialog', async ({ page, context }) => {
+  await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+  await page.goto('/');
+  await page.getByRole('button', { name: '이메일 보내기' }).click();
+  const dialog = page.getByRole('dialog', { name: '이메일 안내' });
+  await expect(dialog).toBeVisible();
+  await expect(dialog).toContainText('moon010103@naver.com');
+  await dialog.getByRole('button', { name: '이메일 주소 복사' }).click();
+  await expect(dialog.getByRole('status')).toHaveText('이메일 주소가 복사되었습니다.');
+  await expect(page.evaluate(() => navigator.clipboard.readText())).resolves.toBe('moon010103@naver.com');
+  await dialog.getByRole('button', { name: '닫기' }).click();
+  await expect(dialog).not.toBeVisible();
+});
+
+test('copies the contact address from the footer without opening a mail client', async ({ page, context }) => {
+  await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+  await page.goto('/');
+  await page.locator('#contact').getByRole('button', { name: /moon010103@naver\.com/ }).click();
+  await expect(page.locator('#contact').getByRole('status')).toHaveText('이메일 주소가 복사되었습니다.');
+  await expect(page.evaluate(() => navigator.clipboard.readText())).resolves.toBe('moon010103@naver.com');
 });
 
 test('legacy sample content is absent', async ({ page }) => {

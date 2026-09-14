@@ -4,18 +4,23 @@ import ProjectCard from '../components/ProjectCard.astro';
 import { profile } from '../data/profile';
 import { getCollection } from 'astro:content';
 
-const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort((a, b) => a.data.order - b.data.order);
+const getProjectStartDate = (period: string) => period.match(/^(\d{4})\.(\d{2})\.(\d{2})/)
+  ? Date.parse(period.slice(0, 10).replaceAll('.', '-'))
+  : 0;
+const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
+  (a, b) => getProjectStartDate(b.data.period) - getProjectStartDate(a.data.period),
+);
 ---
 
 <BaseLayout home>
   <section id="about" class="hero container">
     <div class="hero-copy">
       <p class="eyebrow">Moon Seung Gi · AI Engineer</p>
-      <h1>AI를 기능이 아닌<br /><span>작동하는 구조</span>로 만듭니다.</h1>
+      <h1><span class="hero-prefix">AI를 기능이 아닌</span> <span>작동하는 구조</span>로 만듭니다.</h1>
       <p class="hero-description">{profile.headline}</p>
       <div class="hero-actions">
         <a class="button" href="#projects">프로젝트 보기 ↓</a>
-        <a class="button secondary" href={`mailto:${profile.contact.email}`}>이메일 보내기</a>
+        <button class="button secondary" type="button" data-email-dialog-open>이메일 보내기</button>
       </div>
     </div>
     <aside class="hero-profile surface" aria-label="프로필 요약">
@@ -24,12 +29,12 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
         <i></i><i></i><i></i>
       </div>
       <div class="profile-content">
-        <span class="availability"><i></i> Open to conversation</span>
+        <span class="availability"><i></i> 연락 가능</span>
         <h2>{profile.name}</h2>
         <p>{profile.englishName}</p>
         <dl>
-          <div><dt>Focus</dt><dd>LLM · RAG · Agent</dd></div>
-          <div><dt>Based</dt><dd>South Korea</dd></div>
+          <div><dt>전문 분야</dt><dd>LLM · RAG · Agent</dd></div>
+          <div><dt>주요 경험</dt><dd>AI 서비스 기획 · 설계 · 개발</dd></div>
         </dl>
       </div>
     </aside>
@@ -37,7 +42,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
 
   <section class="intro-band">
     <div class="container intro-grid">
-      <p class="eyebrow">How I Work</p>
+      <p class="eyebrow">일하는 방식</p>
       <p class="intro-copy">{profile.introduction}</p>
       <div class="workflow-grid">
         {profile.workflow.map((item) => (
@@ -53,8 +58,8 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
 
   <section id="career" class="section container career-section">
     <div class="section-heading">
-      <p class="eyebrow">Experience</p>
-      <h2>기술을 업무의 흐름에<br />연결해 왔습니다.</h2>
+      <p class="eyebrow">경력</p>
+      <h2>기술을 업무의 흐름에 연결합니다.</h2>
     </div>
     <div class="timeline">
       {profile.career.map((item, index) => (
@@ -75,21 +80,21 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
     <div class="container">
       <div class="section-heading projects-heading">
         <div>
-          <p class="eyebrow">Selected Projects</p>
+          <p class="eyebrow">프로젝트</p>
           <h2>문제에서 서비스까지.</h2>
         </div>
-        <p>기존 포트폴리오의 순서를 유지하되, 각 프로젝트의 배경·구조·판단을 웹에서 읽기 쉽게 재구성했습니다.</p>
+        <p>최근 작업부터 프로젝트의 배경·구조·기술적 판단을 웹에서 읽기 쉽게 정리했습니다.</p>
       </div>
       <div class="project-grid">
-        {projects.map((project, index) => <ProjectCard project={project} featured={index === 0} />)}
+        {projects.map((project) => <ProjectCard project={project} />)}
       </div>
     </div>
   </section>
 
   <section id="skills" class="section container skills-section">
     <div class="section-heading">
-      <p class="eyebrow">Capabilities</p>
-      <h2>모델부터 운영까지<br />하나의 시스템으로 봅니다.</h2>
+      <p class="eyebrow">기술 역량</p>
+      <h2>서비스를 만들며 활용하는 기술입니다.</h2>
     </div>
     <div class="skill-grid">
       {profile.skills.map((skill, index) => (
@@ -104,8 +109,8 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
 
   <section class="section container background-section">
     <div class="section-heading">
-      <p class="eyebrow">Background</p>
-      <h2>학습하고, 만들고,<br />검증한 과정</h2>
+      <p class="eyebrow">이력과 활동</p>
+      <h2>학습과 프로젝트 경험</h2>
     </div>
     <div class="background-list">
       {profile.education.map((item) => (
@@ -119,6 +124,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
 <style>
   .hero { display: grid; min-height: calc(100svh - 4.75rem); grid-template-columns: minmax(0, 1.45fr) minmax(20rem, 0.55fr); align-items: center; gap: clamp(2rem, 7vw, 7rem); padding-block: clamp(3rem, 7vw, 7rem); }
   .hero h1 { max-width: 56rem; margin-bottom: var(--space-8); }
+  .hero-prefix { white-space: nowrap; }
   .hero h1 span { color: var(--accent-primary); }
   .hero-description { max-width: 43rem; margin-bottom: var(--space-8); color: var(--text-secondary); font-size: clamp(1.05rem, 2vw, 1.25rem); }
   .hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
@@ -174,6 +180,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
     .workflow-grid { grid-template-columns: repeat(2, 1fr); }
     .skill-grid { grid-template-columns: 1fr; }
     .skill-card { min-height: auto; }
+    .hero-prefix { white-space: normal; }
   }
   @media (max-width: 44rem) {
     .projects-heading, .project-grid { grid-template-columns: 1fr; }

@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import EmailDialog from '../components/EmailDialog.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -46,5 +47,6 @@ const socialImage = new URL(image, Astro.site);
     <Header home={home} />
     <main id="main-content"><slot /></main>
     <Footer />
+    <EmailDialog />
   </body>
 </html>

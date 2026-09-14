@@ -1,11 +1,11 @@
 ---
 import MediaFrame from './MediaFrame.astro';
 import type { CollectionEntry } from 'astro:content';
-const { project, featured = false } = Astro.props as { project: CollectionEntry<'projects'>; featured?: boolean };
+const { project } = Astro.props as { project: CollectionEntry<'projects'> };
 const data = project.data;
 ---
 
-<article class:list={['project-card', { featured }]}>
+<article class="project-card" data-period={data.period}>
   <a class="media-link" href={`/projects/${project.id}/`} aria-label={`${data.title} 프로젝트 자세히 보기`}>
     <MediaFrame asset={data.heroMedia} label={`Project ${String(data.order).padStart(2, '0')}`} />
   </a>
@@ -37,10 +37,7 @@ const data = project.data;
   .summary { margin-bottom: var(--space-5); color: var(--text-secondary); }
   .detail-link { display: inline-flex; gap: var(--space-2); margin-top: var(--space-5); color: var(--text-primary); font-weight: 750; text-decoration: none; }
   .detail-link:hover { color: var(--accent-primary); }
-  .featured { grid-column: span 2; }
-  .featured .media-link { max-width: none; }
   @media (max-width: 44rem) {
-    .featured { grid-column: auto; }
     .card-body { grid-template-columns: 2rem 1fr; }
   }
 </style>

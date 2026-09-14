@@ -17,7 +17,7 @@ export const profile = {
       team: '기술연구소',
       role: 'AI 개발자',
       period: '2026.04 — 현재',
-      description: 'LLM·RAG 솔루션과 문서 파싱·검색 시스템을 개발하고 있습니다.',
+      description: '전력산업 연구개발 과제·사업의 기획 및 수주 과정에 참여하며, 폐쇄망 환경을 고려한 AI 서비스의 기획·설계·개발을 수행하고 있습니다.',
     },
     {
       company: '아크릴',
