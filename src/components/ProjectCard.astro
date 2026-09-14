@@ -1,0 +1,46 @@
+---
+import MediaFrame from './MediaFrame.astro';
+import type { CollectionEntry } from 'astro:content';
+const { project, featured = false } = Astro.props as { project: CollectionEntry<'projects'>; featured?: boolean };
+const data = project.data;
+---
+
+<article class:list={['project-card', { featured }]}>
+  <a class="media-link" href={`/projects/${project.id}/`} aria-label={`${data.title} 프로젝트 자세히 보기`}>
+    <MediaFrame asset={data.heroMedia} label={`Project ${String(data.order).padStart(2, '0')}`} />
+  </a>
+  <div class="card-body">
+    <div class="project-number">{String(data.order).padStart(2, '0')}</div>
+    <div>
+      <p class="eyebrow">{data.period}</p>
+      <h3><a href={`/projects/${project.id}/`}>{data.title}</a></h3>
+      <p class="subtitle">{data.subtitle}</p>
+      <p class="summary">{data.summary}</p>
+      <ul class="tag-list" aria-label={`${data.title} 기술 스택`}>
+        {data.tech.slice(0, 5).map((tech) => <li class="tag">{tech}</li>)}
+      </ul>
+      <a class="detail-link" href={`/projects/${project.id}/`}>프로젝트 자세히 보기 <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+</article>
+
+<style>
+  .project-card { min-width: 0; }
+  .media-link { display: block; margin-bottom: var(--space-5); color: inherit; text-decoration: none; transition: transform 180ms ease; }
+  .media-link:hover { transform: translateY(-5px); }
+  .card-body { display: grid; grid-template-columns: 3rem 1fr; gap: var(--space-4); }
+  .project-number { color: var(--accent-secondary); font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; }
+  h3 { margin-bottom: var(--space-1); }
+  h3 a { text-decoration: none; }
+  h3 a:hover { color: var(--accent-primary); }
+  .subtitle { margin-bottom: var(--space-3); color: var(--accent-primary); font-weight: 700; }
+  .summary { margin-bottom: var(--space-5); color: var(--text-secondary); }
+  .detail-link { display: inline-flex; gap: var(--space-2); margin-top: var(--space-5); color: var(--text-primary); font-weight: 750; text-decoration: none; }
+  .detail-link:hover { color: var(--accent-primary); }
+  .featured { grid-column: span 2; }
+  .featured .media-link { max-width: none; }
+  @media (max-width: 44rem) {
+    .featured { grid-column: auto; }
+    .card-body { grid-template-columns: 2rem 1fr; }
+  }
+</style>

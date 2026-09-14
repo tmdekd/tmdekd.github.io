@@ -1,0 +1,45 @@
+---
+title: NeuroCare
+subtitle: 독거노인 정서 돌봄 AI 서비스
+order: 1
+period: 2025.08.21 — 2025.08.22
+role: AI Engineer
+platform: Web · AI Chatbot
+result: 짧은 기간 내 AI 기반 챗봇 서비스 구현
+summary: 공감형 대화와 심리 상태 분류를 연결해 정서적 돌봄과 보호자 연계를 지원합니다.
+tech: [Gemma 3 4B, PyTorch, FastAPI, Spring Boot, RunPod, OpenAI API]
+githubUrl: https://github.com/tmdekd/HonamISHackathon
+heroMedia:
+  type: placeholder
+  alt: NeuroCare 서비스 대표 화면이 들어갈 자리
+  caption: 권장 자료 · 서비스 대화 화면 또는 전체 구성 화면
+  aspectRatio: 16 / 10
+media:
+  - type: placeholder
+    alt: NeuroCare 공감형 대화 데모 영상이 들어갈 자리
+    caption: 필요 자료 · 30–60초 대화 데모 영상
+    aspectRatio: 16 / 9
+draft: false
+problem:
+  - 단순 대화형 챗봇만으로는 사용자의 정서적 안정을 충분히 지원하기 어렵습니다.
+  - 우울·불안·중독 위험을 조기에 발견하고 가족이나 의료진과 연결할 흐름이 필요했습니다.
+  - 사용자의 심리 상태 변화를 지속해서 확인할 수 있는 시각화가 필요했습니다.
+goals:
+  - 고령자의 과거 경험을 자연스럽게 회상하도록 돕는 공감형 대화를 설계합니다.
+  - 심리 상태 분류 결과를 보호자 연계와 리포트로 확장할 수 있는 구조를 만듭니다.
+flow: [사용자 대화, Spring Boot 서비스, FastAPI 심리 질환 분류 모델, RunPod 챗봇 sLLM, 응답 및 상태 기록]
+features:
+  - title: 회상 유도형 공감 대화
+    description: 형식적인 공감 어휘 반복 대신 사용자의 경험을 되짚고 다음 이야기를 이끌어내는 대화로 구성했습니다.
+  - title: 심리 상태 분류
+    description: 대화 흐름과 별도로 심리 질환 분류 모델을 연결해 상태 파악 가능성을 확보했습니다.
+  - title: 보호자 연계 기반
+    description: 향후 상태 시각화와 보호자 리포트로 확장할 수 있도록 서비스 구조를 분리했습니다.
+decisions:
+  - title: 공감 문장보다 회상 흐름
+    description: 자연스러운 공감을 위해 고령자의 근현대 경험 기반 스토리 데이터를 정제해 파인튜닝에 활용했습니다.
+  - title: 대화 데이터 품질 관리
+    description: 불필요한 발화 제거, 대화 길이 필터링, 역할 재구성으로 학습 데이터의 맥락 일관성을 높였습니다.
+reflection: 짧은 해커톤 기간 안에 대화 모델과 분류 모델을 서비스 흐름으로 연결했습니다. 실제 돌봄 서비스로 확장하려면 진단 표현의 안전성, 개인정보 보호, 전문가 연계 기준을 추가로 검증해야 합니다.
+---
+

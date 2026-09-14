@@ -1,0 +1,45 @@
+---
+title: 요리왕 좌룡
+subtitle: 생성형 AI 기반 맞춤형 레시피 추천 챗봇
+order: 4
+period: 2025.04.14 — 2025.04.15
+role: AI Engineer
+platform: Web · RAG Chatbot
+result: Fine-tuned sLLM과 RAG 분기형 응답 구조 설계
+summary: 냉장고 속 재료와 도구·시간 조건을 통합해 지금 실행할 수 있는 레시피로 정리합니다.
+tech: [Gemma 3 4B, Fine-tuning, RAG, FAISS, Python, OpenAI API]
+githubUrl: https://github.com/tmdekd/SKN10-3rd-5Team
+heroMedia:
+  type: placeholder
+  alt: 요리왕 좌룡 레시피 추천 화면이 들어갈 자리
+  caption: 권장 자료 · 조건 입력과 최종 레시피가 함께 보이는 화면
+  aspectRatio: 16 / 10
+media:
+  - type: placeholder
+    alt: 요리왕 좌룡 대화형 추천 데모 영상이 들어갈 자리
+    caption: 필요 자료 · 다중 조건을 반영하는 대화 데모
+    aspectRatio: 16 / 9
+draft: false
+problem:
+  - 요리 이름 중심 검색은 사용자가 가진 재료와 도구, 조리 시간을 충분히 반영하지 못합니다.
+  - 생성 답변만으로는 제약 조건의 충족 여부와 실제 실행 가능성을 확인하기 어렵습니다.
+  - 대화가 길어질수록 흩어지는 조건을 하나의 맥락으로 통합할 필요가 있었습니다.
+goals:
+  - 재료 중심으로 검색 기준을 바꾸고 도구·시간 제약을 필터로 반영합니다.
+  - 부족한 정보를 단계적으로 보완한 뒤 하나의 실행 가능한 레시피만 제공합니다.
+flow: [조건 입력, 요리 질문 분류, Fine-tuned sLLM 초안, 적절성 평가, 내부 레시피 RAG, 외부 검색 보완, 최종 레시피]
+features:
+  - title: 다중 조건 통합
+    description: 이전 대화에서 입력한 재료·도구·시간을 하나의 맥락으로 모아 추천에 반영했습니다.
+  - title: 내부 우선 RAG
+    description: 유튜브 자막과 레시피 데이터를 활용한 내부 검색을 먼저 수행하고 부족할 때만 외부 검색으로 확장했습니다.
+  - title: 실행 중심 응답
+    description: 불필요한 설명을 줄이고 재료, 조리 순서, 대체 방법 중심의 단일 레시피로 정리했습니다.
+decisions:
+  - title: 응답 생성과 적절성 판단 분리
+    description: 생성 직후 출력하지 않고 재료·도구·시간 충족과 실행 가능성을 별도로 평가했습니다.
+  - title: 복잡성은 내부에 유지
+    description: 분류·검색·보완 과정은 시스템 내부에서 처리하고 사용자에게는 정제된 결과만 보여주도록 했습니다.
+reflection: 짧은 기간에 파인튜닝 모델과 RAG 분기를 결합해 조건 중심 추천 흐름을 구현했습니다. 실제 서비스로 발전시키려면 알레르기·식이 제한·레시피 출처에 대한 검증이 필요합니다.
+---
+

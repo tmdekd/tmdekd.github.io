@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="페이지를 찾을 수 없습니다 · 문승기 포트폴리오" description="요청한 페이지를 찾을 수 없습니다.">
+  <section class="not-found container">
+    <p class="eyebrow">Error · 404</p>
+    <h1>길을 잠시<br />벗어났습니다.</h1>
+    <p>요청한 페이지가 이동했거나 주소가 올바르지 않습니다.</p>
+    <a class="button" href="/">포트폴리오로 돌아가기</a>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found { display: grid; min-height: 70svh; place-content: center; justify-items: start; padding-block: var(--space-20); }
+  .not-found h1 { margin-bottom: var(--space-6); }
+  .not-found > p:not(.eyebrow) { margin-bottom: var(--space-8); color: var(--text-secondary); }
+</style>

@@ -1,0 +1,187 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { profile } from '../data/profile';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout home>
+  <section id="about" class="hero container">
+    <div class="hero-copy">
+      <p class="eyebrow">Moon Seung Gi · AI Engineer</p>
+      <h1>AI를 기능이 아닌<br /><span>작동하는 구조</span>로 만듭니다.</h1>
+      <p class="hero-description">{profile.headline}</p>
+      <div class="hero-actions">
+        <a class="button" href="#projects">프로젝트 보기 ↓</a>
+        <a class="button secondary" href={`mailto:${profile.contact.email}`}>이메일 보내기</a>
+      </div>
+    </div>
+    <aside class="hero-profile surface" aria-label="프로필 요약">
+      <div class="profile-visual" aria-hidden="true">
+        <span>MS</span>
+        <i></i><i></i><i></i>
+      </div>
+      <div class="profile-content">
+        <span class="availability"><i></i> Open to conversation</span>
+        <h2>{profile.name}</h2>
+        <p>{profile.englishName}</p>
+        <dl>
+          <div><dt>Focus</dt><dd>LLM · RAG · Agent</dd></div>
+          <div><dt>Based</dt><dd>South Korea</dd></div>
+        </dl>
+      </div>
+    </aside>
+  </section>
+
+  <section class="intro-band">
+    <div class="container intro-grid">
+      <p class="eyebrow">How I Work</p>
+      <p class="intro-copy">{profile.introduction}</p>
+      <div class="workflow-grid">
+        {profile.workflow.map((item) => (
+          <article>
+            <span>{item.number}</span>
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="career" class="section container career-section">
+    <div class="section-heading">
+      <p class="eyebrow">Experience</p>
+      <h2>기술을 업무의 흐름에<br />연결해 왔습니다.</h2>
+    </div>
+    <div class="timeline">
+      {profile.career.map((item, index) => (
+        <article>
+          <div class="timeline-marker"><span>{String(index + 1).padStart(2, '0')}</span></div>
+          <div class="timeline-period">{item.period}</div>
+          <div class="timeline-content">
+            <h3>{item.company}</h3>
+            <p class="career-role">{item.team} · {item.role}</p>
+            <p>{item.description}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section id="projects" class="section projects-section">
+    <div class="container">
+      <div class="section-heading projects-heading">
+        <div>
+          <p class="eyebrow">Selected Projects</p>
+          <h2>문제에서 서비스까지.</h2>
+        </div>
+        <p>기존 포트폴리오의 순서를 유지하되, 각 프로젝트의 배경·구조·판단을 웹에서 읽기 쉽게 재구성했습니다.</p>
+      </div>
+      <div class="project-grid">
+        {projects.map((project, index) => <ProjectCard project={project} featured={index === 0} />)}
+      </div>
+    </div>
+  </section>
+
+  <section id="skills" class="section container skills-section">
+    <div class="section-heading">
+      <p class="eyebrow">Capabilities</p>
+      <h2>모델부터 운영까지<br />하나의 시스템으로 봅니다.</h2>
+    </div>
+    <div class="skill-grid">
+      {profile.skills.map((skill, index) => (
+        <article class="skill-card surface">
+          <div class="skill-index">0{index + 1}</div>
+          <h3>{skill.group}</h3>
+          <ul>{skill.items.map((item) => <li>{item}</li>)}</ul>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section container background-section">
+    <div class="section-heading">
+      <p class="eyebrow">Background</p>
+      <h2>학습하고, 만들고,<br />검증한 과정</h2>
+    </div>
+    <div class="background-list">
+      {profile.education.map((item) => (
+        <div><span>{item.label}</span><strong>{item.value}</strong></div>
+      ))}
+      <div><span>공개 이력서</span><strong>준비 중</strong></div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero { display: grid; min-height: calc(100svh - 4.75rem); grid-template-columns: minmax(0, 1.45fr) minmax(20rem, 0.55fr); align-items: center; gap: clamp(2rem, 7vw, 7rem); padding-block: clamp(3rem, 7vw, 7rem); }
+  .hero h1 { max-width: 56rem; margin-bottom: var(--space-8); }
+  .hero h1 span { color: var(--accent-primary); }
+  .hero-description { max-width: 43rem; margin-bottom: var(--space-8); color: var(--text-secondary); font-size: clamp(1.05rem, 2vw, 1.25rem); }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  .hero-profile { overflow: hidden; }
+  .profile-visual { position: relative; display: grid; min-height: 20rem; place-items: center; overflow: hidden; background: var(--bg-accent-soft); }
+  .profile-visual > span { position: relative; z-index: 2; display: grid; width: 8rem; aspect-ratio: 1; place-items: center; border-radius: 2.5rem; background: var(--accent-primary); color: var(--bg-surface); font-family: var(--font-mono); font-size: 2rem; font-weight: 700; transform: rotate(-5deg); }
+  .profile-visual i { position: absolute; border: 1px solid var(--color-indigo-100); border-radius: 50%; }
+  .profile-visual i:nth-of-type(1) { width: 16rem; aspect-ratio: 1; }
+  .profile-visual i:nth-of-type(2) { width: 22rem; aspect-ratio: 1; }
+  .profile-visual i:nth-of-type(3) { width: 29rem; aspect-ratio: 1; }
+  .profile-content { padding: var(--space-6); }
+  .availability { display: inline-flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-8); color: var(--accent-secondary); font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; }
+  .availability i { width: 0.5rem; aspect-ratio: 1; border-radius: 50%; background: var(--accent-secondary); }
+  .profile-content h2 { margin-bottom: 0; font-size: 2rem; }
+  .profile-content > p { color: var(--text-muted); }
+  .profile-content dl { margin: var(--space-6) 0 0; }
+  .profile-content dl div { display: grid; grid-template-columns: 4rem 1fr; gap: var(--space-3); padding-block: var(--space-2); border-top: 1px solid var(--border-subtle); }
+  dt { color: var(--text-muted); font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; }
+  dd { margin: 0; font-size: 0.84rem; font-weight: 650; }
+  .intro-band { padding-block: clamp(4rem, 8vw, 7rem); background: var(--text-primary); color: var(--bg-surface); }
+  .intro-band .eyebrow { color: var(--color-indigo-100); }
+  .intro-copy { max-width: 62rem; margin-bottom: clamp(3rem, 7vw, 6rem); color: color-mix(in srgb, var(--bg-surface) 84%, transparent); font-size: clamp(1.5rem, 3.6vw, 3rem); line-height: 1.42; letter-spacing: -0.03em; }
+  .workflow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
+  .workflow-grid article { min-height: 15rem; padding: var(--space-5); border: 1px solid color-mix(in srgb, var(--bg-surface) 15%, transparent); border-radius: var(--radius-md); background: color-mix(in srgb, var(--bg-surface) 4%, transparent); }
+  .workflow-grid span { color: var(--color-indigo-100); font-family: var(--font-mono); font-size: 0.72rem; }
+  .workflow-grid h3 { margin-top: var(--space-12); }
+  .workflow-grid p { margin-bottom: 0; color: color-mix(in srgb, var(--bg-surface) 62%, transparent); font-size: 0.9rem; }
+  .career-section { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(3rem, 7vw, 7rem); }
+  .timeline { border-top: 1px solid var(--border-subtle); }
+  .timeline article { display: grid; grid-template-columns: 3rem 9rem 1fr; gap: var(--space-4); padding: var(--space-8) 0; border-bottom: 1px solid var(--border-subtle); }
+  .timeline-marker span { color: var(--accent-secondary); font-family: var(--font-mono); font-size: 0.72rem; }
+  .timeline-period { color: var(--text-muted); font-family: var(--font-mono); font-size: 0.75rem; }
+  .timeline-content h3 { margin-bottom: var(--space-1); }
+  .career-role { color: var(--accent-primary); font-weight: 700; }
+  .timeline-content p:last-child { margin-bottom: 0; color: var(--text-secondary); }
+  .projects-section { background: var(--bg-surface); }
+  .projects-heading { display: grid; max-width: none; grid-template-columns: 1.1fr 0.9fr; align-items: end; gap: var(--space-12); }
+  .project-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(3rem, 7vw, 7rem) var(--space-8); }
+  .skill-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
+  .skill-card { min-height: 22rem; padding: var(--space-6); }
+  .skill-index { color: var(--accent-secondary); font-family: var(--font-mono); font-size: 0.75rem; }
+  .skill-card h3 { margin-top: var(--space-16); }
+  .skill-card ul { margin: var(--space-6) 0 0; padding: 0; list-style: none; }
+  .skill-card li { padding-block: var(--space-2); border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary); font-family: var(--font-mono); font-size: 0.8rem; }
+  .background-section { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(3rem, 7vw, 7rem); }
+  .background-list { border-top: 1px solid var(--border-subtle); }
+  .background-list div { display: grid; grid-template-columns: 7rem 1fr; gap: var(--space-4); padding: var(--space-6) 0; border-bottom: 1px solid var(--border-subtle); }
+  .background-list span { color: var(--text-muted); font-family: var(--font-mono); font-size: 0.74rem; }
+  @media (max-width: 54rem) {
+    .hero, .career-section, .background-section { grid-template-columns: 1fr; }
+    .hero { min-height: auto; }
+    .hero-profile { max-width: 30rem; }
+    .workflow-grid { grid-template-columns: repeat(2, 1fr); }
+    .skill-grid { grid-template-columns: 1fr; }
+    .skill-card { min-height: auto; }
+  }
+  @media (max-width: 44rem) {
+    .projects-heading, .project-grid { grid-template-columns: 1fr; }
+    .workflow-grid { grid-template-columns: 1fr; }
+    .workflow-grid article { min-height: auto; }
+    .timeline article { grid-template-columns: 2rem 1fr; }
+    .timeline-period { grid-column: 2; grid-row: 1; }
+    .timeline-content { grid-column: 2; }
+    .background-list div { grid-template-columns: 1fr; gap: var(--space-1); }
+  }
+</style>

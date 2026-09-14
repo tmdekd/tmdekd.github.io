@@ -1,0 +1,56 @@
+:root {
+  color-scheme: light;
+
+  --color-indigo-50: #f0effc;
+  --color-indigo-100: #e4e1fa;
+  --color-indigo-500: #6254c7;
+  --color-indigo-600: #5144b3;
+  --color-indigo-700: #43378f;
+  --color-teal-50: #e9f5f4;
+  --color-teal-500: #236c69;
+  --color-teal-700: #1f625f;
+  --color-mist-50: #f6f7fb;
+  --color-white: #ffffff;
+  --color-ink-950: #121826;
+  --color-ink-700: #3f4758;
+  --color-ink-500: #697183;
+  --color-line: #e3e6ef;
+  --color-focus: #2d5bd1;
+
+  --bg-page: var(--color-mist-50);
+  --bg-surface: var(--color-white);
+  --bg-accent-soft: var(--color-indigo-50);
+  --bg-secondary-soft: var(--color-teal-50);
+  --text-primary: var(--color-ink-950);
+  --text-secondary: var(--color-ink-700);
+  --text-muted: var(--color-ink-500);
+  --accent-primary: var(--color-indigo-500);
+  --accent-primary-hover: var(--color-indigo-600);
+  --accent-secondary: var(--color-teal-500);
+  --border-subtle: var(--color-line);
+  --focus-ring: var(--color-focus);
+
+  --font-sans: "Pretendard Variable", Pretendard, Inter, "Noto Sans KR", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  --radius-sm: 0.65rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  --radius-xl: 2rem;
+  --shadow-card: 0 18px 50px rgba(38, 42, 68, 0.07);
+  --shadow-hover: 0 24px 60px rgba(38, 42, 68, 0.13);
+  --container: 74rem;
+}

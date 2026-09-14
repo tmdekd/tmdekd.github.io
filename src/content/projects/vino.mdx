@@ -1,0 +1,45 @@
+---
+title: VINO
+subtitle: 생성형 AI 기반 와인 입문 가이드 챗봇
+order: 3
+period: 2025.05.09 — 2025.05.12
+role: PM · AI Engineer
+platform: Web · RAG Chatbot
+result: Fine-tuned sLLM과 다단계 평가 구조 적용
+summary: 질문 유형을 분류하고 내부 문서와 외부 검색을 단계적으로 활용해 하나의 답으로 정제합니다.
+tech: [Fine-tuned sLLM, RAG, FAISS, LLM-as-a-Judge, Tavily, OpenAI API]
+githubUrl: https://github.com/tmdekd/SKN10-4th-2Team
+heroMedia:
+  type: placeholder
+  alt: VINO 와인 가이드 챗봇 화면이 들어갈 자리
+  caption: 권장 자료 · 답변 근거가 표시된 챗봇 화면
+  aspectRatio: 16 / 10
+media:
+  - type: placeholder
+    alt: VINO 질의 분기 데모 영상이 들어갈 자리
+    caption: 필요 자료 · 내부 검색과 외부 검색 분기 데모
+    aspectRatio: 16 / 9
+draft: false
+problem:
+  - 흩어진 와인 정보를 나열하는 방식은 입문자가 질문 맥락에 맞는 답을 찾기 어렵게 합니다.
+  - 모델 내부 지식만으로 답하면 환각과 출처 불명확성 때문에 신뢰도를 판단하기 어렵습니다.
+  - 생성된 답변이 충분한지 확인하고 부족할 때만 보완하는 기준이 필요했습니다.
+goals:
+  - 질문 유형을 분류해 와인·품종·지역·생산자 등 맥락별 응답 경로를 나눕니다.
+  - 내부 문서를 먼저 활용하고 부족한 경우에만 외부 검색으로 확장합니다.
+flow: [질문 입력, 카테고리 분류, sLLM 응답, 관련성 평가, 내부 문서 RAG, 재평가, 외부 검색, 최종 응답]
+features:
+  - title: 질문 유형별 분기
+    description: 인사와 와인 관련 질문, 기타 질문을 구분해 필요한 처리만 수행하도록 했습니다.
+  - title: 단계적 검색 보완
+    description: FAISS 기반 내부 문서를 먼저 검색하고 관련성이 부족할 때 Tavily 외부 검색으로 확장했습니다.
+  - title: 응답 품질 평가
+    description: LLM-as-a-Judge로 응답의 충분성과 적합성을 확인해 다음 단계를 결정했습니다.
+decisions:
+  - title: 생성과 평가의 분리
+    description: 자연스러운 답변과 충분한 답변은 다를 수 있어 생성 결과를 별도의 평가 단계로 검증했습니다.
+  - title: 검색 비용의 단계화
+    description: 모든 요청에 외부 검색을 사용하지 않고 내부 지식으로 부족할 때만 범위를 넓혔습니다.
+reflection: 생성·검색·평가를 한 번에 처리하지 않고 단계별로 분리하면서 응답 품질을 제어하는 방법을 실험했습니다. 평가지표와 테스트셋을 더 체계화하면 판단 기준의 일관성을 높일 수 있습니다.
+---
+

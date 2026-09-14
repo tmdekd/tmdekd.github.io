@@ -1,0 +1,45 @@
+---
+title: LAWMATE
+subtitle: 법무법인 업무보조 AI 플랫폼
+order: 2
+period: 2025.05.13 — 2025.07.07
+role: AI Engineer · Full-Stack Developer
+platform: Web · AI Agent
+result: 기업 참여 프로젝트 우수팀 선정
+summary: 법률 검색과 사건 분석, 권한별 협업 흐름을 하나의 업무 플랫폼으로 구성했습니다.
+tech: [LangChain, LangGraph, Django, FastAPI, JWT, AWS, Docker]
+githubUrl: https://github.com/tmdekd/SKN10-FINAL-3Team
+heroMedia:
+  type: placeholder
+  alt: LAWMATE 사건 분석 화면이 들어갈 자리
+  caption: 권장 자료 · 대시보드 또는 사건 분석 대표 화면
+  aspectRatio: 16 / 10
+media:
+  - type: placeholder
+    alt: LAWMATE 주요 기능 데모 영상이 들어갈 자리
+    caption: 필요 자료 · 사건 등록부터 AI 분석까지의 데모
+    aspectRatio: 16 / 9
+draft: false
+problem:
+  - 검색과 추천 중심의 도구만으로는 사건별 전략 수립과 후속 업무를 함께 지원하기 어렵습니다.
+  - 초보 인력의 독자적 대응과 로펌 내부의 역할별 협업을 모두 지원할 구조가 필요했습니다.
+  - 판례·사건 정보 검토 시간을 줄이면서 접근 권한을 분명히 구분해야 했습니다.
+goals:
+  - 유사 판례 검색과 사건 분석을 연결해 법률 업무의 탐색 시간을 줄입니다.
+  - 관리자·변호사·법률사무원·파트너 변호사의 역할에 따라 기능과 데이터 접근을 구분합니다.
+flow: [사용자 요청, Django 및 JWT 권한 검증, LangGraph 오케스트레이션, VectorDB·RDB 검색, LLM 분석, 사건 화면 응답]
+features:
+  - title: 사건 중심 업무 관리
+    description: 사건 등록·수정, 팀 배정, 구성원별 업무 흐름을 하나의 서비스에 연결했습니다.
+  - title: 유사 판례 검색
+    description: 사건 맥락을 바탕으로 검색을 수행하고, 분석 결과를 사건 화면에서 활용하도록 구성했습니다.
+  - title: AI 사건 분석
+    description: LangGraph 흐름에서 벡터 검색, SQL 검색, 점수 계산, 설명 단계를 연결했습니다.
+decisions:
+  - title: 역할별 권한 분리
+    description: 모든 요청에서 JWT를 검증하고 Django Middleware에서 인증 로직을 일괄 처리하도록 구성했습니다.
+  - title: 서비스와 AI 실행 환경 분리
+    description: AWS의 웹 서비스와 RunPod의 AI 실행 환경을 나누고 API로 연결해 배포 구조를 구성했습니다.
+reflection: 기능 구현뿐 아니라 인증·권한·배포까지 포함한 서비스 전체 흐름을 다룬 프로젝트입니다. 법률 서비스의 실제 적용을 위해서는 판례 최신성, 설명 가능성, 전문가 검토 절차가 추가로 필요합니다.
+---
+

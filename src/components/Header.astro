@@ -1,0 +1,37 @@
+---
+const { home = false } = Astro.props;
+const prefix = home ? '' : '/';
+---
+
+<header class="site-header">
+  <div class="header-inner container">
+    <a class="brand" href="/" aria-label="문승기 포트폴리오 홈">
+      <span class="brand-mark" aria-hidden="true">MS</span>
+      <span>Moon Seung Gi</span>
+    </a>
+    <nav aria-label="주요 메뉴">
+      <a href={`${prefix}#about`}>소개</a>
+      <a href={`${prefix}#career`}>경력</a>
+      <a href={`${prefix}#projects`}>프로젝트</a>
+      <a href={`${prefix}#skills`}>기술</a>
+      <a class="contact-link" href={`${prefix}#contact`}>연락</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header { position: sticky; z-index: 20; top: 0; border-bottom: 1px solid color-mix(in srgb, var(--border-subtle) 85%, transparent); background: color-mix(in srgb, var(--bg-page) 88%, transparent); backdrop-filter: blur(18px); }
+  .header-inner { display: flex; min-height: 4.75rem; align-items: center; justify-content: space-between; gap: var(--space-6); }
+  .brand { display: inline-flex; align-items: center; gap: var(--space-3); font-size: 0.86rem; font-weight: 800; text-decoration: none; }
+  .brand-mark { display: grid; width: 2.2rem; aspect-ratio: 1; place-items: center; border-radius: 0.7rem; background: var(--accent-primary); color: var(--bg-surface); font-family: var(--font-mono); font-size: 0.72rem; }
+  nav { display: flex; align-items: center; gap: clamp(0.75rem, 2.5vw, 2rem); }
+  nav a { color: var(--text-secondary); font-size: 0.85rem; font-weight: 650; text-decoration: none; }
+  nav a:hover { color: var(--accent-primary); }
+  .contact-link { padding: 0.5rem 0.85rem; border: 1px solid var(--border-subtle); border-radius: 999px; background: var(--bg-surface); }
+  @media (max-width: 42rem) {
+    .brand > span:last-child { display: none; }
+    nav { gap: 0.45rem; }
+    nav a { display: none; }
+    nav a:nth-last-child(2), nav .contact-link { display: inline-flex; }
+  }
+</style>
