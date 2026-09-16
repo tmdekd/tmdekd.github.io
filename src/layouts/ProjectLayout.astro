@@ -2,6 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import MediaFrame from '../components/MediaFrame.astro';
+import ProjectBrief from '../components/ProjectBrief.astro';
 
 interface Props {
   project: CollectionEntry<'projects'>;
@@ -18,7 +19,7 @@ const data = project.data;
       <a class="back-link" href="/#projects">← 프로젝트 목록</a>
       <div class="hero-grid">
         <div class="hero-copy">
-          <p class="eyebrow">Project {String(data.order).padStart(2, '0')}</p>
+          <p class="detail-index">프로젝트 <span>{String(data.order).padStart(2, '0')}</span></p>
           <h1>{data.title}</h1>
           <p class="subtitle">{data.subtitle}</p>
           <p class="summary">{data.summary}</p>
@@ -28,18 +29,20 @@ const data = project.data;
           </div>
         </div>
         <dl class="project-meta surface">
-          <div><dt>Period</dt><dd>{data.period}</dd></div>
-          <div><dt>Role</dt><dd>{data.role}</dd></div>
-          <div><dt>Platform</dt><dd>{data.platform}</dd></div>
-          <div><dt>Result</dt><dd>{data.result}</dd></div>
+          <div><dt>기간</dt><dd>{data.period}</dd></div>
+          <div><dt>역할</dt><dd>{data.role}</dd></div>
+          <div><dt>플랫폼</dt><dd>{data.platform}</dd></div>
+          <div><dt>결과</dt><dd>{data.result}</dd></div>
         </dl>
       </div>
-      <MediaFrame asset={data.heroMedia} label="Hero Media" />
+      {data.heroMedia.type === 'placeholder'
+        ? <ProjectBrief project={project} variant="hero" />
+        : <MediaFrame asset={data.heroMedia} label="대표 미디어" />}
     </section>
 
     <section class="section container content-grid">
       <div class="section-heading sticky-title">
-        <p class="eyebrow">01 · Background</p>
+        <p class="section-kicker"><span class="section-number">01</span> 배경</p>
         <h2>무엇을 해결하려 했는가</h2>
       </div>
       <div class="content-stack">
@@ -54,7 +57,7 @@ const data = project.data;
     <section class="section architecture-section">
       <div class="container">
         <div class="section-heading">
-          <p class="eyebrow">02 · Architecture</p>
+          <p class="section-kicker section-kicker--inverse"><span class="section-number">02</span> 서비스 흐름</p>
           <h2>서비스 흐름</h2>
           <p>복잡한 처리 과정은 내부에 두고, 사용자에게는 정제된 하나의 결과를 전달합니다.</p>
         </div>
@@ -68,7 +71,7 @@ const data = project.data;
 
     <section class="section container">
       <div class="section-heading">
-        <p class="eyebrow">03 · Features</p>
+        <p class="section-kicker"><span class="section-number">03</span> 주요 기능</p>
         <h2>주요 기능</h2>
       </div>
       <div class="feature-grid">
@@ -84,7 +87,7 @@ const data = project.data;
 
     <section class="section container content-grid">
       <div class="section-heading sticky-title">
-        <p class="eyebrow">04 · Decisions</p>
+        <p class="section-kicker"><span class="section-number">04</span> 기술적 판단</p>
         <h2>기술적 판단과 고려사항</h2>
       </div>
       <div class="decision-list">
@@ -96,7 +99,7 @@ const data = project.data;
 
     <section class="section container">
       <div class="section-heading">
-        <p class="eyebrow">05 · Demo</p>
+        <p class="section-kicker"><span class="section-number">05</span> 데모</p>
         <h2>이미지와 영상</h2>
         <p>현재는 자료가 들어갈 비율과 위치를 먼저 잡아두었습니다. 실제 화면을 전달받으면 이 구조를 유지한 채 교체할 수 있습니다.</p>
       </div>
@@ -107,7 +110,7 @@ const data = project.data;
 
     <section class="section container reflection">
       <div>
-        <p class="eyebrow">06 · Outcome & Reflection</p>
+        <p class="section-kicker"><span class="section-number">06</span> 결과와 회고</p>
         <h2>결과와 회고</h2>
       </div>
       <div>
@@ -125,16 +128,18 @@ const data = project.data;
 
 <style>
   .project-hero { padding-block: clamp(2.5rem, 6vw, 5rem) var(--space-20); }
-  .back-link { display: inline-block; margin-bottom: var(--space-12); color: var(--text-secondary); font-size: 0.85rem; font-weight: 700; text-decoration: none; }
+  .back-link { display: inline-block; margin-bottom: var(--space-12); color: var(--text-secondary); font-size: 0.9rem; font-weight: 700; text-decoration: none; }
   .hero-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(18rem, 0.7fr); gap: var(--space-10); align-items: end; margin-bottom: var(--space-12); }
   h1 { margin-bottom: var(--space-3); }
+  .detail-index { margin-bottom: var(--space-3); color: var(--text-section-kicker); font-size: 0.9rem; font-weight: 700; }
+  .detail-index span, .section-number { margin-right: var(--space-2); font-family: var(--font-mono); font-size: var(--font-size-utility); letter-spacing: 0.06em; }
   .subtitle { margin-bottom: var(--space-5); color: var(--accent-primary); font-size: clamp(1.15rem, 2.5vw, 1.6rem); font-weight: 750; }
   .summary { max-width: 46rem; margin-bottom: var(--space-6); color: var(--text-secondary); font-size: 1.08rem; }
   .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
   .project-meta { margin: 0; padding: var(--space-6); box-shadow: none; }
   .project-meta div { display: grid; grid-template-columns: 5rem 1fr; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: 1px solid var(--border-subtle); }
   .project-meta div:last-child { border-bottom: 0; }
-  dt { color: var(--text-muted); font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; }
+  dt { color: var(--text-muted); font-family: var(--font-sans); font-size: var(--font-size-utility); font-weight: 700; }
   dd { margin: 0; font-size: 0.9rem; font-weight: 650; }
   .content-grid { display: grid; grid-template-columns: minmax(16rem, 0.8fr) minmax(0, 1.2fr); gap: clamp(3rem, 8vw, 8rem); }
   .sticky-title { align-self: start; position: sticky; top: 7rem; }
@@ -142,27 +147,27 @@ const data = project.data;
   .goal-panel { margin-top: var(--space-8); padding: clamp(1.5rem, 4vw, 2.5rem); border-radius: var(--radius-lg); background: var(--bg-accent-soft); }
   .goal-panel ul { margin-bottom: 0; padding-left: 1.2rem; }
   .architecture-section { background: var(--text-primary); color: var(--bg-surface); }
-  .architecture-section .eyebrow { color: var(--color-indigo-100); }
+  .architecture-section .section-kicker { color: var(--color-indigo-100); }
   .architecture-section .section-heading p:last-child { color: color-mix(in srgb, var(--bg-surface) 68%, transparent); }
   .flow-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: var(--space-3); margin: 0; padding: 0; list-style: none; counter-reset: flow; }
   .flow-list li { min-height: 10rem; padding: var(--space-5); border: 1px solid color-mix(in srgb, var(--bg-surface) 15%, transparent); border-radius: var(--radius-md); background: color-mix(in srgb, var(--bg-surface) 5%, transparent); }
-  .flow-list span { display: block; margin-bottom: var(--space-8); color: var(--color-indigo-100); font-family: var(--font-mono); font-size: 0.72rem; }
+  .flow-list span { display: block; margin-bottom: var(--space-8); color: var(--color-indigo-100); font-family: var(--font-mono); font-size: var(--font-size-utility); }
   .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
-  .feature-card { min-height: 19rem; padding: var(--space-6); }
-  .feature-card > span { color: var(--accent-secondary); font-family: var(--font-mono); font-size: 0.75rem; }
+  .feature-card { min-height: 16rem; padding: var(--space-6); }
+  .feature-card > span { color: var(--accent-secondary); font-family: var(--font-mono); font-size: var(--font-size-utility); }
   .feature-card h3 { margin-top: var(--space-12); }
   .feature-card p, .decision-list p { color: var(--text-secondary); }
   .decision-list { border-top: 1px solid var(--border-subtle); }
   .decision-list article { padding: var(--space-8) 0; border-bottom: 1px solid var(--border-subtle); }
   .media-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-5); }
   .media-grid > :only-child { grid-column: 1 / -1; }
-  .reflection { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: var(--space-12); padding: clamp(2rem, 6vw, 5rem); border-radius: var(--radius-xl); background: var(--bg-secondary-soft); }
+  .reflection { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: var(--space-12); padding: clamp(2rem, 6vw, 5rem); border-radius: var(--radius-xl); background: var(--bg-secondary-soft); box-shadow: var(--shadow-emphasis); }
   .reflection strong { display: block; margin-bottom: var(--space-4); color: var(--color-teal-700); font-size: 1.1rem; }
   .reflection p { margin-bottom: 0; color: var(--text-secondary); font-size: clamp(1rem, 2vw, 1.2rem); }
   .project-nav { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); padding-block: var(--space-20); }
   .project-nav a { display: grid; padding: var(--space-6); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--bg-surface); text-decoration: none; }
   .project-nav a:hover { border-color: var(--accent-primary); }
-  .project-nav span { color: var(--text-muted); font-size: 0.78rem; }
+  .project-nav span { color: var(--text-muted); font-size: var(--font-size-utility); }
   .project-nav strong { margin-top: var(--space-3); font-size: 1.4rem; }
   .project-nav .next { text-align: right; }
   @media (max-width: 48rem) {

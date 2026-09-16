@@ -5,7 +5,7 @@ const email = profile.contact.email;
 
 <dialog id="email-dialog" class="email-dialog" aria-labelledby="email-dialog-title" data-email={email}>
   <div class="dialog-content">
-    <p class="eyebrow">Email</p>
+    <p class="dialog-kicker">연락처</p>
     <h2 id="email-dialog-title">이메일 안내</h2>
     <p>아래 이메일 주소로 연락해 주세요.</p>
     <strong class="email-address">{email}</strong>
@@ -20,9 +20,10 @@ const email = profile.contact.email;
 <script is:inline src="/scripts/email-dialog.js"></script>
 
 <style>
-  .email-dialog { width: min(calc(100% - 2rem), 32rem); padding: 0; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--bg-surface); color: var(--text-primary); box-shadow: var(--shadow-hover); }
+  .email-dialog { width: min(calc(100% - 2rem), 32rem); padding: 0; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--bg-surface); color: var(--text-primary); box-shadow: var(--shadow-emphasis-hover); }
   .email-dialog::backdrop { background: color-mix(in srgb, var(--text-primary) 58%, transparent); }
   .dialog-content { padding: clamp(1.5rem, 4vw, 2.5rem); }
+  .dialog-kicker { margin-bottom: var(--space-3); color: var(--text-section-kicker); font-size: 0.9rem; font-weight: 700; }
   .dialog-content h2 { margin-bottom: var(--space-3); font-size: clamp(1.75rem, 5vw, 2.25rem); }
   .dialog-content > p:not(.copy-status) { color: var(--text-secondary); }
   .email-address { display: block; margin: var(--space-6) 0; padding: var(--space-4); border-radius: var(--radius-md); background: var(--bg-accent-soft); color: var(--accent-primary-hover); font-family: var(--font-mono); overflow-wrap: anywhere; }

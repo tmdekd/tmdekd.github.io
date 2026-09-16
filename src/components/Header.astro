@@ -9,7 +9,10 @@ const prefix = home ? '' : '/';
       <span class="brand-mark" aria-hidden="true">MS</span>
       <span>Moon Seung Gi</span>
     </a>
-    <nav aria-label="주요 메뉴">
+    <button class="menu-toggle" type="button" aria-label="메뉴 열기" aria-controls="primary-navigation" aria-expanded="false" data-menu-toggle>
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+    </button>
+    <nav id="primary-navigation" aria-label="주요 메뉴" data-mobile-menu>
       <a href={`${prefix}#about`}>소개</a>
       <a href={`${prefix}#career`}>경력</a>
       <a href={`${prefix}#projects`}>프로젝트</a>
@@ -19,19 +22,25 @@ const prefix = home ? '' : '/';
   </div>
 </header>
 
+<script is:inline src="/scripts/mobile-menu.js"></script>
+
 <style>
   .site-header { position: sticky; z-index: 20; top: 0; border-bottom: 1px solid color-mix(in srgb, var(--border-subtle) 85%, transparent); background: color-mix(in srgb, var(--bg-page) 88%, transparent); backdrop-filter: blur(18px); }
-  .header-inner { display: flex; min-height: 4.75rem; align-items: center; justify-content: space-between; gap: var(--space-6); }
+  .header-inner { position: relative; display: flex; min-height: var(--header-height); align-items: center; justify-content: space-between; gap: var(--space-6); }
   .brand { display: inline-flex; align-items: center; gap: var(--space-3); font-size: 0.86rem; font-weight: 800; text-decoration: none; }
-  .brand-mark { display: grid; width: 2.2rem; aspect-ratio: 1; place-items: center; border-radius: 0.7rem; background: var(--accent-primary); color: var(--bg-surface); font-family: var(--font-mono); font-size: 0.72rem; }
+  .brand-mark { display: grid; width: 2.2rem; aspect-ratio: 1; place-items: center; border-radius: 0.7rem; background: var(--accent-primary); color: var(--bg-surface); font-family: var(--font-mono); font-size: var(--font-size-utility); }
   nav { display: flex; align-items: center; gap: clamp(0.75rem, 2.5vw, 2rem); }
-  nav a { color: var(--text-secondary); font-size: 0.85rem; font-weight: 650; text-decoration: none; }
+  nav a { color: var(--text-secondary); font-size: 0.875rem; font-weight: 650; text-decoration: none; }
   nav a:hover { color: var(--accent-primary); }
   .contact-link { padding: 0.5rem 0.85rem; border: 1px solid var(--border-subtle); border-radius: 999px; background: var(--bg-surface); }
+  .menu-toggle { display: none; width: 2.75rem; min-height: 2.75rem; place-items: center; padding: 0; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); background: var(--bg-surface); color: var(--text-primary); }
+  .menu-toggle svg { width: 1.25rem; fill: none; stroke: currentColor; stroke-linecap: round; stroke-width: 1.8; }
   @media (max-width: 42rem) {
     .brand > span:last-child { display: none; }
-    nav { gap: 0.45rem; }
-    nav a { display: none; }
-    nav a:nth-last-child(2), nav .contact-link { display: inline-flex; }
+    .menu-toggle { display: grid; }
+    nav { position: absolute; top: calc(100% - var(--space-2)); right: 0; display: none; width: min(18rem, calc(100vw - 1.25rem)); gap: var(--space-1); padding: var(--space-2); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--bg-surface); box-shadow: var(--shadow-emphasis); }
+    nav[data-open="true"] { display: grid; }
+    nav a, .contact-link { display: flex; min-height: 2.75rem; align-items: center; padding: 0.7rem var(--space-3); border: 0; border-radius: var(--radius-sm); background: transparent; font-size: 0.9rem; }
+    nav a:hover { background: var(--bg-accent-soft); }
   }
 </style>

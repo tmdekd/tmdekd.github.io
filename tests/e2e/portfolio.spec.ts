@@ -77,7 +77,7 @@ test('uses clear Korean profile and skill labels without forced heading breaks',
 test('uses readable Pretendard section labels for core Korean sections', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
-  const labels = page.locator('#career .section-kicker, #projects .section-kicker, #skills .section-kicker, .background-section .section-kicker');
+  const labels = page.locator('#career .section-kicker, #projects .section-kicker, #skills > .section-heading .section-kicker, .background-compact .section-kicker');
   await expect(labels).toHaveText(['경력', '프로젝트', '기술 역량', '이력과 활동']);
   expect(await labels.evaluateAll((elements) => elements.every((element) => {
     const style = getComputedStyle(element);
@@ -108,7 +108,8 @@ test('summarizes Bytech AI service work for a closed network environment', async
 test('opens email guidance and copies the address from the dialog', async ({ page, context }) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   await page.goto('/');
-  await page.getByRole('button', { name: '이메일 보내기' }).click();
+  const opener = page.getByRole('button', { name: '이메일 주소 보기' });
+  await opener.click();
   const dialog = page.getByRole('dialog', { name: '이메일 안내' });
   await expect(dialog).toBeVisible();
   await expect(dialog).toContainText('moon010103@naver.com');
@@ -117,6 +118,58 @@ test('opens email guidance and copies the address from the dialog', async ({ pag
   await expect(page.evaluate(() => navigator.clipboard.readText())).resolves.toBe('moon010103@naver.com');
   await dialog.getByRole('button', { name: '닫기' }).click();
   await expect(dialog).not.toBeVisible();
+  await expect(opener).toBeFocused();
+});
+
+test('mobile navigation reveals every portfolio section and restores focus when dismissed', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  const menuButton = page.getByRole('button', { name: '메뉴 열기' });
+  await expect(menuButton).toBeVisible();
+  await menuButton.click();
+
+  const navigation = page.locator('#primary-navigation');
+  await expect(navigation).toBeVisible();
+  await expect(navigation.getByRole('link', { name: '소개' })).toBeVisible();
+  await expect(navigation.getByRole('link', { name: '경력' })).toBeVisible();
+  await expect(navigation.getByRole('link', { name: '프로젝트' })).toBeVisible();
+  await expect(navigation.getByRole('link', { name: '기술' })).toBeVisible();
+  await expect(navigation.getByRole('link', { name: '연락' })).toBeVisible();
+
+  await page.keyboard.press('Escape');
+  await expect(navigation).toBeHidden();
+  await expect(menuButton).toBeFocused();
+});
+
+test('placeholder projects use case briefs instead of generic media panels', async ({ page }) => {
+  await page.goto('/');
+  const briefs = page.locator('#projects [data-project-brief]');
+  await expect(briefs).toHaveCount(4);
+  await expect(briefs.first()).toContainText('역할');
+  await expect(briefs.first()).toContainText('플랫폼');
+  await expect(briefs.first()).toContainText('핵심 기술');
+});
+
+test('project details use Korean metadata and section labels', async ({ page }) => {
+  await page.goto('/projects/lawmate/');
+  await expect(page.getByText('기간', { exact: true })).toBeVisible();
+  await expect(page.locator('.section-kicker').filter({ hasText: '배경' })).toBeVisible();
+  await expect(page.locator('body')).not.toContainText('Period');
+  await expect(page.locator('body')).not.toContainText('Background');
+  await expect(page.locator('body')).not.toContainText('Outcome & Reflection');
+});
+
+test('uses the compact display and utility typography scale', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+  const type = await page.evaluate(() => ({
+    hero: Number.parseFloat(getComputedStyle(document.querySelector('h1')!).fontSize),
+    section: Number.parseFloat(getComputedStyle(document.querySelector('.section-heading h2')!).fontSize),
+    tag: Number.parseFloat(getComputedStyle(document.querySelector('.tag')!).fontSize),
+  }));
+  expect(type.hero).toBeLessThanOrEqual(96);
+  expect(type.section).toBeLessThanOrEqual(56);
+  expect(type.tag).toBeGreaterThanOrEqual(12.5);
 });
 
 test('copies the contact address from the footer without opening a mail client', async ({ page, context }) => {

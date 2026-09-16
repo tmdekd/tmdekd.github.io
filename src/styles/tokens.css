@@ -33,6 +33,10 @@
 
   --font-sans: "Pretendard Variable", Pretendard, Inter, "Noto Sans KR", system-ui, -apple-system, sans-serif;
   --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  --font-size-display: clamp(2.75rem, 7vw, 6rem);
+  --font-size-heading: clamp(2rem, 4.2vw, 3.5rem);
+  --font-size-card-title: clamp(1.25rem, 2.2vw, 1.75rem);
+  --font-size-utility: 0.8125rem;
   --font-size-section-kicker: clamp(1.125rem, 1.4vw, 1.25rem);
   --font-weight-section-kicker: 700;
 
@@ -53,7 +57,8 @@
   --radius-md: 1rem;
   --radius-lg: 1.5rem;
   --radius-xl: 2rem;
-  --shadow-card: 0 18px 50px rgba(38, 42, 68, 0.07);
-  --shadow-hover: 0 24px 60px rgba(38, 42, 68, 0.13);
+  --shadow-emphasis: 0 18px 50px rgba(38, 42, 68, 0.09);
+  --shadow-emphasis-hover: 0 24px 60px rgba(38, 42, 68, 0.13);
+  --header-height: 4.75rem;
   --container: 74rem;
 }

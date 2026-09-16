@@ -1,5 +1,6 @@
 const dialog = document.querySelector('#email-dialog');
 const email = dialog?.dataset.email ?? '';
+let opener;
 
 const copyEmail = async (status) => {
   try {
@@ -11,7 +12,10 @@ const copyEmail = async (status) => {
 };
 
 document.querySelectorAll('[data-email-dialog-open]').forEach((button) => {
-  button.addEventListener('click', () => dialog?.showModal());
+  button.addEventListener('click', () => {
+    opener = button;
+    dialog?.showModal();
+  });
 });
 
 document.querySelectorAll('[data-email-dialog-close]').forEach((button) => {
@@ -20,6 +24,11 @@ document.querySelectorAll('[data-email-dialog-close]').forEach((button) => {
 
 dialog?.addEventListener('click', (event) => {
   if (event.target === dialog) dialog.close();
+});
+
+dialog?.addEventListener('close', () => {
+  opener?.focus();
+  opener = undefined;
 });
 
 document.querySelectorAll('[data-email-copy]').forEach((button) => {
