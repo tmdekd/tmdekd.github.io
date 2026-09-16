@@ -100,6 +100,18 @@ test('keeps Korean headings from breaking inside a word', async ({ page }) => {
   expect(await page.locator('.hero-prefix').evaluate((heading) => getComputedStyle(heading).whiteSpace)).toBe('nowrap');
 });
 
+test('keeps Korean editorial copy together at natural word boundaries', async ({ page }) => {
+  await page.goto('/');
+  expect(await page.locator('.intro-copy').evaluate((element) => getComputedStyle(element).wordBreak)).toBe('keep-all');
+  expect(await page.locator('.workflow-grid p').first().evaluate((element) => getComputedStyle(element).wordBreak)).toBe('keep-all');
+});
+
+test('uses Contact as the footer label and omits availability status', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('#contact .section-kicker')).toHaveText('Contact');
+  await expect(page.locator('body')).not.toContainText('연락 가능');
+});
+
 test('summarizes Bytech AI service work for a closed network environment', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByText('전력산업 연구개발 과제·사업의 기획 및 수주 과정에 참여하며, 폐쇄망 환경을 고려한 AI 서비스의 기획·설계·개발을 수행하고 있습니다.')).toBeVisible();
@@ -134,7 +146,7 @@ test('mobile navigation reveals every portfolio section and restores focus when 
   await expect(navigation.getByRole('link', { name: '경력' })).toBeVisible();
   await expect(navigation.getByRole('link', { name: '프로젝트' })).toBeVisible();
   await expect(navigation.getByRole('link', { name: '기술' })).toBeVisible();
-  await expect(navigation.getByRole('link', { name: '연락' })).toBeVisible();
+  await expect(navigation.getByRole('link', { name: 'Contact' })).toBeVisible();
 
   await page.keyboard.press('Escape');
   await expect(navigation).toBeHidden();

@@ -29,7 +29,6 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
         <i></i><i></i><i></i>
       </div>
       <div class="profile-content">
-        <span class="availability"><i></i> 연락 가능</span>
         <h2>{profile.name}</h2>
         <p>{profile.englishName}</p>
         <dl>
@@ -141,8 +140,6 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
   .profile-visual i:nth-of-type(2) { width: 22rem; aspect-ratio: 1; }
   .profile-visual i:nth-of-type(3) { width: 29rem; aspect-ratio: 1; }
   .profile-content { padding: var(--space-6); }
-  .availability { display: inline-flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-8); color: var(--accent-secondary); font-family: var(--font-mono); font-size: var(--font-size-utility); font-weight: 700; }
-  .availability i { width: 0.5rem; aspect-ratio: 1; border-radius: 50%; background: var(--accent-secondary); }
   .profile-content h2 { margin-bottom: 0; font-size: 2rem; }
   .profile-content > p { color: var(--text-muted); }
   .profile-content dl { margin: var(--space-6) 0 0; }
