@@ -64,6 +64,60 @@ test('home shows equal-width project cards in newest-first order', async ({ page
   expect(firstRow[0]?.width).toBeCloseTo(firstRow[1]?.width ?? 0, 0);
 });
 
+test('project cards expose each case study through one unified link', async ({ page }) => {
+  await page.goto('/');
+  const cards = page.locator('#projects .project-card');
+  await expect(cards).toHaveCount(4);
+
+  for (let index = 0; index < await cards.count(); index += 1) {
+    const card = cards.nth(index);
+    await expect(card.locator('a.project-card-link')).toHaveCount(1);
+    await expect(card.locator('a')).toHaveCount(1);
+    await expect(card.locator('[data-project-brief], .media-frame')).toHaveCount(1);
+    await expect(card.locator('.project-card__content')).toBeVisible();
+  }
+});
+
+test('project detail provides breadcrumb and a local case-study table of contents', async ({ page }) => {
+  await page.goto('/projects/lawmate/');
+
+  const breadcrumb = page.getByRole('navigation', { name: '이동 경로' });
+  await expect(breadcrumb).toBeVisible();
+  await expect(breadcrumb).toContainText('홈');
+  await expect(breadcrumb).toContainText('프로젝트');
+  await expect(breadcrumb).toContainText('LAWMATE');
+
+  const tableOfContents = page.getByRole('navigation', { name: '프로젝트 목차' });
+  await expect(tableOfContents).toBeVisible();
+  await expect(tableOfContents.getByRole('link', { name: '배경' })).toHaveAttribute('href', '#project-background');
+  await expect(tableOfContents.getByRole('link', { name: '서비스 흐름' })).toHaveAttribute('href', '#project-flow');
+  await expect(tableOfContents.getByRole('link', { name: '결과와 회고' })).toHaveAttribute('href', '#project-reflection');
+});
+
+test('section navigation marks the visible home and project-detail section', async ({ page }) => {
+  await page.goto('/');
+  const homeNavigation = page.locator('[data-section-navigation="home"]');
+  await expect(homeNavigation).toBeVisible();
+  await page.locator('#skills').evaluate((element) => element.scrollIntoView({ block: 'start' }));
+  await expect(homeNavigation.getByRole('link', { name: '기술' })).toHaveAttribute('aria-current', 'location');
+
+  await page.goto('/projects/lawmate/');
+  const projectNavigation = page.locator('[data-section-navigation="project"]');
+  await page.locator('#project-features').evaluate((element) => element.scrollIntoView({ block: 'start' }));
+  await expect(projectNavigation.getByRole('link', { name: '주요 기능' })).toHaveAttribute('aria-current', 'location');
+});
+
+test('reveal targets remain visible without movement when reduced motion is requested', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  const projectCards = page.locator('[data-reveal="project-card"]');
+  await expect(projectCards).toHaveCount(4);
+  expect(await projectCards.evaluateAll((elements) => elements.every((element) => {
+    const style = getComputedStyle(element);
+    return style.opacity === '1' && style.transform === 'none';
+  }))).toBe(true);
+});
+
 test('uses clear Korean profile and skill labels without forced heading breaks', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByText('전문 분야', { exact: true })).toBeVisible();
@@ -201,7 +255,7 @@ test('legacy sample content is absent', async ({ page }) => {
 
 test('project cards lead to working detail pages', async ({ page }) => {
   await page.goto('/');
-  const links = page.locator('#projects a.detail-link');
+  const links = page.locator('#projects a.project-card-link');
   await expect(links).toHaveCount(4);
   for (const link of await links.evaluateAll((elements) => elements.map((element) => (element as HTMLAnchorElement).href))) {
     const response = await page.request.get(link);

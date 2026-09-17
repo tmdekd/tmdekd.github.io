@@ -37,4 +37,16 @@ describe('public portfolio content', () => {
   it('marks the public resume as not yet available', () => {
     expect(profile.resume.status).toBe('preparing');
   });
+
+  it('keeps card video previews poster-only and detailed videos controllable', () => {
+    const mediaFrame = readFileSync(join(process.cwd(), 'src', 'components', 'MediaFrame.astro'), 'utf8');
+
+    expect(mediaFrame).toContain("mode = 'detail'");
+    expect(mediaFrame).toContain("mode === 'card' && asset.type === 'video'");
+    expect(mediaFrame).toContain('class="video-poster"');
+    expect(mediaFrame).toContain('class="video-poster__fallback"');
+    expect(mediaFrame).not.toContain('isCardVideo && asset.poster');
+    expect(mediaFrame).toContain('<video controls preload="metadata"');
+    expect(mediaFrame).not.toContain('autoplay');
+  });
 });

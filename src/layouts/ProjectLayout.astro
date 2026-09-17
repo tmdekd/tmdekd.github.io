@@ -11,12 +11,26 @@ interface Props {
 }
 const { project, previous, next } = Astro.props;
 const data = project.data;
+const caseStudySections = [
+  { id: 'project-background', label: '배경' },
+  { id: 'project-flow', label: '서비스 흐름' },
+  { id: 'project-features', label: '주요 기능' },
+  { id: 'project-decisions', label: '기술적 판단' },
+  { id: 'project-demo', label: '데모' },
+  { id: 'project-reflection', label: '결과와 회고' },
+];
 ---
 
 <BaseLayout title={`${data.title} · 문승기 포트폴리오`} description={data.summary}>
   <article>
     <section class="project-hero container">
-      <a class="back-link" href="/#projects">← 프로젝트 목록</a>
+      <nav class="breadcrumb" aria-label="이동 경로">
+        <ol>
+          <li><a href="/">홈</a></li>
+          <li><a href="/#projects">프로젝트</a></li>
+          <li><span aria-current="page">{data.title}</span></li>
+        </ol>
+      </nav>
       <div class="hero-grid">
         <div class="hero-copy">
           <p class="detail-index">프로젝트 <span>{String(data.order).padStart(2, '0')}</span></p>
@@ -37,10 +51,14 @@ const data = project.data;
       </div>
       {data.heroMedia.type === 'placeholder'
         ? <ProjectBrief project={project} variant="hero" />
-        : <MediaFrame asset={data.heroMedia} label="대표 미디어" />}
+        : <MediaFrame asset={data.heroMedia} label="대표 미디어" mode="detail" />}
     </section>
 
-    <section class="section container content-grid">
+    <nav class="project-toc container" aria-label="프로젝트 목차" data-section-navigation="project">
+      {caseStudySections.map((section) => <a href={`#${section.id}`}>{section.label}</a>)}
+    </nav>
+
+    <section id="project-background" class="section container content-grid case-study-section">
       <div class="section-heading sticky-title">
         <p class="section-kicker"><span class="section-number">01</span> 배경</p>
         <h2>무엇을 해결하려 했는가</h2>
@@ -54,7 +72,7 @@ const data = project.data;
       </div>
     </section>
 
-    <section class="section architecture-section">
+    <section id="project-flow" class="section architecture-section case-study-section">
       <div class="container">
         <div class="section-heading">
           <p class="section-kicker section-kicker--inverse"><span class="section-number">02</span> 서비스 흐름</p>
@@ -63,13 +81,13 @@ const data = project.data;
         </div>
         <ol class="flow-list">
           {data.flow.map((step, index) => (
-            <li><span>{String(index + 1).padStart(2, '0')}</span><strong>{step}</strong></li>
+            <li data-reveal="flow-step"><span>{String(index + 1).padStart(2, '0')}</span><strong>{step}</strong></li>
           ))}
         </ol>
       </div>
     </section>
 
-    <section class="section container">
+    <section id="project-features" class="section container case-study-section">
       <div class="section-heading">
         <p class="section-kicker"><span class="section-number">03</span> 주요 기능</p>
         <h2>주요 기능</h2>
@@ -85,7 +103,7 @@ const data = project.data;
       </div>
     </section>
 
-    <section class="section container content-grid">
+    <section id="project-decisions" class="section container content-grid case-study-section">
       <div class="section-heading sticky-title">
         <p class="section-kicker"><span class="section-number">04</span> 기술적 판단</p>
         <h2>기술적 판단과 고려사항</h2>
@@ -97,18 +115,18 @@ const data = project.data;
       </div>
     </section>
 
-    <section class="section container">
+    <section id="project-demo" class="section container case-study-section">
       <div class="section-heading">
         <p class="section-kicker"><span class="section-number">05</span> 데모</p>
         <h2>이미지와 영상</h2>
         <p>현재는 자료가 들어갈 비율과 위치를 먼저 잡아두었습니다. 실제 화면을 전달받으면 이 구조를 유지한 채 교체할 수 있습니다.</p>
       </div>
       <div class="media-grid">
-        {data.media.map((asset, index) => <MediaFrame asset={asset} label={`Demo ${String(index + 1).padStart(2, '0')}`} />)}
+        {data.media.map((asset, index) => <MediaFrame asset={asset} label={`Demo ${String(index + 1).padStart(2, '0')}`} mode="detail" />)}
       </div>
     </section>
 
-    <section class="section container reflection">
+    <section id="project-reflection" class="section container reflection case-study-section">
       <div>
         <p class="section-kicker"><span class="section-number">06</span> 결과와 회고</p>
         <h2>결과와 회고</h2>
@@ -128,7 +146,12 @@ const data = project.data;
 
 <style>
   .project-hero { padding-block: clamp(2.5rem, 6vw, 5rem) var(--space-20); }
-  .back-link { display: inline-block; margin-bottom: var(--space-12); color: var(--text-secondary); font-size: 0.9rem; font-weight: 700; text-decoration: none; }
+  .breadcrumb { margin-bottom: var(--space-12); }
+  .breadcrumb ol { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; color: var(--text-muted); font-size: var(--font-size-utility); list-style: none; }
+  .breadcrumb li { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .breadcrumb li + li::before { color: var(--border-subtle); content: '/'; }
+  .breadcrumb a { color: var(--text-secondary); font-weight: 700; text-decoration: none; }
+  .breadcrumb a:hover { color: var(--accent-primary); }
   .hero-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(18rem, 0.7fr); gap: var(--space-10); align-items: end; margin-bottom: var(--space-12); }
   h1 { margin-bottom: var(--space-3); }
   .detail-index { margin-bottom: var(--space-3); color: var(--text-section-kicker); font-size: 0.9rem; font-weight: 700; }
@@ -136,6 +159,10 @@ const data = project.data;
   .subtitle { margin-bottom: var(--space-5); color: var(--accent-primary); font-size: clamp(1.15rem, 2.5vw, 1.6rem); font-weight: 750; }
   .summary { max-width: 46rem; margin-bottom: var(--space-6); color: var(--text-secondary); font-size: 1.08rem; }
   .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  .project-toc { position: sticky; z-index: 10; top: calc(var(--header-height) - 1px); display: flex; gap: var(--space-2); overflow-x: auto; margin-bottom: var(--space-8); padding-block: var(--space-3); border-block: 1px solid var(--border-subtle); background: color-mix(in srgb, var(--bg-page) 92%, transparent); backdrop-filter: blur(14px); scrollbar-width: thin; }
+  .project-toc a { flex: 0 0 auto; padding: 0.45rem 0.7rem; border-radius: 999px; color: var(--text-secondary); font-size: var(--font-size-utility); font-weight: 700; text-decoration: none; }
+  .project-toc a:hover, .project-toc a[aria-current="location"] { background: var(--navigation-active-bg); color: var(--navigation-active-text); }
+  .case-study-section { scroll-margin-top: calc(var(--header-height) + 3.5rem); }
   .project-meta { margin: 0; padding: var(--space-6); box-shadow: none; }
   .project-meta div { display: grid; grid-template-columns: 5rem 1fr; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: 1px solid var(--border-subtle); }
   .project-meta div:last-child { border-bottom: 0; }

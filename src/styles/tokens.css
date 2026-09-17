@@ -59,6 +59,15 @@
   --radius-xl: 2rem;
   --shadow-emphasis: 0 18px 50px rgba(38, 42, 68, 0.09);
   --shadow-emphasis-hover: 0 24px 60px rgba(38, 42, 68, 0.13);
+  --card-hover-border: color-mix(in srgb, var(--accent-primary) 58%, var(--border-subtle));
+  --card-hover-shadow: var(--shadow-emphasis-hover);
+  --navigation-active-bg: var(--bg-accent-soft);
+  --navigation-active-text: var(--accent-primary-hover);
+  --media-play-bg: color-mix(in srgb, var(--bg-surface) 88%, var(--accent-primary));
+  --media-play-border: color-mix(in srgb, var(--accent-primary) 30%, var(--border-subtle));
+  --media-play-text: var(--text-primary);
+  --motion-interactive: 180ms ease;
+  --motion-reveal: 420ms cubic-bezier(0.22, 1, 0.36, 1);
   --header-height: 4.75rem;
   --container: 74rem;
 }
