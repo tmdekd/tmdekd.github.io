@@ -5,3 +5,8 @@ dist/
 playwright-report/
 test-results/
 
+
+# Local reference material (not deployed)
+CLAUDE.md
+docs/
+references/
