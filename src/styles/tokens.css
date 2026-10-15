@@ -45,6 +45,7 @@
   --text-on-inverse: var(--color-white);
   --text-on-inverse-muted: color-mix(in srgb, var(--text-on-inverse) 84%, transparent);
   --text-on-inverse-subtle: color-mix(in srgb, var(--text-on-inverse) 62%, transparent);
+  --text-on-inverse-soft: color-mix(in srgb, var(--text-on-inverse) 68%, transparent);
   --accent-on-inverse: var(--color-indigo-100);
   --border-on-inverse: color-mix(in srgb, var(--text-on-inverse) 15%, transparent);
   --surface-on-inverse: color-mix(in srgb, var(--text-on-inverse) 4%, transparent);
