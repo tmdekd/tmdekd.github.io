@@ -31,6 +31,30 @@
   --border-subtle: var(--color-line);
   --focus-ring: var(--color-focus);
 
+  /* 역할 토큰: 글자로 쓰이는 강조색(채움용 --accent-*와 분리) */
+  --text-accent: var(--color-indigo-500);
+  --text-accent-secondary: var(--color-teal-500);
+  --text-accent-secondary-strong: var(--color-teal-700);
+  --text-on-accent: var(--color-white);
+  --selection-bg: var(--color-indigo-100);
+  --line-decorative: var(--color-indigo-100);
+  --gradient-placeholder: linear-gradient(135deg, var(--bg-accent-soft), var(--bg-secondary-soft));
+
+  /* 역상(다크 밴드) 토큰 */
+  --bg-inverse: var(--color-ink-950);
+  --text-on-inverse: var(--color-white);
+  --text-on-inverse-muted: color-mix(in srgb, var(--text-on-inverse) 84%, transparent);
+  --text-on-inverse-subtle: color-mix(in srgb, var(--text-on-inverse) 62%, transparent);
+  --accent-on-inverse: var(--color-indigo-100);
+  --border-on-inverse: color-mix(in srgb, var(--text-on-inverse) 15%, transparent);
+  --surface-on-inverse: color-mix(in srgb, var(--text-on-inverse) 4%, transparent);
+
+  /* 히어로 토큰: 페이지와 분리해 팔레트별로 밴드 색을 바꿀 수 있게 함 */
+  --bg-hero: var(--bg-page);
+  --text-hero: var(--text-primary);
+  --text-hero-muted: var(--text-secondary);
+  --text-hero-accent: var(--text-accent);
+
   --font-sans: "Pretendard Variable", Pretendard, Inter, "Noto Sans KR", system-ui, -apple-system, sans-serif;
   --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
   --font-size-display: clamp(2.75rem, 7vw, 6rem);
