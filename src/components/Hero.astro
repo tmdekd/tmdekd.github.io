@@ -1,0 +1,88 @@
+---
+/**
+ * 홈 히어로 · 키네틱 타이포 (모션 랩 2026-10-15 결정)
+ * 헤드라인을 단어 단위 span으로 나눠 줄 순서대로 올라오며 나타난다. 색 강조 없음, 제목 서체는 Pretendard 유지.
+ * `.hero-prefix`(nowrap)는 단어 래퍼 바깥에 둔다(e2e 단언). 모션 게이트는 src/scripts/motion/reduced.ts 참고.
+ */
+import { profile } from '../data/profile';
+
+const prefixWords = ['AI를', '기능이', '아닌'];
+const restWords = ['작동하는', '구조로', '만듭니다.'];
+---
+
+<section id="about" class="hero-band">
+  <div class="hero container">
+    <div class="hero-copy">
+      <p class="eyebrow" data-hero-anim>Moon Seung Gi · AI Engineer</p>
+      <h1 class="kinetic-headline">
+        <span class="hero-prefix">{prefixWords.map((word, index) => <>{index > 0 && ' '}<span class="w" data-hero-anim>{word}</span></>)}</span>
+        {restWords.map((word) => <>{' '}<span class="w" data-hero-anim>{word}</span></>)}
+      </h1>
+      <span class="kinetic-rule" aria-hidden="true"></span>
+      <p class="hero-description" data-hero-anim>{profile.headline}</p>
+      <div class="hero-actions" data-hero-anim>
+        <a class="button" href="#projects">프로젝트 보기 ↓</a>
+        <button class="button secondary" type="button" data-email-dialog-open>이메일 주소 보기</button>
+      </div>
+    </div>
+    <aside class="hero-profile" aria-label="프로필 요약" data-hero-anim>
+      <div class="profile-content">
+        <h2>{profile.name}</h2>
+        <p>{profile.englishName}</p>
+        <dl>
+          <div><dt>전문 분야</dt><dd>LLM · RAG · Agent</dd></div>
+          <div><dt>주요 경험</dt><dd>AI 서비스 기획 · 설계 · 개발</dd></div>
+        </dl>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .hero-band { background: var(--bg-hero); color: var(--text-hero); }
+  .hero { display: grid; min-height: calc(100svh - var(--header-height)); grid-template-columns: minmax(0, 1.45fr) minmax(20rem, 0.55fr); align-items: center; gap: clamp(2rem, 7vw, 7rem); padding-block: clamp(3rem, 7vw, 7rem); }
+  .hero .eyebrow { color: var(--text-hero); }
+  .hero h1 { max-width: 56rem; margin-bottom: var(--space-8); }
+  .hero-prefix { white-space: nowrap; }
+  .kinetic-headline .w { display: inline-block; }
+  .kinetic-rule { display: block; width: 6rem; height: 4px; margin: calc(var(--space-8) * -1) 0 var(--space-8); background: var(--accent-bar); transform-origin: left center; }
+  .hero-description { max-width: 43rem; margin-bottom: var(--space-8); color: var(--text-hero-muted); font-size: clamp(1.05rem, 2vw, 1.25rem); }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+  .hero-profile { border-top: 1px solid var(--border-on-inverse); }
+  .profile-content { padding: var(--space-5) 0 0; }
+  .profile-content h2 { margin-bottom: 0; font-size: 1.6rem; }
+  .profile-content > p { color: var(--text-hero-muted); }
+  .profile-content dl { margin: var(--space-5) 0 0; }
+  .profile-content dl div { display: grid; grid-template-columns: 5rem 1fr; gap: var(--space-3); padding-block: var(--space-2); }
+  .profile-content dl div + div { border-top: 1px solid var(--border-on-inverse); }
+  dt { color: var(--text-hero-muted); font-family: var(--font-sans); font-size: var(--font-size-utility); font-weight: 600; }
+  dd { margin: 0; font-size: 0.9rem; font-weight: 650; }
+  @media (max-width: 54rem) {
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-profile { max-width: 30rem; }
+    .hero-prefix { white-space: normal; }
+  }
+</style>
+
+<script>
+  import { animate, claim, finish, EASE_OUT } from '../scripts/motion/reduced';
+
+  const root = document.querySelector<HTMLElement>('.hero-band');
+  if (root && claim()) {
+    const words = Array.from(root.querySelectorAll<HTMLElement>('.kinetic-headline .w'));
+    const rest = Array.from(root.querySelectorAll<HTMLElement>('[data-hero-anim]:not(.w)'));
+    const rule = root.querySelector<HTMLElement>('.kinetic-rule');
+    const WORD_GAP = 0.07;
+    const wordsDone = WORD_GAP * words.length + 0.5;
+
+    words.forEach((word, index) => {
+      animate(word, { opacity: [0, 1], transform: ['translateY(0.6em)', 'translateY(0)'] }, { duration: 0.6, delay: index * WORD_GAP, ease: EASE_OUT });
+    });
+    if (rule) animate(rule, { transform: ['scaleX(0)', 'scaleX(1)'] }, { duration: 0.5, delay: wordsDone - 0.2, ease: EASE_OUT });
+    rest.forEach((element, index) => {
+      const last = index === rest.length - 1;
+      animate(element, { opacity: [0, 1], transform: ['translateY(12px)', 'translateY(0)'] }, { duration: 0.5, delay: wordsDone + index * 0.08, ease: EASE_OUT })
+        .finished.then(() => { if (last) finish(); });
+    });
+  }
+</script>

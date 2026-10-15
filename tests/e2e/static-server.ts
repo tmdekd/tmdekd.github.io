@@ -8,6 +8,11 @@ const contentTypes: Record<string, string> = {
   '.js': 'text/javascript; charset=utf-8',
   '.svg': 'image/svg+xml',
   '.xml': 'application/xml; charset=utf-8',
+  '.woff2': 'font/woff2',
+  '.woff': 'font/woff',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.webm': 'video/webm',
 };
 
 export function createStaticServer(root: string): Server {

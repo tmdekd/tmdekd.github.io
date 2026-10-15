@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import Hero from '../components/Hero.astro';
 import { profile } from '../data/profile';
 import { getCollection } from 'astro:content';
 
@@ -13,37 +14,30 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
 ---
 
 <BaseLayout home>
-  <section id="about" class="hero-band">
-    <div class="hero container">
-    <div class="hero-copy">
-      <p class="eyebrow">Moon Seung Gi · AI Engineer</p>
-      <h1><span class="hero-prefix">AI를 기능이 아닌</span> <span>작동하는 구조</span>로 만듭니다.</h1>
-      <p class="hero-description">{profile.headline}</p>
-      <div class="hero-actions">
-        <a class="button" href="#projects">프로젝트 보기 ↓</a>
-        <button class="button secondary" type="button" data-email-dialog-open>이메일 주소 보기</button>
+  <Hero />
+
+  <section id="projects" class="section projects-section">
+    <div class="container">
+      <div class="section-heading projects-heading">
+        <div>
+          <p class="section-kicker">프로젝트</p>
+          <h2>문제에서 서비스까지.</h2>
+        </div>
+        <p>최근 작업부터 프로젝트의 배경·구조·기술적 판단을 웹에서 읽기 쉽게 정리했습니다.</p>
       </div>
-    </div>
-    <aside class="hero-profile" aria-label="프로필 요약">
-      <div class="profile-content">
-        <h2>{profile.name}</h2>
-        <p>{profile.englishName}</p>
-        <dl>
-          <div><dt>전문 분야</dt><dd>LLM · RAG · Agent</dd></div>
-          <div><dt>주요 경험</dt><dd>AI 서비스 기획 · 설계 · 개발</dd></div>
-        </dl>
+      <div class="project-grid">
+        {projects.map((project) => <ProjectCard project={project} />)}
       </div>
-    </aside>
     </div>
   </section>
 
-  <section class="intro-band section--divided">
+  <section class="intro-band section--alt">
     <div class="container intro-grid">
       <p class="section-kicker">일하는 방식</p>
       <p class="intro-copy">{profile.introduction}</p>
       <div class="workflow-grid">
         {profile.workflow.map((item) => (
-          <article>
+          <article data-reveal="workflow">
             <span>{item.number}</span>
             <h3>{item.title}</h3>
             <p>{item.description}</p>
@@ -53,7 +47,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
     </div>
   </section>
 
-  <section class="section section--alt section--divided">
+  <section class="section">
     <div id="career" class="container career-section">
     <div class="section-heading">
       <p class="section-kicker">경력</p>
@@ -80,21 +74,6 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
     </div>
   </section>
 
-  <section id="projects" class="section projects-section section--divided">
-    <div class="container">
-      <div class="section-heading projects-heading">
-        <div>
-          <p class="section-kicker">프로젝트</p>
-          <h2>문제에서 서비스까지.</h2>
-        </div>
-        <p>최근 작업부터 프로젝트의 배경·구조·기술적 판단을 웹에서 읽기 쉽게 정리했습니다.</p>
-      </div>
-      <div class="project-grid">
-        {projects.map((project) => <ProjectCard project={project} />)}
-      </div>
-    </div>
-  </section>
-
   <section class="section section--alt">
     <div id="skills" class="container skills-section">
     <div class="section-heading">
@@ -103,7 +82,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
     </div>
     <div class="skill-grid">
       {profile.skills.map((skill, index) => (
-        <article class="skill-card">
+        <article class="skill-card" data-reveal="skill">
           <div class="skill-index">0{index + 1}</div>
           <h3>{skill.group}</h3>
           <p class="skill-summary">{skill.description}</p>
@@ -128,34 +107,19 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
 </BaseLayout>
 
 <style>
-  .hero-band { background: var(--bg-hero); color: var(--text-hero); }
-  .hero { display: grid; min-height: calc(100svh - var(--header-height)); grid-template-columns: minmax(0, 1.45fr) minmax(20rem, 0.55fr); align-items: center; gap: clamp(2rem, 7vw, 7rem); padding-block: clamp(3rem, 7vw, 7rem); }
-  .hero .eyebrow { color: var(--text-hero); }
-  .hero h1 { max-width: 56rem; margin-bottom: var(--space-8); }
-  .hero-prefix { white-space: nowrap; }
-  .hero h1 span { color: var(--text-hero-accent); }
-  .hero-description { max-width: 43rem; margin-bottom: var(--space-8); color: var(--text-hero-muted); font-size: clamp(1.05rem, 2vw, 1.25rem); }
-  .hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
-  .hero-profile { border-top: 1px solid var(--border-on-inverse); }
-  .profile-content { padding: var(--space-5) 0 0; }
-  .profile-content h2 { margin-bottom: 0; font-size: 1.6rem; }
-  .profile-content > p { color: var(--text-hero-muted); }
-  .profile-content dl { margin: var(--space-5) 0 0; }
-  .profile-content dl div { display: grid; grid-template-columns: 5rem 1fr; gap: var(--space-3); padding-block: var(--space-2); border-top: 1px solid var(--border-on-inverse); }
-  dt { color: var(--text-hero-muted); font-family: var(--font-sans); font-size: var(--font-size-utility); font-weight: 600; }
-  dd { margin: 0; font-size: 0.9rem; font-weight: 650; }
-  .intro-band { padding-block: clamp(4rem, 8vw, 7rem); background: var(--bg-page); }
+  .intro-band { padding-block: clamp(4rem, 8vw, 7rem); }
   .intro-copy { max-width: 62rem; margin-bottom: clamp(2.5rem, 6vw, 5rem); color: var(--text-primary); font-size: clamp(1.5rem, 3.4vw, 2.6rem); line-height: 1.42; letter-spacing: -0.03em; }
   .workflow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); }
-  .workflow-grid article { min-height: 14rem; padding: var(--space-5); border: 1px solid var(--border-subtle); border-left: 3px solid var(--accent-bar); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--bg-surface); }
+  .workflow-grid article { min-height: 14rem; padding: var(--space-5); border-left: 3px solid var(--accent-bar); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--bg-page); }
   .workflow-grid span { color: var(--text-accent); font-family: var(--font-mono); font-size: var(--font-size-utility); font-weight: 600; }
   .workflow-grid h3 { margin-top: var(--space-12); }
   .workflow-grid p { margin-bottom: 0; color: var(--text-secondary); font-size: 0.9rem; }
   .career-section { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(3rem, 7vw, 7rem); }
   .career-focus { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: var(--space-6) 0 0; padding: 0; list-style: none; }
   .career-focus li { padding: 0.35rem 0.65rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-secondary); font-size: var(--font-size-utility); font-weight: 650; }
-  .timeline { border-top: 1px solid var(--border-subtle); }
-  .timeline article { display: grid; grid-template-columns: 3rem 9rem 1fr; gap: var(--space-4); padding: var(--space-8) 0; border-bottom: 1px solid var(--border-subtle); }
+  .timeline article { display: grid; grid-template-columns: 3rem 9rem 1fr; gap: var(--space-4); padding: var(--space-8) 0; }
+  .timeline article + article { border-top: 1px solid var(--border-hair); }
+  .timeline article:first-child { padding-top: var(--space-2); }
   .timeline-marker span { color: var(--text-accent-secondary); font-family: var(--font-mono); font-size: var(--font-size-utility); }
   .timeline-period { color: var(--text-muted); font-family: var(--font-mono); font-size: var(--font-size-utility); }
   .timeline-content h3 { margin-bottom: var(--space-1); }
@@ -164,30 +128,25 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
   .projects-section { background: var(--bg-page); }
   .projects-heading { display: grid; max-width: none; grid-template-columns: 1.1fr 0.9fr; align-items: end; gap: var(--space-12); }
   .project-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(2rem, 5vw, 4rem) var(--space-8); }
-  .skill-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
-  .skill-card { display: flex; min-height: 20rem; flex-direction: column; padding: var(--space-2) var(--space-6); border-left: 1px solid var(--border-subtle); }
-  .skill-card:first-child { padding-left: 0; border-left: 0; }
+  .skill-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(2rem, 4vw, 3.5rem); }
+  .skill-card { display: flex; min-height: 20rem; flex-direction: column; }
   .skill-index { color: var(--text-accent-secondary); font-family: var(--font-mono); font-size: var(--font-size-utility); font-weight: 600; }
   .skill-card h3 { margin: var(--space-8) 0 var(--space-3); }
   .skill-summary { min-height: 4.4em; margin-bottom: var(--space-5); color: var(--text-secondary); font-size: 0.95rem; line-height: 1.65; }
   .skill-card ul { margin: auto 0 0; padding: 0; list-style: none; }
-  .skill-card li { padding-block: 0.4rem; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary); font-family: var(--font-sans); font-size: 0.9rem; font-weight: 600; }
-  .background-compact { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(3rem, 7vw, 7rem); margin-top: clamp(4rem, 8vw, 7rem); padding-top: clamp(3rem, 6vw, 5rem); border-top: 1px solid var(--border-subtle); }
+  .skill-card li { padding-block: 0.3rem; color: var(--text-secondary); font-family: var(--font-sans); font-size: 0.9rem; font-weight: 600; }
+  .background-compact { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(3rem, 7vw, 7rem); margin-top: clamp(4rem, 8vw, 7rem); }
   .background-heading .section-kicker { margin-bottom: var(--space-3); }
   .background-heading h2 { max-width: 28rem; font-size: clamp(1.75rem, 3vw, 2.5rem); }
-  .background-list { border-top: 1px solid var(--border-subtle); }
-  .background-list div { display: grid; grid-template-columns: 7rem 1fr; gap: var(--space-4); padding: var(--space-6) 0; border-bottom: 1px solid var(--border-subtle); }
+  .background-list div { display: grid; grid-template-columns: 7rem 1fr; gap: var(--space-4); padding: var(--space-5) 0; }
+  .background-list div + div { border-top: 1px solid var(--border-hair); }
   .background-list span { color: var(--text-muted); font-family: var(--font-mono); font-size: var(--font-size-utility); }
   @media (max-width: 54rem) {
-    .hero, .career-section, .background-compact { grid-template-columns: 1fr; }
-    .hero { min-height: auto; }
-    .hero-profile { max-width: 30rem; }
+    .career-section, .background-compact { grid-template-columns: 1fr; }
     .workflow-grid { grid-template-columns: repeat(2, 1fr); }
     .skill-grid { grid-template-columns: 1fr; }
-    .skill-card { min-height: auto; padding: var(--space-6) 0; border-left: 0; border-top: 1px solid var(--border-subtle); }
-    .skill-card:first-child { padding-top: 0; border-top: 0; }
+    .skill-card { min-height: auto; }
     .skill-summary { min-height: auto; }
-    .hero-prefix { white-space: normal; }
   }
   @media (max-width: 44rem) {
     .projects-heading, .project-grid { grid-template-columns: 1fr; }

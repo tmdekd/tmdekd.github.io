@@ -25,6 +25,8 @@ const projectRoutes = routes.filter((route) => route.startsWith('/projects/'));
 
 for (const route of routes) {
   test(`${route} renders without accessibility violations`, async ({ page }) => {
+    // 진입 리빌(opacity 전환) 중인 요소를 axe가 대비 미달로 읽지 않도록 최종 정적 상태에서 검사한다.
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto(route);
     await expect(page.locator('main')).toBeVisible();
     const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
@@ -118,6 +120,25 @@ test('reveal targets remain visible without movement when reduced motion is requ
   }))).toBe(true);
 });
 
+test('hero words are visible immediately without motion when reduced motion is requested', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  await expect(page.locator('html')).not.toHaveAttribute('data-motion', /.+/);
+  const targets = page.locator('[data-hero-anim]');
+  expect(await targets.count()).toBeGreaterThan(6);
+  expect(await targets.evaluateAll((elements) => elements.every((element) => {
+    const style = getComputedStyle(element);
+    return style.opacity === '1' && style.transform === 'none';
+  }))).toBe(true);
+});
+
+test('hero motion finishes and every animated element ends fully visible', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('/');
+  await expect(page.locator('html')).toHaveAttribute('data-motion', 'done', { timeout: 4500 });
+  expect(await page.locator('[data-hero-anim]').evaluateAll((elements) => elements.every((element) => getComputedStyle(element).opacity === '1'))).toBe(true);
+});
+
 test('uses clear Korean profile and skill labels without forced heading breaks', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByText('전문 분야', { exact: true })).toBeVisible();
@@ -131,8 +152,8 @@ test('uses clear Korean profile and skill labels without forced heading breaks',
 test('uses readable Pretendard section labels for core Korean sections', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
-  const labels = page.locator('#career .section-kicker, #projects .section-kicker, #skills > .section-heading .section-kicker, .background-compact .section-kicker');
-  await expect(labels).toHaveText(['경력', '프로젝트', '기술 역량', '이력과 활동']);
+  const labels = page.locator('#projects .section-kicker, #career .section-kicker, #skills > .section-heading .section-kicker, .background-compact .section-kicker');
+  await expect(labels).toHaveText(['프로젝트', '경력', '기술 역량', '이력과 활동']);
   expect(await labels.evaluateAll((elements) => elements.every((element) => {
     const style = getComputedStyle(element);
     const size = Number.parseFloat(style.fontSize);
