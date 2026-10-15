@@ -17,7 +17,6 @@
   --bg-surface: var(--color-white);
   --bg-section-alt: var(--color-white); /* 섹션 교대용(Slate 50 ↔ 흰색) */
   --bg-accent-soft: color-mix(in srgb, var(--color-sky-700) 8%, var(--color-white));
-  --bg-secondary-soft: color-mix(in srgb, var(--color-slate-700) 6%, var(--color-white));
 
   /* 글자 */
   --text-primary: var(--color-slate-900);
@@ -39,7 +38,6 @@
   --border-subtle: color-mix(in srgb, var(--color-slate-700) 25%, var(--color-slate-50));
   --border-hair: color-mix(in srgb, var(--color-slate-700) 18%, var(--color-slate-50));
   --line-section: var(--border-subtle); /* 섹션 경계 1px */
-  --line-decorative: var(--border-hair);
   --focus-ring: var(--color-sky-700);
   --selection-bg: color-mix(in srgb, var(--color-sky-700) 20%, var(--color-white));
 
@@ -50,8 +48,6 @@
   --bg-inverse: var(--color-slate-900);
   --text-on-inverse: var(--color-white);
   --text-on-inverse-muted: color-mix(in srgb, var(--text-on-inverse) 80%, var(--color-slate-900));
-  --text-on-inverse-subtle: color-mix(in srgb, var(--text-on-inverse) 72%, var(--color-slate-900));
-  --text-on-inverse-soft: color-mix(in srgb, var(--text-on-inverse) 80%, var(--color-slate-900));
   --accent-on-inverse: var(--color-white);
   --border-on-inverse: color-mix(in srgb, var(--text-on-inverse) 20%, var(--color-slate-900));
   --surface-on-inverse: color-mix(in srgb, var(--text-on-inverse) 6%, var(--color-slate-900));
@@ -92,7 +88,6 @@
   --shadow-emphasis: none;
   --shadow-emphasis-hover: none;
   --card-hover-border: var(--accent-primary);
-  --card-hover-shadow: none;
   --navigation-active-bg: var(--bg-accent-soft);
   --navigation-active-text: var(--accent-primary);
   --media-play-bg: var(--bg-surface);

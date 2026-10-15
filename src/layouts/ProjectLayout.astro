@@ -23,7 +23,8 @@ const caseStudySections = [
 
 <BaseLayout title={`${data.title} · 문승기 포트폴리오`} description={data.summary}>
   <article>
-    <section class="project-hero container">
+    <section class="project-hero-band section--inverse">
+    <div class="project-hero container">
       <nav class="breadcrumb" aria-label="이동 경로">
         <ol>
           <li><a href="/">홈</a></li>
@@ -52,6 +53,7 @@ const caseStudySections = [
       {data.heroMedia.type === 'placeholder'
         ? <ProjectBrief project={project} variant="hero" />
         : <MediaFrame asset={data.heroMedia} label="대표 미디어" mode="detail" />}
+    </div>
     </section>
 
     <nav class="project-toc container" aria-label="프로젝트 목차" data-section-navigation="project">
@@ -145,25 +147,26 @@ const caseStudySections = [
 </BaseLayout>
 
 <style>
+  .project-hero-band { background: var(--bg-hero); color: var(--text-hero); }
   .project-hero { padding-block: clamp(2.5rem, 6vw, 5rem) var(--space-20); }
   .breadcrumb { margin-bottom: var(--space-12); }
-  .breadcrumb ol { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; color: var(--text-muted); font-size: var(--font-size-utility); list-style: none; }
+  .breadcrumb ol { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; color: var(--text-hero-muted); font-size: var(--font-size-utility); list-style: none; }
   .breadcrumb li { display: inline-flex; align-items: center; gap: var(--space-2); }
-  .breadcrumb li + li::before { color: var(--border-subtle); content: '/'; }
-  .breadcrumb a { color: var(--text-secondary); font-weight: 700; text-decoration: none; }
-  .breadcrumb a:hover { color: var(--text-accent); }
+  .breadcrumb li + li::before { color: var(--border-on-inverse); content: '/'; }
+  .breadcrumb a { color: var(--text-hero-muted); font-weight: 700; text-decoration: none; }
+  .breadcrumb a:hover { color: var(--text-hero); text-decoration: underline; text-underline-offset: 4px; }
   .hero-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(18rem, 0.7fr); gap: var(--space-10); align-items: end; margin-bottom: var(--space-12); }
   h1 { margin-bottom: var(--space-3); }
-  .detail-index { margin-bottom: var(--space-3); color: var(--text-section-kicker); font-size: 0.9rem; font-weight: 700; }
+  .detail-index { margin-bottom: var(--space-3); color: var(--text-hero-muted); font-size: 0.9rem; font-weight: 700; }
   .detail-index span, .section-number { margin-right: var(--space-2); font-family: var(--font-mono); font-size: var(--font-size-utility); letter-spacing: 0.06em; }
-  .subtitle { margin-bottom: var(--space-5); color: var(--text-accent); font-size: clamp(1.15rem, 2.5vw, 1.6rem); font-weight: 750; }
-  .summary { max-width: 46rem; margin-bottom: var(--space-6); color: var(--text-secondary); font-size: 1.08rem; }
+  .subtitle { margin-bottom: var(--space-5); color: var(--text-hero); font-size: clamp(1.15rem, 2.5vw, 1.6rem); font-weight: 750; }
+  .summary { max-width: 46rem; margin-bottom: var(--space-6); color: var(--text-hero-muted); font-size: 1.08rem; }
   .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
   .project-toc { position: sticky; z-index: 10; top: calc(var(--header-height) - 1px); display: flex; gap: var(--space-2); overflow-x: auto; margin-bottom: var(--space-8); padding-block: var(--space-3); border-block: 1px solid var(--border-subtle); background: var(--bg-page); scrollbar-width: thin; }
   .project-toc a { flex: 0 0 auto; padding: 0.45rem 0.7rem; border-radius: var(--radius-sm); color: var(--text-secondary); font-size: var(--font-size-utility); font-weight: 700; text-decoration: none; }
   .project-toc a:hover, .project-toc a[aria-current="location"] { background: var(--navigation-active-bg); color: var(--navigation-active-text); }
   .case-study-section { scroll-margin-top: calc(var(--header-height) + 3.5rem); }
-  .project-meta { margin: 0; padding: var(--space-6); box-shadow: none; }
+  .project-meta { margin: 0; padding: var(--space-6); color: var(--text-primary); }
   .project-meta div { display: grid; grid-template-columns: 5rem 1fr; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: 1px solid var(--border-subtle); }
   .project-meta div:last-child { border-bottom: 0; }
   dt { color: var(--text-muted); font-family: var(--font-sans); font-size: var(--font-size-utility); font-weight: 700; }

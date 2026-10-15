@@ -34,6 +34,7 @@ const data = project.data;
   .project-card { min-width: 0; overflow: hidden; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--bg-surface); transition: border-color var(--motion-interactive); }
   .project-card-link { display: flex; min-height: 100%; flex-direction: column; color: inherit; text-decoration: none; }
   .project-card__media { aspect-ratio: 16 / 10; overflow: hidden; border-bottom: 1px solid var(--border-subtle); background: var(--pattern-placeholder); }
+  .project-card__media:has(.project-brief) { aspect-ratio: auto; }
   .project-card__media :global(.media-frame) { height: 100%; }
   .project-card__content { display: flex; min-width: 0; flex: 1; flex-direction: column; padding: var(--space-6); }
   h3 { margin-bottom: var(--space-1); }

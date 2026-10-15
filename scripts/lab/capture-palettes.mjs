@@ -16,7 +16,7 @@ import { createStaticServer } from '../../tests/e2e/static-server.ts';
 
 const PORT = 4322;
 const OUT = `lab-results/palettes${process.env.LAB_OUT_SUFFIX ?? ''}`; // test-results/는 Playwright가 매 실행마다 비우므로 별도 폴더 사용
-const THEMES = (process.env.LAB_THEMES ?? 'current,a,a-light,b,c').split(',');
+const THEMES = (process.env.LAB_THEMES ?? 'default').split(','); // 시안 테마는 제거됨(2026-10-15). 기본 1회 캡처
 const ROUTES = [
   { name: 'home', path: '/' },
   { name: 'lawmate', path: '/projects/lawmate/' },
