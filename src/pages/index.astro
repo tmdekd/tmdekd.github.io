@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import Hero from '../components/Hero.astro';
 import { profile } from '../data/profile';
 import { getCollection } from 'astro:content';
 
@@ -13,29 +14,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
 ---
 
 <BaseLayout home>
-  <section id="about" class="hero-band">
-    <div class="hero container">
-    <div class="hero-copy">
-      <p class="eyebrow">Moon Seung Gi · AI Engineer</p>
-      <h1><span class="hero-prefix">AI를 기능이 아닌</span> <span>작동하는 구조</span>로 만듭니다.</h1>
-      <p class="hero-description">{profile.headline}</p>
-      <div class="hero-actions">
-        <a class="button" href="#projects">프로젝트 보기 ↓</a>
-        <button class="button secondary" type="button" data-email-dialog-open>이메일 주소 보기</button>
-      </div>
-    </div>
-    <aside class="hero-profile" aria-label="프로필 요약">
-      <div class="profile-content">
-        <h2>{profile.name}</h2>
-        <p>{profile.englishName}</p>
-        <dl>
-          <div><dt>전문 분야</dt><dd>LLM · RAG · Agent</dd></div>
-          <div><dt>주요 경험</dt><dd>AI 서비스 기획 · 설계 · 개발</dd></div>
-        </dl>
-      </div>
-    </aside>
-    </div>
-  </section>
+  <Hero />
 
   <section class="intro-band section--divided">
     <div class="container intro-grid">
@@ -43,7 +22,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
       <p class="intro-copy">{profile.introduction}</p>
       <div class="workflow-grid">
         {profile.workflow.map((item) => (
-          <article>
+          <article data-reveal="workflow">
             <span>{item.number}</span>
             <h3>{item.title}</h3>
             <p>{item.description}</p>
@@ -103,7 +82,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
     </div>
     <div class="skill-grid">
       {profile.skills.map((skill, index) => (
-        <article class="skill-card">
+        <article class="skill-card" data-reveal="skill">
           <div class="skill-index">0{index + 1}</div>
           <h3>{skill.group}</h3>
           <p class="skill-summary">{skill.description}</p>
@@ -128,22 +107,6 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
 </BaseLayout>
 
 <style>
-  .hero-band { background: var(--bg-hero); color: var(--text-hero); }
-  .hero { display: grid; min-height: calc(100svh - var(--header-height)); grid-template-columns: minmax(0, 1.45fr) minmax(20rem, 0.55fr); align-items: center; gap: clamp(2rem, 7vw, 7rem); padding-block: clamp(3rem, 7vw, 7rem); }
-  .hero .eyebrow { color: var(--text-hero); }
-  .hero h1 { max-width: 56rem; margin-bottom: var(--space-8); }
-  .hero-prefix { white-space: nowrap; }
-  .hero h1 span { color: var(--text-hero-accent); }
-  .hero-description { max-width: 43rem; margin-bottom: var(--space-8); color: var(--text-hero-muted); font-size: clamp(1.05rem, 2vw, 1.25rem); }
-  .hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
-  .hero-profile { border-top: 1px solid var(--border-on-inverse); }
-  .profile-content { padding: var(--space-5) 0 0; }
-  .profile-content h2 { margin-bottom: 0; font-size: 1.6rem; }
-  .profile-content > p { color: var(--text-hero-muted); }
-  .profile-content dl { margin: var(--space-5) 0 0; }
-  .profile-content dl div { display: grid; grid-template-columns: 5rem 1fr; gap: var(--space-3); padding-block: var(--space-2); border-top: 1px solid var(--border-on-inverse); }
-  dt { color: var(--text-hero-muted); font-family: var(--font-sans); font-size: var(--font-size-utility); font-weight: 600; }
-  dd { margin: 0; font-size: 0.9rem; font-weight: 650; }
   .intro-band { padding-block: clamp(4rem, 8vw, 7rem); background: var(--bg-page); }
   .intro-copy { max-width: 62rem; margin-bottom: clamp(2.5rem, 6vw, 5rem); color: var(--text-primary); font-size: clamp(1.5rem, 3.4vw, 2.6rem); line-height: 1.42; letter-spacing: -0.03em; }
   .workflow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); }
@@ -179,15 +142,12 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
   .background-list div { display: grid; grid-template-columns: 7rem 1fr; gap: var(--space-4); padding: var(--space-6) 0; border-bottom: 1px solid var(--border-subtle); }
   .background-list span { color: var(--text-muted); font-family: var(--font-mono); font-size: var(--font-size-utility); }
   @media (max-width: 54rem) {
-    .hero, .career-section, .background-compact { grid-template-columns: 1fr; }
-    .hero { min-height: auto; }
-    .hero-profile { max-width: 30rem; }
+    .career-section, .background-compact { grid-template-columns: 1fr; }
     .workflow-grid { grid-template-columns: repeat(2, 1fr); }
     .skill-grid { grid-template-columns: 1fr; }
     .skill-card { min-height: auto; padding: var(--space-6) 0; border-left: 0; border-top: 1px solid var(--border-subtle); }
     .skill-card:first-child { padding-top: 0; border-top: 0; }
     .skill-summary { min-height: auto; }
-    .hero-prefix { white-space: normal; }
   }
   @media (max-width: 44rem) {
     .projects-heading, .project-grid { grid-template-columns: 1fr; }
