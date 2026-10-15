@@ -2,6 +2,7 @@
 @import '@fontsource/ibm-plex-mono/400.css';
 @import '@fontsource/ibm-plex-mono/600.css';
 @import './tokens.css';
+@import './themes-preview.css'; /* 팔레트 시안용 임시 import — 결정 후 삭제 */
 
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
@@ -19,7 +20,7 @@ img, video, svg { display: block; max-width: 100%; }
 a { color: inherit; }
 button, input, textarea { font: inherit; }
 :focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 4px; }
-::selection { background: var(--color-indigo-100); color: var(--text-primary); }
+::selection { background: var(--selection-bg); color: var(--text-primary); }
 
 .skip-link {
   position: fixed;
@@ -28,8 +29,8 @@ button, input, textarea { font: inherit; }
   left: var(--space-4);
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-sm);
-  background: var(--text-primary);
-  color: var(--bg-surface);
+  background: var(--bg-inverse);
+  color: var(--text-on-inverse);
   transform: translateY(-180%);
 }
 .skip-link:focus { transform: translateY(0); }
@@ -39,7 +40,7 @@ button, input, textarea { font: inherit; }
 .section-heading { max-width: 47rem; margin-bottom: clamp(2rem, 5vw, 4rem); }
 .eyebrow {
   margin: 0 0 var(--space-3);
-  color: var(--accent-primary);
+  color: var(--text-accent);
   font-family: var(--font-mono);
   font-size: 0.75rem;
   font-weight: 700;
@@ -55,7 +56,7 @@ button, input, textarea { font: inherit; }
   letter-spacing: -0.015em;
   line-height: 1.4;
 }
-.section-kicker--inverse { color: var(--color-indigo-100); }
+.section-kicker--inverse { color: var(--accent-on-inverse); }
 h1, h2, h3, p { margin-top: 0; }
 h1, h2, h3 { line-height: 1.16; letter-spacing: -0.035em; text-wrap: balance; word-break: keep-all; }
 p, li, dd, strong { word-break: keep-all; overflow-wrap: normal; line-break: strict; }
@@ -74,7 +75,7 @@ h3 { font-size: var(--font-size-card-title); }
   border: 1px solid transparent;
   border-radius: 999px;
   background: var(--accent-primary);
-  color: var(--bg-surface);
+  color: var(--text-on-accent);
   font-weight: 700;
   text-decoration: none;
 }
@@ -83,7 +84,7 @@ h3 { font-size: var(--font-size-card-title); }
 @media (hover: hover) and (pointer: fine) {
   .button { transition: transform var(--motion-interactive), background var(--motion-interactive), border-color var(--motion-interactive), color var(--motion-interactive); }
   .button:hover { background: var(--accent-primary-hover); transform: translateY(-2px); }
-  .button.secondary:hover { border-color: var(--accent-primary); color: var(--accent-primary); }
+  .button.secondary:hover { border-color: var(--accent-primary); color: var(--text-accent); }
 }
 
 .tag-list { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
