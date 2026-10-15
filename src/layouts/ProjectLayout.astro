@@ -177,9 +177,10 @@ const caseStudySections = [
   .goal-panel { margin-top: var(--space-8); padding: clamp(1.5rem, 4vw, 2.5rem); border-radius: var(--radius-lg); background: var(--bg-accent-soft); }
   .goal-panel ul { margin-bottom: 0; padding-left: 1.2rem; }
   /* "서비스 흐름" 밴드: 다크 대신 Slate 50 + 1px 경계 */
-  .architecture-section { background: var(--bg-page); }
+  /* 상세 페이지 바탕(Slate 50)과 교대되도록 흰 면. 흐름 타일은 Slate 50 */
+  .architecture-section { background: var(--bg-section-alt); }
   .flow-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: var(--space-3); margin: 0; padding: 0; list-style: none; counter-reset: flow; }
-  .flow-list li { min-height: 10rem; padding: var(--space-5); border-left: 3px solid var(--accent-bar); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--bg-surface); }
+  .flow-list li { min-height: 10rem; padding: var(--space-5); border-left: 3px solid var(--accent-bar); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--bg-page); }
   .flow-list span { display: block; margin-bottom: var(--space-8); color: var(--text-accent); font-family: var(--font-mono); font-size: var(--font-size-utility); font-weight: 600; }
   .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
   .feature-card { min-height: 16rem; padding: var(--space-6); }
