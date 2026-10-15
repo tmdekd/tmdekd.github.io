@@ -16,7 +16,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
 <BaseLayout home>
   <Hero />
 
-  <section id="projects" class="section projects-section section--divided">
+  <section id="projects" class="section projects-section">
     <div class="container">
       <div class="section-heading projects-heading">
         <div>
@@ -31,7 +31,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
     </div>
   </section>
 
-  <section class="intro-band section--alt section--divided">
+  <section class="intro-band section--alt">
     <div class="container intro-grid">
       <p class="section-kicker">일하는 방식</p>
       <p class="intro-copy">{profile.introduction}</p>
@@ -47,7 +47,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
     </div>
   </section>
 
-  <section class="section section--divided">
+  <section class="section">
     <div id="career" class="container career-section">
     <div class="section-heading">
       <p class="section-kicker">경력</p>
@@ -110,15 +110,16 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
   .intro-band { padding-block: clamp(4rem, 8vw, 7rem); }
   .intro-copy { max-width: 62rem; margin-bottom: clamp(2.5rem, 6vw, 5rem); color: var(--text-primary); font-size: clamp(1.5rem, 3.4vw, 2.6rem); line-height: 1.42; letter-spacing: -0.03em; }
   .workflow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); }
-  .workflow-grid article { min-height: 14rem; padding: var(--space-5); border: 1px solid var(--border-subtle); border-left: 3px solid var(--accent-bar); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--bg-page); }
+  .workflow-grid article { min-height: 14rem; padding: var(--space-5); border-left: 3px solid var(--accent-bar); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--bg-page); }
   .workflow-grid span { color: var(--text-accent); font-family: var(--font-mono); font-size: var(--font-size-utility); font-weight: 600; }
   .workflow-grid h3 { margin-top: var(--space-12); }
   .workflow-grid p { margin-bottom: 0; color: var(--text-secondary); font-size: 0.9rem; }
   .career-section { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(3rem, 7vw, 7rem); }
   .career-focus { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: var(--space-6) 0 0; padding: 0; list-style: none; }
   .career-focus li { padding: 0.35rem 0.65rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-secondary); font-size: var(--font-size-utility); font-weight: 650; }
-  .timeline { border-top: 1px solid var(--border-subtle); }
-  .timeline article { display: grid; grid-template-columns: 3rem 9rem 1fr; gap: var(--space-4); padding: var(--space-8) 0; border-bottom: 1px solid var(--border-subtle); }
+  .timeline article { display: grid; grid-template-columns: 3rem 9rem 1fr; gap: var(--space-4); padding: var(--space-8) 0; }
+  .timeline article + article { border-top: 1px solid var(--border-hair); }
+  .timeline article:first-child { padding-top: var(--space-2); }
   .timeline-marker span { color: var(--text-accent-secondary); font-family: var(--font-mono); font-size: var(--font-size-utility); }
   .timeline-period { color: var(--text-muted); font-family: var(--font-mono); font-size: var(--font-size-utility); }
   .timeline-content h3 { margin-bottom: var(--space-1); }
@@ -127,26 +128,24 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
   .projects-section { background: var(--bg-page); }
   .projects-heading { display: grid; max-width: none; grid-template-columns: 1.1fr 0.9fr; align-items: end; gap: var(--space-12); }
   .project-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(2rem, 5vw, 4rem) var(--space-8); }
-  .skill-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
-  .skill-card { display: flex; min-height: 20rem; flex-direction: column; padding: var(--space-2) var(--space-6); border-left: 1px solid var(--border-subtle); }
-  .skill-card:first-child { padding-left: 0; border-left: 0; }
+  .skill-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(2rem, 4vw, 3.5rem); }
+  .skill-card { display: flex; min-height: 20rem; flex-direction: column; }
   .skill-index { color: var(--text-accent-secondary); font-family: var(--font-mono); font-size: var(--font-size-utility); font-weight: 600; }
   .skill-card h3 { margin: var(--space-8) 0 var(--space-3); }
   .skill-summary { min-height: 4.4em; margin-bottom: var(--space-5); color: var(--text-secondary); font-size: 0.95rem; line-height: 1.65; }
   .skill-card ul { margin: auto 0 0; padding: 0; list-style: none; }
-  .skill-card li { padding-block: 0.4rem; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary); font-family: var(--font-sans); font-size: 0.9rem; font-weight: 600; }
-  .background-compact { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(3rem, 7vw, 7rem); margin-top: clamp(4rem, 8vw, 7rem); padding-top: clamp(3rem, 6vw, 5rem); border-top: 1px solid var(--border-subtle); }
+  .skill-card li { padding-block: 0.3rem; color: var(--text-secondary); font-family: var(--font-sans); font-size: 0.9rem; font-weight: 600; }
+  .background-compact { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(3rem, 7vw, 7rem); margin-top: clamp(4rem, 8vw, 7rem); }
   .background-heading .section-kicker { margin-bottom: var(--space-3); }
   .background-heading h2 { max-width: 28rem; font-size: clamp(1.75rem, 3vw, 2.5rem); }
-  .background-list { border-top: 1px solid var(--border-subtle); }
-  .background-list div { display: grid; grid-template-columns: 7rem 1fr; gap: var(--space-4); padding: var(--space-6) 0; border-bottom: 1px solid var(--border-subtle); }
+  .background-list div { display: grid; grid-template-columns: 7rem 1fr; gap: var(--space-4); padding: var(--space-5) 0; }
+  .background-list div + div { border-top: 1px solid var(--border-hair); }
   .background-list span { color: var(--text-muted); font-family: var(--font-mono); font-size: var(--font-size-utility); }
   @media (max-width: 54rem) {
     .career-section, .background-compact { grid-template-columns: 1fr; }
     .workflow-grid { grid-template-columns: repeat(2, 1fr); }
     .skill-grid { grid-template-columns: 1fr; }
-    .skill-card { min-height: auto; padding: var(--space-6) 0; border-left: 0; border-top: 1px solid var(--border-subtle); }
-    .skill-card:first-child { padding-top: 0; border-top: 0; }
+    .skill-card { min-height: auto; }
     .skill-summary { min-height: auto; }
   }
   @media (max-width: 44rem) {

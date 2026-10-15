@@ -37,9 +37,8 @@ button, input, textarea { font: inherit; }
 
 .container { width: min(calc(100% - 2rem), var(--container)); margin-inline: auto; }
 .section { padding-block: clamp(4.25rem, 8vw, 7.5rem); }
-/* 섹션 구분: 바탕을 Slate 50 ↔ 흰색으로 교대하고 경계마다 1px 선 */
+/* 섹션 구분: 바탕을 Slate 50 ↔ 흰색으로 교대. 경계선은 두지 않는다(요소 구분선과 겹치지 않게) */
 .section--alt { background: var(--bg-section-alt); }
-.section--divided { border-bottom: 1px solid var(--line-section); }
 .section--inverse { background: var(--bg-inverse); color: var(--text-on-inverse); }
 .section-heading { max-width: 47rem; margin-bottom: clamp(2rem, 5vw, 4rem); }
 .eyebrow {
@@ -107,7 +106,7 @@ h3 { font-size: var(--font-size-card-title); }
   line-height: 1.4;
 }
 
-.surface { border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--bg-surface); }
+.surface { border: 1px solid var(--border-hair); border-radius: var(--radius-lg); background: var(--bg-surface); }
 .muted { color: var(--text-muted); }
 
 @media (max-width: 44rem) {

@@ -162,39 +162,40 @@ const caseStudySections = [
   .subtitle { margin-bottom: var(--space-5); color: var(--text-hero); font-size: clamp(1.15rem, 2.5vw, 1.6rem); font-weight: 750; }
   .summary { max-width: 46rem; margin-bottom: var(--space-6); color: var(--text-hero-muted); font-size: 1.08rem; }
   .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
-  .project-toc { position: sticky; z-index: 10; top: calc(var(--header-height) - 1px); display: flex; gap: var(--space-2); overflow-x: auto; margin-bottom: var(--space-8); padding-block: var(--space-3); border-block: 1px solid var(--border-subtle); background: var(--bg-page); scrollbar-width: thin; }
+  .project-toc { position: sticky; z-index: 10; top: calc(var(--header-height) - 1px); display: flex; gap: var(--space-2); overflow-x: auto; margin-bottom: var(--space-8); padding-block: var(--space-3); border-bottom: 1px solid var(--border-hair); background: var(--bg-page); scrollbar-width: thin; }
   .project-toc a { flex: 0 0 auto; padding: 0.45rem 0.7rem; border-radius: var(--radius-sm); color: var(--text-secondary); font-size: var(--font-size-utility); font-weight: 700; text-decoration: none; }
   .project-toc a:hover, .project-toc a[aria-current="location"] { background: var(--navigation-active-bg); color: var(--navigation-active-text); }
   .case-study-section { scroll-margin-top: calc(var(--header-height) + 3.5rem); }
   .project-meta { margin: 0; padding: var(--space-6); color: var(--text-primary); }
-  .project-meta div { display: grid; grid-template-columns: 5rem 1fr; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: 1px solid var(--border-subtle); }
-  .project-meta div:last-child { border-bottom: 0; }
+  .project-meta div { display: grid; grid-template-columns: 5rem 1fr; gap: var(--space-3); padding: var(--space-3) 0; }
+  .project-meta div + div { border-top: 1px solid var(--border-hair); }
   dt { color: var(--text-muted); font-family: var(--font-sans); font-size: var(--font-size-utility); font-weight: 700; }
   dd { margin: 0; font-size: 0.9rem; font-weight: 650; }
   .content-grid { display: grid; grid-template-columns: minmax(16rem, 0.8fr) minmax(0, 1.2fr); gap: clamp(3rem, 8vw, 8rem); }
   .sticky-title { align-self: start; position: sticky; top: 7rem; }
-  .large-copy { padding-bottom: var(--space-5); border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary); font-size: clamp(1.05rem, 2vw, 1.28rem); }
+  .large-copy { padding-bottom: var(--space-5); border-bottom: 1px solid var(--border-hair); color: var(--text-secondary); font-size: clamp(1.05rem, 2vw, 1.28rem); }
   .goal-panel { margin-top: var(--space-8); padding: clamp(1.5rem, 4vw, 2.5rem); border-radius: var(--radius-lg); background: var(--bg-accent-soft); }
   .goal-panel ul { margin-bottom: 0; padding-left: 1.2rem; }
   /* "서비스 흐름" 밴드: 다크 대신 Slate 50 + 1px 경계 */
-  .architecture-section { border-block: 1px solid var(--line-section); background: var(--bg-page); }
+  .architecture-section { background: var(--bg-page); }
   .flow-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: var(--space-3); margin: 0; padding: 0; list-style: none; counter-reset: flow; }
-  .flow-list li { min-height: 10rem; padding: var(--space-5); border: 1px solid var(--border-subtle); border-left: 3px solid var(--accent-bar); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--bg-surface); }
+  .flow-list li { min-height: 10rem; padding: var(--space-5); border-left: 3px solid var(--accent-bar); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--bg-surface); }
   .flow-list span { display: block; margin-bottom: var(--space-8); color: var(--text-accent); font-family: var(--font-mono); font-size: var(--font-size-utility); font-weight: 600; }
   .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
   .feature-card { min-height: 16rem; padding: var(--space-6); }
   .feature-card > span { color: var(--text-accent-secondary); font-family: var(--font-mono); font-size: var(--font-size-utility); }
   .feature-card h3 { margin-top: var(--space-12); }
   .feature-card p, .decision-list p { color: var(--text-secondary); }
-  .decision-list { border-top: 1px solid var(--border-subtle); }
-  .decision-list article { padding: var(--space-8) 0; border-bottom: 1px solid var(--border-subtle); }
+  .decision-list article { padding: var(--space-8) 0; }
+  .decision-list article + article { border-top: 1px solid var(--border-hair); }
+  .decision-list article:first-child { padding-top: 0; }
   .media-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-5); }
   .media-grid > :only-child { grid-column: 1 / -1; }
-  .reflection { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: var(--space-12); padding: clamp(2rem, 6vw, 5rem); border: 1px solid var(--border-subtle); border-radius: var(--radius-xl); background: var(--bg-surface); }
+  .reflection { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: var(--space-12); padding: clamp(2rem, 6vw, 5rem); border: 1px solid var(--border-hair); border-radius: var(--radius-xl); background: var(--bg-surface); }
   .reflection strong { display: block; margin-bottom: var(--space-4); color: var(--text-accent-secondary-strong); font-size: 1.1rem; }
   .reflection p { margin-bottom: 0; color: var(--text-secondary); font-size: clamp(1rem, 2vw, 1.2rem); }
   .project-nav { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); padding-block: var(--space-20); }
-  .project-nav a { display: grid; padding: var(--space-6); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--bg-surface); text-decoration: none; }
+  .project-nav a { display: grid; padding: var(--space-6); border: 1px solid var(--border-hair); border-radius: var(--radius-lg); background: var(--bg-surface); text-decoration: none; }
   .project-nav a:hover { border-color: var(--accent-primary); }
   .project-nav span { color: var(--text-muted); font-size: var(--font-size-utility); }
   .project-nav strong { margin-top: var(--space-3); font-size: 1.4rem; }
