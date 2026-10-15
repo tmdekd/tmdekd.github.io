@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /lab/
 
 Sitemap: https://tmdekd.github.io/sitemap-index.xml

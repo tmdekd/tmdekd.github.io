@@ -1,0 +1,77 @@
+---
+/**
+ * 모션 랩 페이지 (프로덕션 미노출)
+ * PUBLIC_LAB=true 일 때만 경로가 생성된다(`.env.lab`). 보험: noindex 메타, sitemap filter, robots Disallow.
+ * 경로: /lab/motion/ (3안 세로 비교), /lab/motion-kinetic/, /lab/motion-infographic/, /lab/motion-isometric/ (캡처용 단일 변형)
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroKinetic from '../../components/lab/HeroKinetic.astro';
+import HeroInfographic from '../../components/lab/HeroInfographic.astro';
+import HeroIsometric from '../../components/lab/HeroIsometric.astro';
+
+export function getStaticPaths() {
+  if (import.meta.env.PUBLIC_LAB !== 'true') return [];
+  return ['motion', 'motion-kinetic', 'motion-infographic', 'motion-isometric'].map((page) => ({ params: { page } }));
+}
+
+const { page } = Astro.params;
+const all = ['kinetic', 'infographic', 'isometric'] as const;
+const variants = page === 'motion' ? [...all] : all.filter((variant) => page === `motion-${variant}`);
+const projects = await getCollection('projects', ({ data }) => !data.draft);
+const titles: Record<string, string> = { kinetic: '1 · 키네틱 타이포 (영상 01/30)', infographic: '2 · 플랫 인포그래픽 (영상 18/30)', isometric: '3 · 아이소메트릭 (영상 26/30)' };
+---
+
+<BaseLayout title="모션 랩 · 문승기 포트폴리오" description="히어로 모션 시안 비교(내부용)" noindex>
+  <div class="lab-toolbar" role="toolbar" aria-label="랩 도구">
+    <div class="container lab-toolbar-inner">
+      <span class="lab-tag">모션 랩 · 내부용</span>
+      <nav class="lab-links" aria-label="시안 이동">
+        <a href="/lab/motion/">전체</a>
+        {all.map((variant) => <a href={`/lab/motion-${variant}/`} aria-current={variants.length === 1 && variants[0] === variant ? 'page' : undefined}>{variant}</a>)}
+      </nav>
+      <div class="lab-font" role="group" aria-label="제목 서체">
+        <button type="button" data-font="pretendard" aria-pressed="true">Pretendard</button>
+        <button type="button" data-font="wanted" aria-pressed="false">Wanted Sans</button>
+      </div>
+    </div>
+  </div>
+
+  {variants.map((variant) => (
+    <section class="lab-section" id={variant}>
+      <h2 class="lab-heading container">{titles[variant]}</h2>
+      {variant === 'kinetic' && <HeroKinetic />}
+      {variant === 'infographic' && <HeroInfographic projectCount={projects.length} />}
+      {variant === 'isometric' && <HeroIsometric />}
+    </section>
+  ))}
+</BaseLayout>
+
+<style is:global>
+  @import 'wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.css';
+  @import '../../styles/lab-hero.css';
+</style>
+
+<style>
+  .lab-toolbar { position: sticky; z-index: 30; top: var(--header-height); border-bottom: 1px solid var(--line-section); background: var(--bg-page); }
+  .lab-toolbar-inner { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); min-height: 3rem; font-size: var(--font-size-utility); }
+  .lab-tag { font-family: var(--font-mono); color: var(--text-accent); }
+  .lab-links { display: flex; gap: var(--space-3); }
+  .lab-links a { color: var(--text-secondary); font-weight: 600; text-decoration: none; }
+  .lab-links a[aria-current="page"] { color: var(--text-accent); text-decoration: underline; text-underline-offset: 4px; }
+  .lab-font { display: flex; gap: var(--space-2); margin-left: auto; }
+  .lab-font button { padding: 0.35rem 0.7rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); background: var(--bg-surface); color: var(--text-primary); font: inherit; font-weight: 600; cursor: pointer; }
+  .lab-font button[aria-pressed="true"] { border-color: var(--text-primary); background: var(--text-primary); color: var(--bg-surface); }
+  .lab-section { border-bottom: 1px solid var(--line-section); }
+  .lab-heading { margin: 0; padding-block: var(--space-6) var(--space-3); font-family: var(--font-mono); font-size: var(--font-size-utility); font-weight: 400; color: var(--text-muted); }
+</style>
+
+<script>
+  const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('.lab-font button'));
+  const apply = (font: string) => {
+    document.documentElement.dataset.font = font;
+    buttons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.font === font)));
+  };
+  buttons.forEach((button) => button.addEventListener('click', () => apply(button.dataset.font ?? 'pretendard')));
+  apply(new URLSearchParams(location.search).get('font') ?? 'pretendard');
+</script>

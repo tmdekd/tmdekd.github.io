@@ -1,0 +1,105 @@
+---
+/**
+ * 모션 랩 변형 3 · 아이소메트릭 (영상 26/30)
+ * 우측에 AI 서비스 구조(데이터 → 검색 → 추론 → 서비스)를 CSS 3D 블록 4개로 순차 등장시킨다.
+ * 평행 투영(perspective 없음)이라 아이소메트릭처럼 보인다. 컨테이너는 overflow hidden + contain: paint.
+ */
+import { profile } from '../../data/profile';
+
+const blocks = [
+  { key: '데이터', note: '문서 파싱 · 색인' },
+  { key: '검색', note: '벡터 · 그래프 검색' },
+  { key: '추론', note: 'LLM · Agent' },
+  { key: '서비스', note: '업무 흐름 연결' },
+];
+---
+
+<section class="lab-hero" data-lab="isometric" aria-label="아이소메트릭 히어로 시안">
+  <div class="hero container">
+    <div class="hero-copy">
+      <p class="eyebrow" data-hero-anim>Moon Seung Gi · AI Engineer</p>
+      <h1 data-hero-anim><span class="hero-prefix">AI를 기능이 아닌</span> <span>작동하는 구조</span>로 만듭니다.</h1>
+      <p class="hero-description" data-hero-anim>{profile.headline}</p>
+      <div class="hero-actions" data-hero-anim>
+        <a class="button" href="#projects">프로젝트 보기 ↓</a>
+        <button class="button secondary" type="button">이메일 주소 보기</button>
+      </div>
+    </div>
+    <aside class="hero-profile iso" aria-label="AI 서비스 구조 도식">
+      <div class="iso-stage" aria-hidden="true">
+        <svg class="iso-path" viewBox="0 0 320 200" preserveAspectRatio="none"><path d="M52 160 L132 128 L212 96 L292 64" pathLength="1" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4" /></svg>
+        {blocks.map((block, index) => (
+          <div class={`iso-cube iso-cube--${index + 1}`} data-hero-anim data-cube>
+            <div class="iso-body"><span class="f f-top"></span><span class="f f-front"></span><span class="f f-right"></span></div>
+          </div>
+        ))}
+      </div>
+      <ol class="iso-labels">
+        {blocks.map((block, index) => (
+          <li data-hero-anim><span class="iso-num">{String(index + 1).padStart(2, '0')}</span><strong>{block.key}</strong><span class="iso-note">{block.note}</span></li>
+        ))}
+      </ol>
+    </aside>
+  </div>
+  <div class="container lab-controls">
+    <button class="button secondary" type="button" data-replay>다시 재생</button>
+    <p class="lab-status" role="status" aria-live="polite"></p>
+  </div>
+</section>
+
+<style>
+  .iso { border-top: 0; }
+  .iso-stage { --s: 4.2rem; position: relative; height: 15rem; overflow: hidden; contain: paint; }
+  .iso-path { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--text-on-inverse-muted); }
+  /* 바깥(.iso-cube)은 JS가 translateY/opacity로 움직이고, 안쪽(.iso-body)이 회전을 맡는다(Motion이 transform을 덮어쓰므로 분리) */
+  .iso-cube { position: absolute; width: var(--s); height: var(--s); }
+  .iso-body { width: 100%; height: 100%; transform-style: preserve-3d; transform: rotateX(-35deg) rotateY(45deg); }
+  .iso-cube--1 { left: 6%; bottom: 10%; }
+  .iso-cube--2 { left: 31%; bottom: 26%; }
+  .iso-cube--3 { left: 56%; bottom: 42%; }
+  .iso-cube--4 { left: 81%; bottom: 58%; }
+  .f { position: absolute; inset: 0; }
+  .f-top { transform: rotateX(90deg) translateZ(calc(var(--s) / 2)); background: var(--accent-primary); }
+  .f-front { transform: translateZ(calc(var(--s) / 2)); background: color-mix(in srgb, var(--accent-primary) 70%, var(--bg-inverse)); }
+  .f-right { transform: rotateY(90deg) translateZ(calc(var(--s) / 2)); background: color-mix(in srgb, var(--accent-primary) 45%, var(--bg-inverse)); }
+  .iso-labels { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); margin: var(--space-4) 0 0; padding: 0; list-style: none; }
+  .iso-labels li { display: grid; gap: 2px; padding-top: var(--space-2); border-top: 1px solid var(--border-on-inverse); }
+  .iso-num { color: var(--text-hero-muted); font-family: var(--font-mono); font-size: var(--font-size-utility); }
+  .iso-labels strong { font-size: 0.95rem; }
+  .iso-note { color: var(--text-hero-muted); font-size: 0.72rem; }
+  .lab-controls { display: flex; align-items: center; gap: var(--space-4); padding-bottom: var(--space-8); }
+  .lab-status { margin: 0; color: var(--text-hero-muted); font-size: 0.9rem; }
+  @media (max-width: 54rem) {
+    .iso-stage { height: 13rem; --s: 3.4rem; }
+    .iso-labels { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+</style>
+
+<script>
+  import { animate, stagger, claim, EASE_OUT } from '../../scripts/motion/reduced';
+
+  const root = document.querySelector<HTMLElement>('[data-lab="isometric"]');
+  if (root) {
+    const copy = Array.from(root.querySelectorAll<HTMLElement>('.hero-copy [data-hero-anim]'));
+    const cubes = Array.from(root.querySelectorAll<HTMLElement>('[data-cube]'));
+    const labels = Array.from(root.querySelectorAll<HTMLElement>('.iso-labels [data-hero-anim]'));
+    const path = root.querySelector<SVGPathElement>('.iso-path path');
+    const status = root.querySelector<HTMLElement>('.lab-status');
+
+    const run = () => {
+      if (!claim([...copy, ...cubes, ...labels])) {
+        if (status) status.textContent = '감속 모션 설정이 켜져 있어 애니메이션 없이 최종 화면을 보여줍니다.';
+        return;
+      }
+      animate(copy, { opacity: [0, 1], y: [12, 0] }, { duration: 0.5, delay: stagger(0.08), ease: EASE_OUT });
+      cubes.forEach((cube, index) => {
+        animate(cube, { opacity: [0, 1], y: [70, 0] }, { duration: 0.65, delay: 0.25 + index * 0.18, ease: EASE_OUT });
+      });
+      if (path) animate(path, { pathLength: [0, 1] }, { duration: 0.8, delay: 0.25 + cubes.length * 0.18, ease: EASE_OUT });
+      animate(labels, { opacity: [0, 1], y: [8, 0] }, { duration: 0.4, delay: stagger(0.08, { startDelay: 0.5 + cubes.length * 0.18 }), ease: EASE_OUT });
+    };
+
+    run();
+    root.querySelector('[data-replay]')?.addEventListener('click', run);
+  }
+</script>
