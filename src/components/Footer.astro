@@ -23,15 +23,16 @@ import { profile } from '../data/profile';
 </footer>
 
 <style>
-  .site-footer { padding: var(--space-8) 0 var(--space-6); }
-  .footer-card { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-12); padding: clamp(2rem, 6vw, 5rem); border-radius: var(--radius-xl); background: var(--bg-inverse); color: var(--text-on-inverse); }
+  /* Contact는 Slate 900 전면 밴드 */
+  .site-footer { padding: clamp(4rem, 8vw, 7rem) 0 var(--space-6); background: var(--bg-inverse); color: var(--text-on-inverse); }
+  .footer-card { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-12); }
   h2 { margin-bottom: 0; }
-  .contact-list { display: grid; align-content: center; gap: var(--space-3); }
-  .contact-list a, .contact-list button, .resume { display: grid; grid-template-columns: 5rem 1fr; gap: var(--space-4); padding: var(--space-3) 0; border: 0; border-bottom: 1px solid color-mix(in srgb, var(--text-on-inverse) 18%, transparent); background: transparent; color: var(--text-on-inverse); text-align: left; text-decoration: none; }
-  .contact-list span { color: var(--text-on-inverse-subtle); font-family: var(--font-mono); font-size: var(--font-size-utility); }
-  .contact-list a:hover, .contact-list button:hover { color: var(--accent-on-inverse); cursor: pointer; }
-  .copy-status { min-height: 1.7em; margin: 0; color: var(--accent-on-inverse); font-size: 0.82rem; }
-  .footer-bottom { display: flex; justify-content: space-between; padding-top: var(--space-5); color: var(--text-muted); font-size: 0.8rem; }
+  .contact-list { display: grid; align-content: start; gap: var(--space-2); }
+  .contact-list a, .contact-list button, .resume { display: grid; grid-template-columns: 5rem 1fr; gap: var(--space-4); padding: var(--space-3) 0; border: 0; border-top: 1px solid var(--border-on-inverse); background: transparent; color: var(--text-on-inverse); font-weight: 600; text-align: left; text-decoration: none; }
+  .contact-list span { color: var(--text-on-inverse-muted); font-family: var(--font-mono); font-size: var(--font-size-utility); font-weight: 400; }
+  .contact-list a:hover, .contact-list button:hover { text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+  .copy-status { min-height: 1.7em; margin: 0; color: var(--text-on-inverse-muted); font-size: 0.82rem; }
+  .footer-bottom { display: flex; justify-content: space-between; margin-top: var(--space-12); padding-top: var(--space-5); border-top: 1px solid var(--border-on-inverse); color: var(--text-on-inverse-muted); font-size: 0.8rem; }
   .footer-bottom a { text-decoration: none; }
   @media (max-width: 44rem) {
     .footer-card { grid-template-columns: 1fr; gap: var(--space-8); }

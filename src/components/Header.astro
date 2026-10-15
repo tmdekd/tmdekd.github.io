@@ -25,22 +25,22 @@ const prefix = home ? '' : '/';
 <script is:inline src="/scripts/mobile-menu.js"></script>
 
 <style>
-  .site-header { position: sticky; z-index: 20; top: 0; border-bottom: 1px solid color-mix(in srgb, var(--border-subtle) 85%, transparent); background: color-mix(in srgb, var(--bg-page) 88%, transparent); backdrop-filter: blur(18px); }
+  /* 헤더는 히어로와 같은 Slate 900 한 판. 블러·반투명 없음 */
+  .site-header { position: sticky; z-index: 20; top: 0; background: var(--bg-inverse); color: var(--text-on-inverse); }
   .header-inner { position: relative; display: flex; min-height: var(--header-height); align-items: center; justify-content: space-between; gap: var(--space-6); }
   .brand { display: inline-flex; align-items: center; gap: var(--space-3); font-size: 0.86rem; font-weight: 800; text-decoration: none; }
-  .brand-mark { display: grid; width: 2.2rem; aspect-ratio: 1; place-items: center; border-radius: 0.7rem; background: var(--accent-primary); color: var(--text-on-accent); font-family: var(--font-mono); font-size: var(--font-size-utility); }
+  .brand-mark { display: grid; width: 2.2rem; aspect-ratio: 1; place-items: center; border-radius: var(--radius-sm); background: var(--accent-primary); color: var(--text-on-accent); font-family: var(--font-mono); font-size: var(--font-size-utility); }
   nav { display: flex; align-items: center; gap: clamp(0.75rem, 2.5vw, 2rem); }
-  nav a { color: var(--text-secondary); font-size: 0.875rem; font-weight: 650; text-decoration: none; }
-  nav a:hover, nav a[aria-current="location"] { color: var(--navigation-active-text); }
-  .contact-link { padding: 0.5rem 0.85rem; border: 1px solid var(--border-subtle); border-radius: 999px; background: var(--bg-surface); }
-  .menu-toggle { display: none; width: 2.75rem; min-height: 2.75rem; place-items: center; padding: 0; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); background: var(--bg-surface); color: var(--text-primary); }
+  nav a { padding-block: var(--space-1); border-bottom: 2px solid transparent; color: var(--text-on-inverse-muted); font-size: 0.875rem; font-weight: 650; text-decoration: none; }
+  nav a:hover, nav a[aria-current="location"] { border-bottom-color: var(--accent-on-inverse); color: var(--text-on-inverse); }
+  .menu-toggle { display: none; width: 2.75rem; min-height: 2.75rem; place-items: center; padding: 0; border: 1px solid var(--border-on-inverse); border-radius: var(--radius-sm); background: transparent; color: var(--text-on-inverse); }
   .menu-toggle svg { width: 1.25rem; fill: none; stroke: currentColor; stroke-linecap: round; stroke-width: 1.8; }
   @media (max-width: 42rem) {
     .brand > span:last-child { display: none; }
     .menu-toggle { display: grid; }
-    nav { position: absolute; top: calc(100% - var(--space-2)); right: 0; display: none; width: min(18rem, calc(100vw - 1.25rem)); gap: var(--space-1); padding: var(--space-2); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--bg-surface); box-shadow: var(--shadow-emphasis); }
+    nav { position: absolute; top: calc(100% - var(--space-2)); right: 0; display: none; width: min(18rem, calc(100vw - 1.25rem)); gap: var(--space-1); padding: var(--space-2); border: 1px solid var(--border-on-inverse); border-radius: var(--radius-md); background: var(--bg-inverse); }
     nav[data-open="true"] { display: grid; }
-    nav a, .contact-link { display: flex; min-height: 2.75rem; align-items: center; padding: 0.7rem var(--space-3); border: 0; border-radius: var(--radius-sm); background: transparent; font-size: 0.9rem; }
-    nav a:hover, nav a[aria-current="location"] { background: var(--navigation-active-bg); }
+    nav a { display: flex; min-height: 2.75rem; align-items: center; padding: 0.7rem var(--space-3); border: 0; border-left: 3px solid transparent; border-radius: 0; font-size: 0.9rem; }
+    nav a:hover, nav a[aria-current="location"] { border-left-color: var(--accent-on-inverse); background: var(--surface-on-inverse); }
   }
 </style>

@@ -75,7 +75,7 @@ const caseStudySections = [
     <section id="project-flow" class="section architecture-section case-study-section">
       <div class="container">
         <div class="section-heading">
-          <p class="section-kicker section-kicker--inverse"><span class="section-number">02</span> 서비스 흐름</p>
+          <p class="section-kicker"><span class="section-number">02</span> 서비스 흐름</p>
           <h2>서비스 흐름</h2>
           <p>복잡한 처리 과정은 내부에 두고, 사용자에게는 정제된 하나의 결과를 전달합니다.</p>
         </div>
@@ -159,8 +159,8 @@ const caseStudySections = [
   .subtitle { margin-bottom: var(--space-5); color: var(--text-accent); font-size: clamp(1.15rem, 2.5vw, 1.6rem); font-weight: 750; }
   .summary { max-width: 46rem; margin-bottom: var(--space-6); color: var(--text-secondary); font-size: 1.08rem; }
   .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
-  .project-toc { position: sticky; z-index: 10; top: calc(var(--header-height) - 1px); display: flex; gap: var(--space-2); overflow-x: auto; margin-bottom: var(--space-8); padding-block: var(--space-3); border-block: 1px solid var(--border-subtle); background: color-mix(in srgb, var(--bg-page) 92%, transparent); backdrop-filter: blur(14px); scrollbar-width: thin; }
-  .project-toc a { flex: 0 0 auto; padding: 0.45rem 0.7rem; border-radius: 999px; color: var(--text-secondary); font-size: var(--font-size-utility); font-weight: 700; text-decoration: none; }
+  .project-toc { position: sticky; z-index: 10; top: calc(var(--header-height) - 1px); display: flex; gap: var(--space-2); overflow-x: auto; margin-bottom: var(--space-8); padding-block: var(--space-3); border-block: 1px solid var(--border-subtle); background: var(--bg-page); scrollbar-width: thin; }
+  .project-toc a { flex: 0 0 auto; padding: 0.45rem 0.7rem; border-radius: var(--radius-sm); color: var(--text-secondary); font-size: var(--font-size-utility); font-weight: 700; text-decoration: none; }
   .project-toc a:hover, .project-toc a[aria-current="location"] { background: var(--navigation-active-bg); color: var(--navigation-active-text); }
   .case-study-section { scroll-margin-top: calc(var(--header-height) + 3.5rem); }
   .project-meta { margin: 0; padding: var(--space-6); box-shadow: none; }
@@ -173,12 +173,11 @@ const caseStudySections = [
   .large-copy { padding-bottom: var(--space-5); border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary); font-size: clamp(1.05rem, 2vw, 1.28rem); }
   .goal-panel { margin-top: var(--space-8); padding: clamp(1.5rem, 4vw, 2.5rem); border-radius: var(--radius-lg); background: var(--bg-accent-soft); }
   .goal-panel ul { margin-bottom: 0; padding-left: 1.2rem; }
-  .architecture-section { background: var(--bg-inverse); color: var(--text-on-inverse); }
-  .architecture-section .section-kicker { color: var(--accent-on-inverse); }
-  .architecture-section .section-heading p:last-child { color: var(--text-on-inverse-soft); }
+  /* "서비스 흐름" 밴드: 다크 대신 Slate 50 + 1px 경계 */
+  .architecture-section { border-block: 1px solid var(--line-section); background: var(--bg-page); }
   .flow-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: var(--space-3); margin: 0; padding: 0; list-style: none; counter-reset: flow; }
-  .flow-list li { min-height: 10rem; padding: var(--space-5); border: 1px solid var(--border-on-inverse); border-radius: var(--radius-md); background: color-mix(in srgb, var(--text-on-inverse) 5%, transparent); }
-  .flow-list span { display: block; margin-bottom: var(--space-8); color: var(--accent-on-inverse); font-family: var(--font-mono); font-size: var(--font-size-utility); }
+  .flow-list li { min-height: 10rem; padding: var(--space-5); border: 1px solid var(--border-subtle); border-left: 3px solid var(--accent-bar); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--bg-surface); }
+  .flow-list span { display: block; margin-bottom: var(--space-8); color: var(--text-accent); font-family: var(--font-mono); font-size: var(--font-size-utility); font-weight: 600; }
   .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
   .feature-card { min-height: 16rem; padding: var(--space-6); }
   .feature-card > span { color: var(--text-accent-secondary); font-family: var(--font-mono); font-size: var(--font-size-utility); }
@@ -188,7 +187,7 @@ const caseStudySections = [
   .decision-list article { padding: var(--space-8) 0; border-bottom: 1px solid var(--border-subtle); }
   .media-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-5); }
   .media-grid > :only-child { grid-column: 1 / -1; }
-  .reflection { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: var(--space-12); padding: clamp(2rem, 6vw, 5rem); border-radius: var(--radius-xl); background: var(--bg-secondary-soft); box-shadow: var(--shadow-emphasis); }
+  .reflection { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: var(--space-12); padding: clamp(2rem, 6vw, 5rem); border: 1px solid var(--border-subtle); border-radius: var(--radius-xl); background: var(--bg-surface); }
   .reflection strong { display: block; margin-bottom: var(--space-4); color: var(--text-accent-secondary-strong); font-size: 1.1rem; }
   .reflection p { margin-bottom: 0; color: var(--text-secondary); font-size: clamp(1rem, 2vw, 1.2rem); }
   .project-nav { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); padding-block: var(--space-20); }

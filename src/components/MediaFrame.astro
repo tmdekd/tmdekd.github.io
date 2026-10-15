@@ -41,14 +41,14 @@ const isCardVideo = mode === 'card' && asset.type === 'video';
   .media-frame { margin: 0; overflow: hidden; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--bg-surface); box-shadow: var(--shadow-emphasis); }
   img, video, .placeholder, .video-poster { width: 100%; aspect-ratio: var(--media-ratio); object-fit: cover; }
   .media-frame--card { height: 100%; border: 0; border-radius: 0; box-shadow: none; }
-  .placeholder { display: grid; place-items: center; align-content: center; gap: var(--space-3); padding: var(--space-8); background: var(--gradient-placeholder); color: var(--text-secondary); text-align: center; }
-  .placeholder svg { width: 4rem; fill: none; stroke: var(--accent-primary); stroke-width: 2; }
-  .placeholder strong { color: var(--text-primary); font-size: clamp(1rem, 2vw, 1.3rem); }
-  .placeholder span:last-child { max-width: 26rem; font-size: 0.85rem; }
-  .placeholder-label { color: var(--text-accent); font-family: var(--font-mono); font-size: var(--font-size-utility); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+  .placeholder { display: grid; place-items: center; align-content: center; gap: var(--space-3); padding: var(--space-8); background: var(--pattern-placeholder); color: var(--text-secondary); text-align: center; }
+  .placeholder svg { width: 4rem; padding: var(--space-2); fill: none; stroke: var(--accent-primary); stroke-width: 2; background: var(--bg-surface); }
+  .placeholder strong { padding: 0.1rem 0.5rem; background: var(--bg-surface); color: var(--text-primary); font-size: clamp(1rem, 2vw, 1.3rem); }
+  .placeholder span:last-child { max-width: 26rem; padding: 0.1rem 0.5rem; background: var(--bg-surface); font-size: 0.85rem; }
+  .placeholder-label { padding: 0.1rem 0.5rem; background: var(--bg-surface); color: var(--text-accent); font-family: var(--font-mono); font-size: var(--font-size-utility); font-weight: 600; }
   .video-poster { position: relative; }
   .video-poster > img { height: 100%; object-fit: cover; }
-  .video-poster__fallback { display: block; width: 100%; height: 100%; background: var(--gradient-placeholder); }
+  .video-poster__fallback { display: block; width: 100%; height: 100%; background: var(--pattern-placeholder); }
   .play-badge { position: absolute; bottom: var(--space-4); left: var(--space-4); display: inline-flex; align-items: center; gap: var(--space-2); padding: 0.45rem 0.65rem; border: 1px solid var(--media-play-border); border-radius: 999px; background: var(--media-play-bg); color: var(--media-play-text); font-size: var(--font-size-utility); font-weight: 700; }
   .play-badge svg { width: 1rem; fill: currentColor; }
   figcaption { padding: var(--space-3) var(--space-4); color: var(--text-muted); font-size: 0.8rem; }
