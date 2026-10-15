@@ -9,8 +9,8 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { chromium } from 'playwright';
 import AxeBuilder from '@axe-core/playwright';
 
-const SRC = 'plan/mockups/ui-palettes.html';
-const OUT = 'lab-results/mock';
+const SRC = process.env.LAB_SRC ?? 'plan/mockups/ui-palettes.html';
+const OUT = process.env.LAB_OUT ?? 'lab-results/mock';
 const VARIANTS = (process.env.LAB_VARIANTS ?? 'a1,a2,b1,b2,c1,c2').split(',');
 const VIEWPORTS = [
   { name: '1280', width: 1280, height: 900 },
