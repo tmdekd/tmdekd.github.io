@@ -5,7 +5,7 @@
  * 실행:     `npm run lab:palettes`
  *
  * dist/를 로컬 서버로 띄우고, 각 테마를 <html data-theme> 속성으로 주입한 뒤
- * 풀페이지 스크린샷과 axe(wcag2a/2aa) 색 대비 위반을 test-results/lab/ 에 저장한다.
+ * 풀페이지 스크린샷과 axe(wcag2a/2aa) 색 대비 위반을 lab-results/palettes/ 에 저장한다.
  * 로컬에는 Playwright 브라우저가 없으므로 설치된 Chrome(channel: 'chrome')을 사용한다.
  */
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -15,7 +15,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { createStaticServer } from '../../tests/e2e/static-server.ts';
 
 const PORT = 4322;
-const OUT = `test-results/lab${process.env.LAB_OUT_SUFFIX ?? ''}`;
+const OUT = `lab-results/palettes${process.env.LAB_OUT_SUFFIX ?? ''}`; // test-results/는 Playwright가 매 실행마다 비우므로 별도 폴더 사용
 const THEMES = (process.env.LAB_THEMES ?? 'current,a,a-light,b,c').split(',');
 const ROUTES = [
   { name: 'home', path: '/' },
