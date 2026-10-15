@@ -19,7 +19,8 @@ img, video, svg { display: block; max-width: 100%; }
 a { color: inherit; }
 button, input, textarea { font: inherit; }
 :focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 4px; }
-::selection { background: var(--color-indigo-100); color: var(--text-primary); }
+.hero-band :focus-visible, .site-header :focus-visible, .site-footer :focus-visible, .section--inverse :focus-visible { outline-color: var(--text-on-inverse); }
+::selection { background: var(--selection-bg); color: var(--text-primary); }
 
 .skip-link {
   position: fixed;
@@ -28,25 +29,30 @@ button, input, textarea { font: inherit; }
   left: var(--space-4);
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-sm);
-  background: var(--text-primary);
-  color: var(--bg-surface);
+  background: var(--bg-inverse);
+  color: var(--text-on-inverse);
   transform: translateY(-180%);
 }
 .skip-link:focus { transform: translateY(0); }
 
 .container { width: min(calc(100% - 2rem), var(--container)); margin-inline: auto; }
 .section { padding-block: clamp(4.25rem, 8vw, 7.5rem); }
+/* 섹션 구분: 바탕을 Slate 50 ↔ 흰색으로 교대하고 경계마다 1px 선 */
+.section--alt { background: var(--bg-section-alt); }
+.section--divided { border-bottom: 1px solid var(--line-section); }
+.section--inverse { background: var(--bg-inverse); color: var(--text-on-inverse); }
 .section-heading { max-width: 47rem; margin-bottom: clamp(2rem, 5vw, 4rem); }
 .eyebrow {
   margin: 0 0 var(--space-3);
-  color: var(--accent-primary);
+  color: var(--text-accent);
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
+  font-size: var(--font-size-utility);
+  font-weight: 400;
 }
 .section-kicker {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
   margin: 0 0 var(--space-4);
   color: var(--text-section-kicker);
   font-family: var(--font-sans);
@@ -55,7 +61,8 @@ button, input, textarea { font: inherit; }
   letter-spacing: -0.015em;
   line-height: 1.4;
 }
-.section-kicker--inverse { color: var(--color-indigo-100); }
+.section-kicker::before { content: ""; flex: 0 0 auto; width: 22px; height: 3px; background: var(--accent-bar); }
+.section-kicker--inverse { color: var(--accent-on-inverse); }
 h1, h2, h3, p { margin-top: 0; }
 h1, h2, h3 { line-height: 1.16; letter-spacing: -0.035em; text-wrap: balance; word-break: keep-all; }
 p, li, dd, strong { word-break: keep-all; overflow-wrap: normal; line-break: strict; }
@@ -71,26 +78,28 @@ h3 { font-size: var(--font-size-card-title); }
   justify-content: center;
   gap: var(--space-2);
   padding: 0.75rem 1.15rem;
-  border: 1px solid transparent;
-  border-radius: 999px;
+  border: 1.5px solid var(--accent-primary);
+  border-radius: var(--radius-sm);
   background: var(--accent-primary);
-  color: var(--bg-surface);
+  color: var(--text-on-accent);
   font-weight: 700;
   text-decoration: none;
 }
-.button.secondary { border-color: var(--border-subtle); background: var(--bg-surface); color: var(--text-primary); }
+.button.secondary { border-color: var(--text-primary); background: transparent; color: var(--text-primary); }
+.hero-band .button.secondary, .section--inverse .button.secondary { border-color: var(--text-on-inverse); color: var(--text-on-inverse); }
 
 @media (hover: hover) and (pointer: fine) {
-  .button { transition: transform var(--motion-interactive), background var(--motion-interactive), border-color var(--motion-interactive), color var(--motion-interactive); }
-  .button:hover { background: var(--accent-primary-hover); transform: translateY(-2px); }
-  .button.secondary:hover { border-color: var(--accent-primary); color: var(--accent-primary); }
+  .button { transition: background var(--motion-interactive), border-color var(--motion-interactive), color var(--motion-interactive); }
+  .button:hover { background: var(--accent-primary-hover); border-color: var(--accent-primary-hover); }
+  .button.secondary:hover { background: transparent; border-color: var(--accent-primary); color: var(--text-accent); }
+  .hero-band .button.secondary:hover, .section--inverse .button.secondary:hover { border-color: var(--text-on-inverse); color: var(--text-on-inverse); background: var(--surface-on-inverse); }
 }
 
 .tag-list { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
 .tag {
   padding: 0.4rem 0.7rem;
   border: 1px solid var(--border-subtle);
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   background: var(--bg-surface);
   color: var(--text-secondary);
   font-family: var(--font-mono);

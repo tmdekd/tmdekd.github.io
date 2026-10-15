@@ -12,7 +12,9 @@
     "preview": "astro preview",
     "check": "astro check",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "lab:palettes": "node scripts/lab/capture-palettes.mjs",
+    "lab:mock": "node scripts/lab/capture-mock.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "8.0.1",

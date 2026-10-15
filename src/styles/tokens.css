@@ -1,35 +1,62 @@
 :root {
   color-scheme: light;
 
-  --color-indigo-50: #f0effc;
-  --color-indigo-100: #e4e1fa;
-  --color-indigo-500: #6254c7;
-  --color-indigo-600: #5144b3;
-  --color-indigo-700: #43378f;
-  --color-teal-50: #e9f5f4;
-  --color-teal-500: #236c69;
-  --color-teal-700: #1f625f;
-  --color-mist-50: #f6f7fb;
+  /*
+   * 팔레트 N2 "프로페셔널 네이비" (2026-10-15 확정)
+   * 출처: ui-ux-pro-max 스킬 colors.csv "B2B Service" — Primary #0F172A, Secondary #334155,
+   *       Accent #0369A1, Background #F8FAFC. 값은 데이터 그대로. 보조 선·면은 아래 값끼리 color-mix로만 파생.
+   */
+  --color-slate-900: #0f172a;
+  --color-slate-700: #334155;
+  --color-slate-50: #f8fafc;
+  --color-sky-700: #0369a1;
   --color-white: #ffffff;
-  --color-ink-950: #121826;
-  --color-ink-700: #3f4758;
-  --color-ink-500: #697183;
-  --color-line: #e3e6ef;
-  --color-focus: #2d5bd1;
 
-  --bg-page: var(--color-mist-50);
+  /* 면 */
+  --bg-page: var(--color-slate-50);
   --bg-surface: var(--color-white);
-  --bg-accent-soft: var(--color-indigo-50);
-  --bg-secondary-soft: var(--color-teal-50);
-  --text-primary: var(--color-ink-950);
-  --text-secondary: var(--color-ink-700);
-  --text-muted: var(--color-ink-500);
-  --text-section-kicker: var(--color-indigo-600);
-  --accent-primary: var(--color-indigo-500);
-  --accent-primary-hover: var(--color-indigo-600);
-  --accent-secondary: var(--color-teal-500);
-  --border-subtle: var(--color-line);
-  --focus-ring: var(--color-focus);
+  --bg-section-alt: var(--color-white); /* 섹션 교대용(Slate 50 ↔ 흰색) */
+  --bg-accent-soft: color-mix(in srgb, var(--color-sky-700) 8%, var(--color-white));
+
+  /* 글자 */
+  --text-primary: var(--color-slate-900);
+  --text-secondary: var(--color-slate-700);
+  --text-muted: color-mix(in srgb, var(--color-slate-700) 80%, var(--color-slate-50)); /* Slate 50 위 약 5.5:1 */
+  --text-section-kicker: var(--color-sky-700);
+  --text-accent: var(--color-sky-700);
+  --text-accent-secondary: var(--color-sky-700);
+  --text-accent-secondary-strong: var(--color-sky-700);
+  --text-on-accent: var(--color-white);
+
+  /* 강조·행동 */
+  --accent-primary: var(--color-sky-700);
+  --accent-primary-hover: color-mix(in srgb, var(--color-sky-700) 85%, var(--color-slate-900));
+  --accent-secondary: var(--color-sky-700);
+  --accent-bar: var(--color-sky-700); /* 섹션 라벨 앞 막대, 4단계 왼쪽 막대 */
+
+  /* 선 */
+  --border-subtle: color-mix(in srgb, var(--color-slate-700) 25%, var(--color-slate-50));
+  --border-hair: color-mix(in srgb, var(--color-slate-700) 18%, var(--color-slate-50));
+  --line-section: var(--border-subtle); /* 섹션 경계 1px */
+  --focus-ring: var(--color-sky-700);
+  --selection-bg: color-mix(in srgb, var(--color-sky-700) 20%, var(--color-white));
+
+  /* 미디어 placeholder: 흰 바탕 + Sky 700 35% 빗금 */
+  --pattern-placeholder: repeating-linear-gradient(135deg, var(--color-white) 0 9px, color-mix(in srgb, var(--color-sky-700) 35%, var(--color-white)) 9px 10px);
+
+  /* 역상(네이비 밴드) 토큰 */
+  --bg-inverse: var(--color-slate-900);
+  --text-on-inverse: var(--color-white);
+  --text-on-inverse-muted: color-mix(in srgb, var(--text-on-inverse) 80%, var(--color-slate-900));
+  --accent-on-inverse: var(--color-white);
+  --border-on-inverse: color-mix(in srgb, var(--text-on-inverse) 20%, var(--color-slate-900));
+  --surface-on-inverse: color-mix(in srgb, var(--text-on-inverse) 6%, var(--color-slate-900));
+
+  /* 히어로: 헤더와 함께 Slate 900 한 판 */
+  --bg-hero: var(--bg-inverse);
+  --text-hero: var(--text-on-inverse);
+  --text-hero-muted: var(--text-on-inverse-muted);
+  --text-hero-accent: var(--text-on-inverse);
 
   --font-sans: "Pretendard Variable", Pretendard, Inter, "Noto Sans KR", system-ui, -apple-system, sans-serif;
   --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
@@ -53,18 +80,18 @@
   --space-20: 5rem;
   --space-24: 6rem;
 
-  --radius-sm: 0.65rem;
-  --radius-md: 1rem;
-  --radius-lg: 1.5rem;
-  --radius-xl: 2rem;
-  --shadow-emphasis: 0 18px 50px rgba(38, 42, 68, 0.09);
-  --shadow-emphasis-hover: 0 24px 60px rgba(38, 42, 68, 0.13);
-  --card-hover-border: color-mix(in srgb, var(--accent-primary) 58%, var(--border-subtle));
-  --card-hover-shadow: var(--shadow-emphasis-hover);
+  /* 형태: 모서리 4px 계열, 그림자 없음 */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.25rem;
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.25rem;
+  --shadow-emphasis: none;
+  --shadow-emphasis-hover: none;
+  --card-hover-border: var(--accent-primary);
   --navigation-active-bg: var(--bg-accent-soft);
-  --navigation-active-text: var(--accent-primary-hover);
-  --media-play-bg: color-mix(in srgb, var(--bg-surface) 88%, var(--accent-primary));
-  --media-play-border: color-mix(in srgb, var(--accent-primary) 30%, var(--border-subtle));
+  --navigation-active-text: var(--accent-primary);
+  --media-play-bg: var(--bg-surface);
+  --media-play-border: var(--border-subtle);
   --media-play-text: var(--text-primary);
   --motion-interactive: 180ms ease;
   --motion-reveal: 420ms cubic-bezier(0.22, 1, 0.36, 1);

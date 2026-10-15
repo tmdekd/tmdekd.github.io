@@ -4,6 +4,7 @@ dist/
 .npm-cache/
 playwright-report/
 test-results/
+lab-results/
 
 
 # Local reference material (not deployed)
