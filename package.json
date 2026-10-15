@@ -15,7 +15,8 @@
     "test:e2e": "playwright test",
     "lab:palettes": "node scripts/lab/capture-palettes.mjs",
     "lab:mock": "node scripts/lab/capture-mock.mjs",
-    "lab:motion": "node scripts/lab/capture-motion.mjs"
+    "lab:motion": "node scripts/lab/capture-motion.mjs",
+    "lab:lighthouse": "node scripts/lab/lighthouse.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "8.0.1",

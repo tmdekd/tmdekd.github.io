@@ -16,7 +16,22 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
 <BaseLayout home>
   <Hero />
 
-  <section class="intro-band section--divided">
+  <section id="projects" class="section projects-section section--divided">
+    <div class="container">
+      <div class="section-heading projects-heading">
+        <div>
+          <p class="section-kicker">프로젝트</p>
+          <h2>문제에서 서비스까지.</h2>
+        </div>
+        <p>최근 작업부터 프로젝트의 배경·구조·기술적 판단을 웹에서 읽기 쉽게 정리했습니다.</p>
+      </div>
+      <div class="project-grid">
+        {projects.map((project) => <ProjectCard project={project} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="intro-band section--alt section--divided">
     <div class="container intro-grid">
       <p class="section-kicker">일하는 방식</p>
       <p class="intro-copy">{profile.introduction}</p>
@@ -32,7 +47,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
     </div>
   </section>
 
-  <section class="section section--alt section--divided">
+  <section class="section section--divided">
     <div id="career" class="container career-section">
     <div class="section-heading">
       <p class="section-kicker">경력</p>
@@ -56,21 +71,6 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
         </article>
       ))}
     </div>
-    </div>
-  </section>
-
-  <section id="projects" class="section projects-section section--divided">
-    <div class="container">
-      <div class="section-heading projects-heading">
-        <div>
-          <p class="section-kicker">프로젝트</p>
-          <h2>문제에서 서비스까지.</h2>
-        </div>
-        <p>최근 작업부터 프로젝트의 배경·구조·기술적 판단을 웹에서 읽기 쉽게 정리했습니다.</p>
-      </div>
-      <div class="project-grid">
-        {projects.map((project) => <ProjectCard project={project} />)}
-      </div>
     </div>
   </section>
 
@@ -107,10 +107,10 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
 </BaseLayout>
 
 <style>
-  .intro-band { padding-block: clamp(4rem, 8vw, 7rem); background: var(--bg-page); }
+  .intro-band { padding-block: clamp(4rem, 8vw, 7rem); }
   .intro-copy { max-width: 62rem; margin-bottom: clamp(2.5rem, 6vw, 5rem); color: var(--text-primary); font-size: clamp(1.5rem, 3.4vw, 2.6rem); line-height: 1.42; letter-spacing: -0.03em; }
   .workflow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); }
-  .workflow-grid article { min-height: 14rem; padding: var(--space-5); border: 1px solid var(--border-subtle); border-left: 3px solid var(--accent-bar); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--bg-surface); }
+  .workflow-grid article { min-height: 14rem; padding: var(--space-5); border: 1px solid var(--border-subtle); border-left: 3px solid var(--accent-bar); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--bg-page); }
   .workflow-grid span { color: var(--text-accent); font-family: var(--font-mono); font-size: var(--font-size-utility); font-weight: 600; }
   .workflow-grid h3 { margin-top: var(--space-12); }
   .workflow-grid p { margin-bottom: 0; color: var(--text-secondary); font-size: 0.9rem; }

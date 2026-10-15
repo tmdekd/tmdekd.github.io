@@ -23,6 +23,7 @@ const ROUTES = [
 ];
 const VIEWPORTS = [
   { name: '1440', width: 1440, height: 900 },
+  { name: '768', width: 768, height: 1024 },
   { name: '390', width: 390, height: 844 },
 ];
 

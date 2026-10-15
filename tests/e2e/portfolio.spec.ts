@@ -152,8 +152,8 @@ test('uses clear Korean profile and skill labels without forced heading breaks',
 test('uses readable Pretendard section labels for core Korean sections', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
-  const labels = page.locator('#career .section-kicker, #projects .section-kicker, #skills > .section-heading .section-kicker, .background-compact .section-kicker');
-  await expect(labels).toHaveText(['경력', '프로젝트', '기술 역량', '이력과 활동']);
+  const labels = page.locator('#projects .section-kicker, #career .section-kicker, #skills > .section-heading .section-kicker, .background-compact .section-kicker');
+  await expect(labels).toHaveText(['프로젝트', '경력', '기술 역량', '이력과 활동']);
   expect(await labels.evaluateAll((elements) => elements.every((element) => {
     const style = getComputedStyle(element);
     const size = Number.parseFloat(style.fontSize);
