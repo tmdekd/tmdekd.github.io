@@ -1,5 +1,6 @@
 {
   "$comment": "원본 포트폴리오 미디어 매핑. source는 자료 폴더(assets)의 파일 또는 pptx 슬라이드 미디어(pptx:image69.png). 대상은 public/media/ 아래 경로(확장자는 변환 결과로 결정).",
+  "reviewed": "2026-10-16 docs/원본 포트폴리오/[신입] 문승기_포트폴리오- 제출용.pptx 검토: 슬라이드별 래스터 해상도·영상이 베이스 pptx와 동일, SVG 103개는 장식 벡터 → 소스로 쓰지 않음",
   "roots": {
     "assets": "C:/Users/moon0/Desktop/문서/01. 취업/내가 작성한 자기소개서_이력서_포트폴리오/자료",
     "pptx": "C:/Users/moon0/Desktop/문서/01. 취업/00. 이력서_자소서_포트폴리오 베이스/[신입] 문승기_포트폴리오.pptx"

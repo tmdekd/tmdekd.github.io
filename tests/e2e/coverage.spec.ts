@@ -36,7 +36,7 @@ const required: Record<string, string[]> = {
     '날씨 아이콘을 활용해 자신의 심리 상태를 직관적으로 확인', '보호자 모드 연계를 통해 사용자 상태를 원격으로 확인',
     '공감형 대화를 어떻게 구현할 것인가?', '데이터 품질을 어떻게 확보할 것인가?', '모델의 경량화와 응답 속도를 어떻게 확보할 것인가?',
     '고령자 근현대 경험 구술 데이터', 'LoRA 기반 파인튜닝 및 양자화', 'RunPod Serverless',
-    '팀장이라는 자리의 무게', '기술적 선택과 집중', '사용자 중심의 구현', 'buly.kr/CWuoilk',
+    '팀장이라는 자리의 무게', '기술적 선택과 집중', '사용자 중심의 구현', 'github.com/tmdekd/HonamISHackathon',
   ],
   '/projects/lawmate/': [
     '법무법인 업무보조 AI 플랫폼', '기업 참여 프로젝트 우수팀 선정', 'SKN10-FINAL-3Team',
@@ -56,7 +56,7 @@ const required: Record<string, string[]> = {
     '질문 유형에 따라 응답 경로 분기', '생성과 평가를 분리한 다단계 구조', 'RAG → 외부 검색 순으로 단계적 보완',
     '요약 + 핵심 포인트 구조로 입문자가 기억해야 할 정보만 직관적으로 제시',
     'Hallucination (환각문제)을 어떻게 해결할 것인가?', "LLM 응답은 언제 '충분하다'고 판단할 수 있을까?", 'FAISS Vector Store', 'LLM-as-a-Judge', 'Tavily',
-    '팀장으로서의 역할 인식', '응답 구조의 재설계', '선택과 집중의 경험', 'buly.kr/Csl2WmA', 'buly.kr/90cMwpv',
+    '팀장으로서의 역할 인식', '응답 구조의 재설계', '선택과 집중의 경험', '18주차-회고', 'github.com/tmdekd/SKN10-4th-2Team',
   ],
   '/projects/yoriwang-jwaryong/': [
     '생성형 AI 기반 맞춤형 레시피 추천 챗봇', 'LLM Fine-tuning · RAG Pipeline Design', 'Fine-tuned sLLM + RAG 분기형 응답 구조 설계', 'SKN10-3rd-5Team',
@@ -66,7 +66,7 @@ const required: Record<string, string[]> = {
     '보유 재료만으로 가능한 요리 추천', '조리 도구·시간 제약을 고려한 추천', '상황에 맞게 변형 가능한 요리 안내', '바로 따라 할 수 있는 단계별 레시피', '추가 질문을 통한 추천 개선', '신뢰도 높은 레시피 추천을 위한 응답 구조',
     'Hallucination (환각문제)을 어떻게 해결할 것인가?', "LLM 응답은 언제 '충분하다'고 판단할 수 있을까?", '대화는 복잡해도, 결과는 어떻게 단순하게 할 수 있을까?',
     '멀티 쿼리를 생성해 내부 문서 RAG(FAISS)로 근거를 검색하고 재생성', '이전 대화에서 입력된 조건을 모두 하나의 맥락으로 통합',
-    '역할과 기여', '응답 구조에 대한 고민', '실행 가능한 서비스', 'buly.kr/HHdEYtj', 'buly.kr/5JOYUmx',
+    '역할과 기여', '응답 구조에 대한 고민', '실행 가능한 서비스', '15주차-회고', 'github.com/tmdekd/SKN10-3rd-5Team',
   ],
 };
 

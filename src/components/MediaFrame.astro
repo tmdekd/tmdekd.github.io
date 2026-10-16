@@ -10,9 +10,10 @@ const isCardVideo = mode === 'card' && asset.type === 'video';
 const ratio = asset.aspectRatio ?? aspectRatioOf(asset.src, '16 / 10');
 const meta = getMedia(asset.src);
 const posterMeta = getMedia(asset.poster);
+const portrait = meta ? meta.height > meta.width * 1.15 : false;
 ---
 
-<figure class:list={['media-frame', `media-frame--${mode}`]} style={`--media-ratio: ${ratio}`}>
+<figure class:list={['media-frame', `media-frame--${mode}`, { 'media-frame--portrait': portrait }]} style={`--media-ratio: ${ratio}`}>
   {asset.type === 'image' && asset.src ? (
     <img src={asset.src} alt={asset.alt} loading={mode === 'card' ? 'lazy' : 'eager'} decoding="async" width={meta?.width} height={meta?.height} />
   ) : isCardVideo ? (
@@ -47,6 +48,7 @@ const posterMeta = getMedia(asset.poster);
   .media-frame--card { height: 100%; border: 0; border-radius: 0; }
   .media-frame--card img { height: 100%; object-fit: contain; }
   video { display: block; max-height: 36rem; background: var(--bg-inverse); }
+  .media-frame--portrait video { max-height: 30rem; }
   .placeholder { display: grid; place-items: center; align-content: center; gap: var(--space-3); padding: var(--space-8); background: var(--pattern-placeholder); color: var(--text-secondary); text-align: center; }
   .placeholder svg { width: 4rem; padding: var(--space-2); fill: none; stroke: var(--accent-primary); stroke-width: 2; background: var(--bg-surface); }
   .placeholder strong { padding: 0.1rem 0.5rem; background: var(--bg-surface); color: var(--text-primary); font-size: clamp(1rem, 2vw, 1.3rem); }

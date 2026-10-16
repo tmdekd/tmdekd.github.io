@@ -29,7 +29,7 @@ describe('public portfolio content', () => {
       github: 'https://github.com/tmdekd',
       velog: 'https://velog.io/@tmdekd/posts',
     });
-    expect(Object.keys(profile.contact).sort()).toEqual(['email', 'github', 'notion', 'velog']);
+    expect(Object.keys(profile.contact).sort()).toEqual(['email', 'github', 'notion', 'portfolioOriginal', 'velog']);
     expect(profile).not.toHaveProperty('phone');
     expect(profile).not.toHaveProperty('birthDate');
     expect(profile).not.toHaveProperty('address');

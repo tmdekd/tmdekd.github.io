@@ -241,6 +241,45 @@ test('project cards show the original hero screenshots with alt text', async ({ 
   }
 });
 
+test('feature cards stay in two columns at tablet width instead of stacking', async ({ page }) => {
+  await page.setViewportSize({ width: 768, height: 1024 });
+  await page.goto('/projects/lawmate/');
+  const cards = page.locator('#project-features .feature-card');
+  expect(await cards.count()).toBeGreaterThanOrEqual(4);
+  const first = await cards.nth(0).boundingBox();
+  const second = await cards.nth(1).boundingBox();
+  expect(first && second && Math.abs(first.y - second.y) < 2).toBe(true);
+  expect(second!.x).toBeGreaterThan(first!.x + first!.width - 1);
+});
+
+test('screenshots open in a lightbox and return focus on close', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/projects/lawmate/');
+  const button = page.locator('#project-features .media-zoom').first();
+  await button.scrollIntoViewIfNeeded();
+  await button.click();
+  const dialog = page.locator('#media-lightbox');
+  await expect(dialog).toBeVisible();
+  const src = await dialog.locator('img').getAttribute('src');
+  expect(src).toMatch(/^\/media\/projects\/lawmate\//);
+  await expect(dialog.locator('img')).toHaveJSProperty('complete', true);
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+  await expect(button).toBeFocused();
+});
+
+test('retrospective links point at velog and github directly, not short links', async ({ page }) => {
+  for (const slug of ['neurocare', 'lawmate', 'vino', 'yoriwang-jwaryong']) {
+    await page.goto(`/projects/${slug}/`);
+    const links = page.locator('#project-retrospective .retro-links a');
+    await expect(links).toHaveCount(2);
+    const hrefs = await links.evaluateAll((anchors) => anchors.map((a) => (a as HTMLAnchorElement).href));
+    expect(hrefs[0]).toMatch(/^https:\/\/velog\.io\/@tmdekd\//);
+    expect(hrefs[1]).toMatch(/^https:\/\/github\.com\/tmdekd\//);
+    expect(hrefs.join(' ')).not.toContain('buly.kr');
+  }
+});
+
 test('project details use Korean metadata and section labels', async ({ page }) => {
   await page.goto('/projects/lawmate/');
   await expect(page.getByText('기간', { exact: true })).toBeVisible();

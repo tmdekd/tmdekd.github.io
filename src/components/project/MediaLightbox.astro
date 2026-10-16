@@ -1,0 +1,32 @@
+---
+/**
+ * 본문 이미지 "크게 보기" 대화상자. 페이지에 하나만 두고 public/scripts/media-lightbox.js 가
+ * [data-lightbox-src] 버튼 클릭을 위임 처리한다(CSP script-src 'self' — 인라인 스크립트 없음).
+ */
+---
+
+<dialog id="media-lightbox" class="media-lightbox" aria-labelledby="media-lightbox-caption">
+  <div class="lightbox-bar">
+    <p id="media-lightbox-caption" class="lightbox-caption"></p>
+    <button class="lightbox-close" type="button" data-lightbox-close aria-label="닫기">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" /></svg>
+    </button>
+  </div>
+  <div class="lightbox-stage" data-lightbox-stage>
+    <img alt="" decoding="async" />
+  </div>
+</dialog>
+
+<script is:inline src="/scripts/media-lightbox.js"></script>
+
+<style>
+  .media-lightbox { width: min(calc(100vw - 2rem), 96rem); max-width: none; max-height: calc(100vh - 2rem); padding: 0; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--bg-surface); color: var(--text-primary); overflow: hidden; }
+  .media-lightbox::backdrop { background: color-mix(in srgb, var(--text-primary) 72%, transparent); }
+  .lightbox-bar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-3) var(--space-3) var(--space-3) var(--space-5); border-bottom: 1px solid var(--border-hair); }
+  .lightbox-caption { margin: 0; color: var(--text-secondary); font-size: 0.9rem; }
+  .lightbox-close { display: grid; width: 2.75rem; min-height: 2.75rem; place-items: center; padding: 0; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); background: transparent; color: var(--text-primary); cursor: pointer; }
+  .lightbox-close svg { width: 1.25rem; fill: none; stroke: currentColor; stroke-linecap: round; stroke-width: 2; }
+  .lightbox-stage { display: grid; place-items: center; max-height: calc(100vh - 2rem - 4.25rem); padding: var(--space-4); overflow: auto; background: var(--bg-page); }
+  .lightbox-stage img { display: block; max-width: 100%; max-height: calc(100vh - 2rem - 6.25rem); width: auto; height: auto; }
+  .lightbox-stage[aria-busy="true"] img { opacity: 0.4; }
+</style>
