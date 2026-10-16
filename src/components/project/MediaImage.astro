@@ -1,0 +1,37 @@
+---
+/**
+ * 본문 이미지(원본 포트폴리오 캡처·도식). media-manifest.json에서 폭·높이·대체 텍스트를 가져와 CLS를 막는다.
+ * 세로로 긴 화면은 contain으로 보여 잘리지 않게 한다.
+ */
+import { getMedia } from '../../data/media';
+
+interface Props {
+  src: string;
+  alt?: string;
+  caption?: string;
+  /** 'frame'(기본): 1px 선 + Slate 50 바탕 / 'plain': 선 없음 */
+  variant?: 'frame' | 'plain';
+  /** 고정 비율 안에 contain (예: 카드 격자) */
+  fit?: string;
+  loading?: 'lazy' | 'eager';
+}
+const { src, alt, caption, variant = 'frame', fit, loading = 'lazy' } = Astro.props;
+const meta = getMedia(src);
+const altText = alt ?? meta?.alt ?? '';
+const portrait = meta ? meta.height > meta.width * 1.15 : false;
+---
+
+<figure class:list={['media-image', `media-image--${variant}`, { 'media-image--fit': fit, 'media-image--portrait': portrait }]} style={fit ? `--fit: ${fit}` : undefined}>
+  <img src={src} alt={altText} width={meta?.width} height={meta?.height} loading={loading} decoding="async" />
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .media-image { margin: 0; min-width: 0; }
+  .media-image--frame { border: 1px solid var(--border-hair); border-radius: var(--radius-md); overflow: hidden; background: var(--bg-page); }
+  .media-image img { display: block; width: 100%; height: auto; }
+  .media-image--portrait img { max-height: 32rem; width: auto; max-width: 100%; margin-inline: auto; }
+  .media-image--fit img { aspect-ratio: var(--fit); object-fit: contain; width: 100%; height: auto; max-height: none; }
+  figcaption { padding: var(--space-2) var(--space-3); border-top: 1px solid var(--border-hair); color: var(--text-muted); font-size: 0.8rem; }
+  .media-image--plain figcaption { border-top: 0; padding-inline: 0; }
+</style>

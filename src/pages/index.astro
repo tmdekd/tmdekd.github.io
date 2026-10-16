@@ -11,6 +11,8 @@ const getProjectStartDate = (period: string) => period.match(/^(\d{4})\.(\d{2})\
 const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
   (a, b) => getProjectStartDate(b.data.period) - getProjectStartDate(a.data.period),
 );
+const internCareer = profile.career.find((item) => item.company === '아크릴');
+const coreSkills = new Set<string>(profile.coreSkills);
 ---
 
 <BaseLayout home>
@@ -23,10 +25,21 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
           <p class="section-kicker">프로젝트</p>
           <h2>문제에서 서비스까지.</h2>
         </div>
-        <p>최근 작업부터 프로젝트의 배경·구조·기술적 판단을 웹에서 읽기 쉽게 정리했습니다.</p>
+        <p>최근 작업부터 프로젝트의 배경·기획 의도·구조·기능·고려사항·회고를 원본 포트폴리오 그대로 읽을 수 있게 정리했습니다.</p>
       </div>
       <div class="project-grid">
         {projects.map((project) => <ProjectCard project={project} />)}
+      </div>
+      <div class="intern-projects">
+        <div class="intern-head">
+          <h3>인턴 기간 참여 프로젝트</h3>
+          <p>{internCareer?.company} · {internCareer?.role} · {internCareer?.period}. 회사 업무라 제목만 공개합니다.</p>
+        </div>
+        <ol class="intern-list">
+          {profile.internProjects.map((item) => (
+            <li><span class="intern-num">{item.number}</span><strong>{item.title}</strong><span class="intern-sub">{item.subtitle}</span></li>
+          ))}
+        </ol>
       </div>
     </div>
   </section>
@@ -67,6 +80,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
             <h3>{item.company}</h3>
             <p class="career-role">{item.team} · {item.role}</p>
             <p>{item.description}</p>
+            {item.highlights.length > 0 && <ul class="career-highlights">{item.highlights.map((line) => <li>{line}</li>)}</ul>}
           </div>
         </article>
       ))}
@@ -75,10 +89,34 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
   </section>
 
   <section class="section section--alt">
+    <div id="resume" class="container">
+      <div class="section-heading">
+        <p class="section-kicker">이력 사항</p>
+        <h2>학력, 활동, 자격과 수상.</h2>
+      </div>
+      <div class="resume-grid">
+        <div class="resume-col">
+          <h3>Education</h3>
+          <ul>{profile.education.map((item) => <li><span class="resume-date">{item.period}</span><span>{item.title}</span></li>)}</ul>
+        </div>
+        <div class="resume-col">
+          <h3>Activities</h3>
+          <ul>{profile.activities.map((item) => <li><span class="resume-date">{item.period}</span><span>{item.title}</span></li>)}</ul>
+        </div>
+        <div class="resume-col">
+          <h3>Certification / Awards</h3>
+          <ul>{profile.awards.map((item) => <li><span class="resume-date">{item.date}</span><span>{item.title}</span></li>)}</ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
     <div id="skills" class="container skills-section">
     <div class="section-heading">
       <p class="section-kicker">기술 역량</p>
       <h2>서비스를 만들며 활용하는 기술입니다.</h2>
+      <p>강조한 항목은 가장 자주 쓰는 주력 기술입니다.</p>
     </div>
     <div class="skill-grid">
       {profile.skills.map((skill, index) => (
@@ -86,27 +124,27 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
           <div class="skill-index">0{index + 1}</div>
           <h3>{skill.group}</h3>
           <p class="skill-summary">{skill.description}</p>
-          <ul>{skill.items.map((item) => <li>{item}</li>)}</ul>
+          <ul>{skill.items.map((item) => <li class:list={{ 'is-core': coreSkills.has(item) }}>{item}</li>)}</ul>
         </article>
       ))}
-    </div>
-    <div class="background-compact">
-      <div class="background-heading">
-        <p class="section-kicker">이력과 활동</p>
-        <h2>학습과 프로젝트 경험</h2>
-      </div>
-      <div class="background-list">
-        {profile.education.map((item) => (
-          <div><span>{item.label}</span><strong>{item.value}</strong></div>
-        ))}
-        <div><span>공개 이력서</span><strong>준비 중</strong></div>
-      </div>
     </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
+  .projects-section { background: var(--bg-page); }
+  .projects-heading { display: grid; max-width: none; grid-template-columns: 1.1fr 0.9fr; align-items: end; gap: var(--space-12); }
+  .project-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(2rem, 5vw, 4rem) var(--space-8); }
+  .intern-projects { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(2rem, 5vw, 5rem); margin-top: clamp(3rem, 6vw, 5rem); padding: var(--space-6) var(--space-6); border-left: 3px solid var(--accent-bar); background: var(--bg-surface); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+  .intern-head h3 { margin-bottom: var(--space-2); font-size: 1.15rem; }
+  .intern-head p { margin: 0; color: var(--text-secondary); font-size: 0.92rem; }
+  .intern-list { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--space-2); }
+  .intern-list li { display: grid; grid-template-columns: 2rem minmax(0, 11rem) 1fr; gap: var(--space-3); align-items: baseline; padding-block: var(--space-2); }
+  .intern-list li + li { border-top: 1px solid var(--border-hair); }
+  .intern-num { color: var(--text-accent); font-family: var(--font-mono); font-size: var(--font-size-utility); font-weight: 600; }
+  .intern-sub { color: var(--text-secondary); font-size: 0.92rem; }
+
   .intro-band { padding-block: clamp(4rem, 8vw, 7rem); }
   .intro-copy { max-width: 62rem; margin-bottom: clamp(2.5rem, 6vw, 5rem); color: var(--text-primary); font-size: clamp(1.5rem, 3.4vw, 2.6rem); line-height: 1.42; letter-spacing: -0.03em; }
   .workflow-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); }
@@ -114,6 +152,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
   .workflow-grid span { color: var(--text-accent); font-family: var(--font-mono); font-size: var(--font-size-utility); font-weight: 600; }
   .workflow-grid h3 { margin-top: var(--space-12); }
   .workflow-grid p { margin-bottom: 0; color: var(--text-secondary); font-size: 0.9rem; }
+
   .career-section { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(3rem, 7vw, 7rem); }
   .career-focus { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: var(--space-6) 0 0; padding: 0; list-style: none; }
   .career-focus li { padding: 0.35rem 0.65rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-secondary); font-size: var(--font-size-utility); font-weight: 650; }
@@ -124,10 +163,16 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
   .timeline-period { color: var(--text-muted); font-family: var(--font-mono); font-size: var(--font-size-utility); }
   .timeline-content h3 { margin-bottom: var(--space-1); }
   .career-role { color: var(--text-secondary); font-weight: 700; }
-  .timeline-content p:last-child { margin-bottom: 0; color: var(--text-secondary); }
-  .projects-section { background: var(--bg-page); }
-  .projects-heading { display: grid; max-width: none; grid-template-columns: 1.1fr 0.9fr; align-items: end; gap: var(--space-12); }
-  .project-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(2rem, 5vw, 4rem) var(--space-8); }
+  .timeline-content p { color: var(--text-secondary); }
+  .timeline-content p:last-of-type { margin-bottom: 0; }
+  .career-highlights { margin: var(--space-3) 0 0; padding-left: 1.1rem; color: var(--text-secondary); font-size: 0.92rem; display: grid; gap: var(--space-1); }
+
+  .resume-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(2rem, 4vw, 3.5rem); }
+  .resume-col h3 { margin-bottom: var(--space-3); padding-bottom: var(--space-2); border-bottom: 1px solid var(--border-hair); font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600; letter-spacing: 0; color: var(--text-accent); }
+  .resume-col ul { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--space-3); }
+  .resume-col li { display: grid; gap: 2px; font-size: 0.95rem; font-weight: 600; }
+  .resume-date { color: var(--text-muted); font-family: var(--font-mono); font-size: var(--font-size-utility); font-weight: 400; }
+
   .skill-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(2rem, 4vw, 3.5rem); }
   .skill-card { display: flex; min-height: 20rem; flex-direction: column; }
   .skill-index { color: var(--text-accent-secondary); font-family: var(--font-mono); font-size: var(--font-size-utility); font-weight: 600; }
@@ -135,16 +180,12 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
   .skill-summary { min-height: 4.4em; margin-bottom: var(--space-5); color: var(--text-secondary); font-size: 0.95rem; line-height: 1.65; }
   .skill-card ul { margin: auto 0 0; padding: 0; list-style: none; }
   .skill-card li { padding-block: 0.3rem; color: var(--text-secondary); font-family: var(--font-sans); font-size: 0.9rem; font-weight: 600; }
-  .background-compact { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(3rem, 7vw, 7rem); margin-top: clamp(4rem, 8vw, 7rem); }
-  .background-heading .section-kicker { margin-bottom: var(--space-3); }
-  .background-heading h2 { max-width: 28rem; font-size: clamp(1.75rem, 3vw, 2.5rem); }
-  .background-list div { display: grid; grid-template-columns: 7rem 1fr; gap: var(--space-4); padding: var(--space-5) 0; }
-  .background-list div + div { border-top: 1px solid var(--border-hair); }
-  .background-list span { color: var(--text-muted); font-family: var(--font-mono); font-size: var(--font-size-utility); }
+  .skill-card li.is-core { display: flex; align-items: center; gap: var(--space-2); color: var(--text-primary); font-weight: 750; }
+  .skill-card li.is-core::before { content: ""; width: 14px; height: 3px; background: var(--accent-bar); flex: 0 0 auto; }
   @media (max-width: 54rem) {
-    .career-section, .background-compact { grid-template-columns: 1fr; }
+    .career-section, .intern-projects { grid-template-columns: 1fr; }
     .workflow-grid { grid-template-columns: repeat(2, 1fr); }
-    .skill-grid { grid-template-columns: 1fr; }
+    .skill-grid, .resume-grid { grid-template-columns: 1fr; }
     .skill-card { min-height: auto; }
     .skill-summary { min-height: auto; }
   }
@@ -155,6 +196,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
     .timeline article { grid-template-columns: 2rem 1fr; }
     .timeline-period { grid-column: 2; grid-row: 1; }
     .timeline-content { grid-column: 2; }
-    .background-list div { grid-template-columns: 1fr; gap: var(--space-1); }
+    .intern-list li { grid-template-columns: 2rem 1fr; }
+    .intern-sub { grid-column: 2; }
   }
 </style>

@@ -4,7 +4,7 @@ export interface MediaAsset {
   poster?: string;
   alt: string;
   caption?: string;
-  aspectRatio: string;
+  aspectRatio?: string;
   captionsSrc?: string;
 }
 

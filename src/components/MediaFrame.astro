@@ -1,20 +1,24 @@
 ---
 import type { MediaAsset } from '../types';
+import { aspectRatioOf, getMedia } from '../data/media';
 const { asset, label = 'Media', mode = 'detail' } = Astro.props as {
   asset: MediaAsset;
   label?: string;
   mode?: 'card' | 'detail';
 };
 const isCardVideo = mode === 'card' && asset.type === 'video';
+const ratio = asset.aspectRatio ?? aspectRatioOf(asset.src, '16 / 10');
+const meta = getMedia(asset.src);
+const posterMeta = getMedia(asset.poster);
 ---
 
-<figure class:list={['media-frame', `media-frame--${mode}`]} style={`--media-ratio: ${asset.aspectRatio}`}>
+<figure class:list={['media-frame', `media-frame--${mode}`]} style={`--media-ratio: ${ratio}`}>
   {asset.type === 'image' && asset.src ? (
-    <img src={asset.src} alt={asset.alt} loading="lazy" />
+    <img src={asset.src} alt={asset.alt} loading={mode === 'card' ? 'lazy' : 'eager'} decoding="async" width={meta?.width} height={meta?.height} />
   ) : isCardVideo ? (
     <div class="video-poster" role="img" aria-label={`${asset.alt} 영상 미리보기`}>
       {asset.poster
-        ? <img src={asset.poster} alt="" loading="lazy" />
+        ? <img src={asset.poster} alt="" loading="lazy" width={posterMeta?.width} height={posterMeta?.height} />
         : <span class="video-poster__fallback" aria-hidden="true"></span>}
       <span class="play-badge" aria-hidden="true">
         <svg viewBox="0 0 24 24"><path d="m9 6 8 6-8 6z"></path></svg>
@@ -22,8 +26,8 @@ const isCardVideo = mode === 'card' && asset.type === 'video';
       </span>
     </div>
   ) : asset.type === 'video' && asset.src ? (
-    <video controls preload="metadata" poster={asset.poster} aria-label={asset.alt}>
-      <source src={asset.src} />
+    <video controls preload="metadata" poster={asset.poster} aria-label={asset.alt} width={meta?.width} height={meta?.height}>
+      <source src={asset.src} type="video/mp4" />
       {asset.captionsSrc && <track kind="captions" src={asset.captionsSrc} srclang="ko" label="한국어" default />}
     </video>
   ) : (
@@ -38,9 +42,11 @@ const isCardVideo = mode === 'card' && asset.type === 'video';
 </figure>
 
 <style>
-  .media-frame { margin: 0; overflow: hidden; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); background: var(--bg-surface); box-shadow: var(--shadow-emphasis); }
-  img, video, .placeholder, .video-poster { width: 100%; aspect-ratio: var(--media-ratio); object-fit: cover; }
-  .media-frame--card { height: 100%; border: 0; border-radius: 0; box-shadow: none; }
+  .media-frame { margin: 0; overflow: hidden; border: 1px solid var(--border-hair); border-radius: var(--radius-lg); background: var(--bg-page); }
+  img, video, .placeholder, .video-poster { width: 100%; aspect-ratio: var(--media-ratio); object-fit: contain; }
+  .media-frame--card { height: 100%; border: 0; border-radius: 0; }
+  .media-frame--card img { height: 100%; object-fit: contain; }
+  video { display: block; max-height: 36rem; background: var(--bg-inverse); }
   .placeholder { display: grid; place-items: center; align-content: center; gap: var(--space-3); padding: var(--space-8); background: var(--pattern-placeholder); color: var(--text-secondary); text-align: center; }
   .placeholder svg { width: 4rem; padding: var(--space-2); fill: none; stroke: var(--accent-primary); stroke-width: 2; background: var(--bg-surface); }
   .placeholder strong { padding: 0.1rem 0.5rem; background: var(--bg-surface); color: var(--text-primary); font-size: clamp(1rem, 2vw, 1.3rem); }
@@ -51,5 +57,5 @@ const isCardVideo = mode === 'card' && asset.type === 'video';
   .video-poster__fallback { display: block; width: 100%; height: 100%; background: var(--pattern-placeholder); }
   .play-badge { position: absolute; bottom: var(--space-4); left: var(--space-4); display: inline-flex; align-items: center; gap: var(--space-2); padding: 0.45rem 0.65rem; border: 1px solid var(--media-play-border); border-radius: 999px; background: var(--media-play-bg); color: var(--media-play-text); font-size: var(--font-size-utility); font-weight: 700; }
   .play-badge svg { width: 1rem; fill: currentColor; }
-  figcaption { padding: var(--space-3) var(--space-4); color: var(--text-muted); font-size: 0.8rem; }
+  figcaption { padding: var(--space-3) var(--space-4); border-top: 1px solid var(--border-hair); color: var(--text-muted); font-size: 0.8rem; }
 </style>
