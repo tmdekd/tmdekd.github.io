@@ -16,7 +16,8 @@
     "lab:palettes": "node scripts/lab/capture-palettes.mjs",
     "lab:mock": "node scripts/lab/capture-mock.mjs",
     "lab:motion": "node scripts/lab/capture-motion.mjs",
-    "lab:lighthouse": "node scripts/lab/lighthouse.mjs"
+    "lab:lighthouse": "node scripts/lab/lighthouse.mjs",
+    "media:import": "node scripts/media/import-portfolio-media.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "8.0.1",
@@ -30,7 +31,9 @@
     "@astrojs/check": "0.9.10",
     "@axe-core/playwright": "4.13.0",
     "@playwright/test": "1.63.0",
+    "adm-zip": "0.5.16",
     "lighthouse": "13.4.1",
+    "sharp": "0.34.5",
     "typescript": "6.0.3",
     "vitest": "5.0.0"
   }
