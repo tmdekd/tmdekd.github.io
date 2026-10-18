@@ -341,7 +341,8 @@ const numbered = (index: number) => String(index + 1).padStart(2, '0');
   /* 03 구조 */
   /* 03 구조 — 도식을 전폭으로 두고, 스택 그룹·설계 원칙은 도식의 범례처럼 바로 아래 4열 띠로 */
   .structure-grid { display: grid; gap: var(--space-6); }
-  .structure-grid > :global(.media-image) { max-width: 64rem; --thumb-h: 40rem; }
+  /* 도식은 컨테이너 폭의 60%로 가운데 정렬(사용자 결정 2026-10-18). 좁은 화면에서는 전폭 */
+  .structure-grid > :global(.media-image) { width: 60%; max-width: none; margin-inline: auto; --thumb-h: 40rem; }
   .stack { margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-5); padding-top: var(--space-5); border-top: 1px solid var(--border-hair); }
   .stack div { display: grid; align-content: start; gap: var(--space-2); min-width: 0; }
   .stack dt { color: var(--text-primary); font-size: 0.95rem; }
@@ -425,6 +426,7 @@ const numbered = (index: number) => String(index + 1).padStart(2, '0');
   /* 반응형: 글 격자는 48rem, 미디어 격자는 40rem까지 2열을 유지한다(768px에서 1열로 무너지지 않게) */
   @media (max-width: 60rem) {
     .stack, .principles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .structure-grid > :global(.media-image) { width: 100%; }
     .evidence-row, .feature-row { grid-template-columns: minmax(0, 1.1fr) minmax(16rem, 1fr); gap: var(--space-6); }
     .feature-text-grid, .retro-cards { grid-template-columns: 1fr; }
     .consideration--side .consideration-body { grid-template-columns: 1fr; }
