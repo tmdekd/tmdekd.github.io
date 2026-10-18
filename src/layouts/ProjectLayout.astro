@@ -66,21 +66,20 @@ const sectionNo = (id: string) => numbered(sections.findIndex((section) => secti
           <p class="subtitle">{data.subtitle}</p>
           <p class="summary">{data.summary}</p>
           <div class="actions">
-            {data.githubUrl && <a class="button" href={data.githubUrl} target="_blank" rel="noreferrer">GitHub 저장소 ↗</a>}
+            {data.githubUrl && <a class="button" href={data.githubUrl} target="_blank" rel="noreferrer" title={data.githubUrl.replace(/^https?:\/\//, '')}>GitHub 저장소 ↗</a>}
             {data.demoUrl && <a class="button secondary" href={data.demoUrl} target="_blank" rel="noreferrer">서비스 보기 ↗</a>}
           </div>
         </div>
-        <dl class="project-meta surface">
+        <dl class="project-meta">
           <div><dt>기간</dt><dd>{data.period}</dd></div>
           <div><dt>역할</dt><dd>{data.role}</dd></div>
           <div><dt>플랫폼</dt><dd>{data.platform}</dd></div>
           <div><dt>결과</dt><dd>{data.result}</dd></div>
-          {data.githubUrl && <div><dt>GitHub</dt><dd><a class="meta-link" href={data.githubUrl} target="_blank" rel="noreferrer">{data.githubUrl.replace(/^https?:\/\//, '')}</a></dd></div>}
           <div><dt>기술</dt><dd><ul class="skill-chips" aria-label="사용 기술">{data.skills.map((skill) => <li>{skill}</li>)}</ul></dd></div>
         </dl>
-      </div>
-      <div class="hero-media">
-        <MediaImage src={data.heroMedia.src!} alt={data.heroMedia.alt} caption={data.heroMedia.caption} loading="eager" sizes={SIZES.structure} />
+        <div class="hero-media">
+          <MediaImage src={data.heroMedia.src!} alt={data.heroMedia.alt} caption={data.heroMedia.caption} loading="eager" sizes={SIZES.row} />
+        </div>
       </div>
     </div>
     </section>
@@ -299,23 +298,26 @@ const sectionNo = (id: string) => numbered(sections.findIndex((section) => secti
   .breadcrumb li + li::before { color: var(--text-hero-muted); content: '/'; }
   .breadcrumb a { color: var(--text-hero-muted); font-weight: 700; text-decoration: none; }
   .breadcrumb a:hover { color: var(--text-hero); text-decoration: underline; text-underline-offset: 4px; }
-  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(18rem, 0.7fr); gap: var(--space-10); align-items: end; margin-bottom: var(--space-10); }
+  /* 표지: 글(좌) + 메타(좌 아래) · 대표 이미지(우). 모바일은 글 → 이미지 → 메타 */
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: 'copy media' 'meta media'; gap: var(--space-8) clamp(2rem, 5vw, 4rem); align-items: start; }
+  .hero-copy { grid-area: copy; }
   h1 { margin-bottom: var(--space-3); }
   .detail-index { margin-bottom: var(--space-3); color: var(--text-hero-muted); font-size: 0.9rem; font-weight: 700; }
   .detail-index span, .section-number { margin-right: var(--space-2); font-family: var(--font-mono); font-size: var(--font-size-utility); letter-spacing: 0.06em; }
   .subtitle { margin-bottom: var(--space-5); color: var(--text-hero); font-size: clamp(1.15rem, 2.5vw, 1.6rem); font-weight: 750; }
   .summary { max-width: 46rem; margin-bottom: var(--space-6); color: var(--text-hero-muted); font-size: 1.08rem; }
   .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
-  .project-meta { margin: 0; padding: var(--space-6); color: var(--text-primary); }
-  .project-meta div { display: grid; grid-template-columns: 4.5rem 1fr; gap: var(--space-3); padding: var(--space-3) 0; }
-  .project-meta div + div { border-top: 1px solid var(--border-hair); }
-  .meta-link { color: var(--text-accent); font-family: var(--font-mono); font-size: 0.85rem; overflow-wrap: anywhere; text-decoration-thickness: 1px; text-underline-offset: 3px; }
-  dt { color: var(--text-muted); font-family: var(--font-sans); font-size: var(--font-size-utility); font-weight: 700; }
-  dd { margin: 0; font-size: 0.9rem; font-weight: 650; }
+  .project-meta { grid-area: meta; margin: 0; max-width: 40rem; color: var(--text-hero); }
+  .project-meta div { display: grid; grid-template-columns: 4.5rem 1fr; gap: var(--space-3); padding: var(--space-3) 0; border-top: 1px solid var(--border-on-inverse); }
+  .project-meta dt { color: var(--text-hero-muted); font-family: var(--font-sans); font-size: var(--font-size-utility); font-weight: 700; }
+  .project-meta dd { margin: 0; font-size: 0.92rem; font-weight: 650; }
+  dt { font-family: var(--font-sans); font-size: var(--font-size-utility); font-weight: 700; }
+  dd { margin: 0; }
   .skill-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
-  .skill-chips li { padding: 0.25rem 0.55rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500; line-height: 1.4; }
-  .hero-media { max-width: 64rem; }
-  .hero-media :global(.media-image--portrait) { max-width: 26rem; }
+  .skill-chips li { padding: 0.3rem 0.6rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.8rem; font-weight: 500; line-height: 1.4; }
+  .project-meta .skill-chips li { border-color: var(--border-on-inverse); }
+  .hero-media { grid-area: media; align-self: center; min-width: 0; }
+  .hero-media :global(.media-image--portrait) { max-width: 22rem; margin-inline: auto; }
   .project-toc { position: sticky; z-index: 10; top: calc(var(--header-height) - 1px); display: flex; gap: var(--space-2); overflow-x: auto; margin-bottom: var(--space-4); padding-block: var(--space-3); border-bottom: 1px solid var(--border-hair); background: var(--bg-page); scrollbar-width: thin; }
   .project-toc a { flex: 0 0 auto; padding: 0.45rem 0.7rem; border-radius: var(--radius-sm); color: var(--text-secondary); font-size: var(--font-size-utility); font-weight: 700; text-decoration: none; }
   .project-toc a:hover, .project-toc a[aria-current="location"] { background: var(--navigation-active-bg); color: var(--navigation-active-text); }
@@ -347,6 +349,7 @@ const sectionNo = (id: string) => numbered(sections.findIndex((section) => secti
   .stack { margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-5); padding-top: var(--space-5); border-top: 1px solid var(--border-hair); }
   .stack div { display: grid; align-content: start; gap: var(--space-2); min-width: 0; }
   .stack dt { color: var(--text-primary); font-size: 0.95rem; }
+  .stack .skill-chips li { font-size: 0.9rem; padding: 0.35rem 0.7rem; }
   .principles { margin: 0; padding: var(--space-5) 0 0; list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-5); border-top: 1px solid var(--border-hair); }
   .principles li { display: grid; grid-template-columns: 2rem 1fr; gap: var(--space-3); min-width: 0; }
   .principle-num { font-family: var(--font-mono); font-weight: 600; color: var(--text-accent); padding-top: 0.15rem; }
@@ -400,9 +403,10 @@ const sectionNo = (id: string) => numbered(sections.findIndex((section) => secti
   .shift-col--after h4 { color: var(--text-accent); }
 
   /* 06 시연 */
-  .media-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-5); }
-  .media-grid > :only-child { grid-column: 1 / -1; max-width: 56rem; }
-  .media-grid--portrait { grid-template-columns: repeat(auto-fit, minmax(14rem, 22rem)); justify-content: start; }
+  /* 시연: 가로 중앙 정렬 */
+  .media-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-5); max-width: 64rem; margin-inline: auto; justify-content: center; }
+  .media-grid > :only-child { grid-column: 1 / -1; max-width: 56rem; margin-inline: auto; }
+  .media-grid--portrait { grid-template-columns: repeat(auto-fit, minmax(14rem, 22rem)); justify-content: center; }
   .original-link { color: var(--text-accent); font-weight: 700; }
 
   /* 07 회고 — 소제목 3개를 3열 카드로, 링크는 제목 아래 한 줄 */
@@ -433,7 +437,8 @@ const sectionNo = (id: string) => numbered(sections.findIndex((section) => secti
     .consideration--side .shift-columns { grid-template-columns: 1fr 1fr; }
   }
   @media (max-width: 48rem) {
-    .hero-grid, .shift-columns { grid-template-columns: 1fr; }
+    .hero-grid { grid-template-columns: 1fr; grid-template-areas: 'copy' 'media' 'meta'; }
+    .shift-columns { grid-template-columns: 1fr; }
     .consideration--side .shift-columns { grid-template-columns: 1fr; }
     .role-table div { grid-template-columns: 1fr; gap: var(--space-2); }
     .consideration-question { max-width: none; }
