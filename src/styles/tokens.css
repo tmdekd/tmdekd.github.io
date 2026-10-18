@@ -58,7 +58,7 @@
   --text-hero-muted: var(--text-on-inverse-muted);
   --text-hero-accent: var(--text-on-inverse);
 
-  --font-sans: "Pretendard Variable", Pretendard, Inter, "Noto Sans KR", system-ui, -apple-system, sans-serif;
+  --font-sans: "Pretendard Variable", Pretendard, "Pretendard Fallback", "Noto Sans KR", system-ui, -apple-system, sans-serif;
   --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
   --font-size-display: clamp(2.75rem, 7vw, 6rem);
   --font-size-heading: clamp(2rem, 4.2vw, 3.5rem);

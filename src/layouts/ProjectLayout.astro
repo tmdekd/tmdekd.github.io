@@ -9,7 +9,7 @@ import MediaFrame from '../components/MediaFrame.astro';
 import MediaImage from '../components/project/MediaImage.astro';
 import ShiftPairs from '../components/project/ShiftPairs.astro';
 import MediaLightbox from '../components/project/MediaLightbox.astro';
-import { getMedia } from '../data/media';
+import { getMedia, SIZES } from '../data/media';
 import { profile } from '../data/profile';
 
 /** 세로로 긴 화면(휴대폰 캡처·세로 영상)인지 — 높이로 묶어 가로로 나열하기 위해 */
@@ -33,16 +33,19 @@ const evidenceRows = project.data.background.reduce<{ media?: Evidence['media'];
 const featureRows = project.data.featureGroups.filter((group) => group.media.length > 0);
 const featureNotes = project.data.featureGroups.filter((group) => group.media.length === 0);
 const structureLabel = data.architecture ? '시스템 아키텍처' : '서비스 흐름 설계';
+/** 시연 영상이 있는 프로젝트만 시연 섹션을 둔다(VINO·요리왕 좌룡은 생략). 번호는 사이트 구조 기준으로 순차 */
+const hasDemo = (data.demo?.media.length ?? 0) > 0;
 const sections = [
   { id: 'project-background', label: '배경', title: '제안 배경' },
   { id: 'project-intent', label: '기획 의도', title: '기획 의도' },
   { id: 'project-structure', label: '구조', title: structureLabel },
   { id: 'project-features', label: '주요 기능', title: '주요 기능' },
   { id: 'project-considerations', label: '고려사항', title: '주요 고려사항' },
-  { id: 'project-demo', label: '시연', title: '시연' },
+  ...(hasDemo ? [{ id: 'project-demo', label: '시연', title: '시연' }] : []),
   { id: 'project-retrospective', label: '회고', title: '회고' },
 ];
 const numbered = (index: number) => String(index + 1).padStart(2, '0');
+const sectionNo = (id: string) => numbered(sections.findIndex((section) => section.id === id));
 ---
 
 <BaseLayout title={`${data.title} · 문승기 포트폴리오`} description={data.summary}>
@@ -77,7 +80,7 @@ const numbered = (index: number) => String(index + 1).padStart(2, '0');
         </dl>
       </div>
       <div class="hero-media">
-        <MediaImage src={data.heroMedia.src!} alt={data.heroMedia.alt} caption={data.heroMedia.caption} loading="eager" />
+        <MediaImage src={data.heroMedia.src!} alt={data.heroMedia.alt} caption={data.heroMedia.caption} loading="eager" sizes={SIZES.structure} />
       </div>
     </div>
     </section>
@@ -129,7 +132,7 @@ const numbered = (index: number) => String(index + 1).padStart(2, '0');
       </div>
       {data.architecture && (
         <div class="structure-grid">
-          <MediaImage src={data.architecture.media.src} alt={data.architecture.media.alt} caption={data.architecture.media.caption} />
+          <MediaImage src={data.architecture.media.src} alt={data.architecture.media.alt} caption={data.architecture.media.caption} sizes={SIZES.structure} />
           <dl class="stack">
             {data.architecture.stack.map((group) => (
               <div><dt>{group.label}</dt><dd><ul class="skill-chips">{group.items.map((item) => <li>{item}</li>)}</ul></dd></div>
@@ -139,7 +142,7 @@ const numbered = (index: number) => String(index + 1).padStart(2, '0');
       )}
       {data.flowDesign && (
         <div class="structure-grid structure-grid--flow">
-          <MediaImage src={data.flowDesign.media.src} alt={data.flowDesign.media.alt} caption={data.flowDesign.media.caption} />
+          <MediaImage src={data.flowDesign.media.src} alt={data.flowDesign.media.alt} caption={data.flowDesign.media.caption} sizes={SIZES.structure} />
           <ol class="principles">
             {data.flowDesign.principles.map((principle, index) => (
               <li><span class="principle-num">{index + 1}</span><div><h3>{principle.title}</h3><p>{principle.note}</p></div></li>
@@ -170,7 +173,7 @@ const numbered = (index: number) => String(index + 1).padStart(2, '0');
                       <MediaImage src={primary.src} alt={primary.alt} caption={primary.caption} />
                       {more.length > 0 && (
                         <div class="feature-shots__more">
-                          {more.map((media) => <MediaImage src={media.src} alt={media.alt} caption={media.caption} fit="16 / 10" />)}
+                          {more.map((media) => <MediaImage src={media.src} alt={media.alt} caption={media.caption} fit="16 / 10" sizes={SIZES.thumb} />)}
                         </div>
                       )}
                     </>
@@ -216,7 +219,7 @@ const numbered = (index: number) => String(index + 1).padStart(2, '0');
             <div class="consideration-body">
             {item.media.length > 0 && (
               <div class="consideration-media" data-count={item.media.length}>
-                {item.media.map((media) => <MediaImage src={media.src} alt={media.alt} caption={media.caption} />)}
+                {item.media.map((media) => <MediaImage src={media.src} alt={media.alt} caption={media.caption} sizes={item.layout === 'wide' ? SIZES.wide : SIZES.row} />)}
               </div>
             )}
             <div class="consideration-text">
@@ -246,28 +249,26 @@ const numbered = (index: number) => String(index + 1).padStart(2, '0');
       </div>
     </section>
 
-    <!-- 06 시연 -->
-    <section id="project-demo" class="section section--alt case-study-section">
-      <div class="container">
-        <div class="section-heading">
-          <p class="section-kicker"><span class="section-number">06</span> 시연</p>
-          <h2>시연 영상</h2>
-          <p>{data.demo.note} <a class="original-link" href={profile.contact.portfolioOriginal} target="_blank" rel="noreferrer">원본 포트폴리오(미리캔버스)에서 보기 ↗</a></p>
-        </div>
-        {data.demo.media.length > 0 ? (
-          <div class:list={['media-grid', { 'media-grid--portrait': data.demo.media.every((asset) => isPortrait(asset.src)) }]} data-count={data.demo.media.length}>
-            {data.demo.media.map((asset, index) => <MediaFrame asset={asset} label={`시연 ${numbered(index)}`} mode="detail" />)}
+    <!-- 시연 (영상이 있을 때만) -->
+    {hasDemo && data.demo && (
+      <section id="project-demo" class="section section--alt case-study-section">
+        <div class="container">
+          <div class="section-heading">
+            <p class="section-kicker"><span class="section-number">{sectionNo('project-demo')}</span> 시연</p>
+            <h2>시연 영상</h2>
+            <p>{data.demo.note} <a class="original-link" href={profile.contact.portfolioOriginal} target="_blank" rel="noreferrer">원본 포트폴리오(미리캔버스)에서 보기 ↗</a></p>
           </div>
-        ) : (
-          <p class="demo-empty">{data.githubUrl ? <a href={data.githubUrl} target="_blank" rel="noreferrer">GitHub 저장소에서 실행 방법 보기 ↗</a> : '시연 자료 준비 중'}</p>
-        )}
-      </div>
-    </section>
+          <div class:list={['media-grid', { 'media-grid--portrait': data.demo.media.every((asset) => isPortrait(asset.src)) }]} data-count={data.demo.media.length}>
+            {data.demo.media.map((asset) => <MediaFrame asset={asset} mode="detail" />)}
+          </div>
+        </div>
+      </section>
+    )}
 
     <!-- 07 회고 -->
     <section id="project-retrospective" class="section container case-study-section">
       <div class="section-heading">
-        <p class="section-kicker"><span class="section-number">07</span> 회고</p>
+        <p class="section-kicker"><span class="section-number">{sectionNo('project-retrospective')}</span> 회고</p>
         <h2>{data.title} 회고</h2>
       </div>
       <nav class="retro-links" aria-label="회고 더보기">
@@ -403,8 +404,6 @@ const numbered = (index: number) => String(index + 1).padStart(2, '0');
   .media-grid > :only-child { grid-column: 1 / -1; max-width: 56rem; }
   .media-grid--portrait { grid-template-columns: repeat(auto-fit, minmax(14rem, 22rem)); justify-content: start; }
   .original-link { color: var(--text-accent); font-weight: 700; }
-  .demo-empty { color: var(--text-secondary); }
-  .demo-empty a { color: var(--text-accent); font-weight: 700; }
 
   /* 07 회고 — 소제목 3개를 3열 카드로, 링크는 제목 아래 한 줄 */
   .retro-links { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6); margin: calc(var(--space-6) * -1) 0 var(--space-8); }

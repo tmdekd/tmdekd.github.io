@@ -32,7 +32,7 @@ describe('project metadata', () => {
 
   it('carries every original portfolio section', () => {
     for (const project of projects) {
-      for (const key of ['background:', 'intent:', 'featureGroups:', 'considerations:', 'demo:', 'retrospective:']) {
+      for (const key of ['background:', 'intent:', 'featureGroups:', 'considerations:', 'retrospective:']) {
         expect(project.content, `${project.file} ${key}`).toContain(`\n${key}`);
       }
       expect(/\n(architecture|flowDesign):/.test(project.content), `${project.file} structure`).toBe(true);

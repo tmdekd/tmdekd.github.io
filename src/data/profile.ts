@@ -20,8 +20,9 @@ export const profile = {
     /** 원본 표지의 Notion QR은 싣지 않기로 함(2026-10-16 결정) */
     /** 미리캔버스에 웹 게시된 원본 포트폴리오(docs/원본 포트폴리오/웹에 게시된 링크.txt) */
     portfolioOriginal: 'https://www.miricanvas.com/v2/ko/design2/v/932e57a4-64e7-45f7-8781-7615642f41be',
+    /** 공개 이력서 PDF 경로(/files/….pdf). 없으면 Contact에 '준비 중'으로 표시 */
+    resume: undefined as string | undefined,
   },
-  resume: { status: 'preparing' as const },
   career: [
     {
       company: '바이텍정보통신',

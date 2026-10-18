@@ -277,6 +277,17 @@ test('consideration layouts follow the MDX flag (wide vs side)', async ({ page }
   expect(side!.width).toBeLessThan(container!.width * 0.6);
 });
 
+test('projects without a demo video omit the demo section and renumber the retrospective', async ({ page }) => {
+  await page.goto('/projects/vino/');
+  const toc = page.locator('[data-section-navigation="project"]');
+  await expect(toc.getByRole('link', { name: '시연' })).toHaveCount(0);
+  await expect(page.locator('#project-demo')).toHaveCount(0);
+  await expect(page.locator('#project-retrospective .section-number')).toHaveText('06');
+  await page.goto('/projects/lawmate/');
+  await expect(page.locator('#project-demo')).toHaveCount(1);
+  await expect(page.locator('#project-retrospective .section-number')).toHaveText('07');
+});
+
 test('retrospective shows three cards side by side on desktop', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/projects/lawmate/');

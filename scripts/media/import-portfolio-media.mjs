@@ -4,6 +4,7 @@
  * 실행: `npm run media:import`
  * - 매핑표 scripts/media/portfolio-media.map.json 을 읽어 자료 폴더 원본 또는 pptx 슬라이드 미디어를 public/media/ 로 변환한다.
  * - 이미지: WebP(품질 85, 최대 폭 2000; maxWidth로 개별 지정, 업스케일 없음). 폭·높이를 src/data/media-manifest.json 에 기록(CLS 방지용).
+ *   반응형용 변형(폭 800·1200, 원본보다 작을 때만)을 `<이름>-800.webp` 식으로 함께 만들고 매니페스트 `variants` 에 폭 목록을 적는다(srcset).
  * - KEEP_ORIGINALS=images_videos 로 실행하면 변환 전 원본(PNG·MP4)을 그 폴더에 같은 이름으로 복사하고 README.md 표를 만든다(폴더는 git 제외).
  * - 영상: H.264 MP4 720p(CRF 28) + 첫 프레임 포스터 WebP. ffmpeg 경로는 환경변수 FFMPEG(없으면 PATH의 ffmpeg).
  * - 원본(PNG·원본 MP4)은 저장소에 넣지 않는다. 자료 폴더는 로컬 전용. pptx는 adm-zip으로 읽는다.
@@ -64,9 +65,17 @@ for (const item of MAP.items) {
     const width = Math.min(meta.width ?? maxWidth, maxWidth);
     const out = `${outBase}.webp`;
     const info = await image.resize({ width, withoutEnlargement: true }).webp({ quality: item.quality ?? 85, effort: 5 }).toFile(out);
-    manifest[`/media/${item.out}.webp`] = { width: info.width, height: info.height, bytes: info.size, alt: item.alt, slide: item.slide, role: item.role, source: item.source, sourceSize: `${meta.width}x${meta.height}` };
+    const variants = [];
+    for (const variantWidth of [800, 1200]) {
+      if (variantWidth >= info.width) continue;
+      const variant = await sharp(buffer).rotate().resize({ width: variantWidth }).webp({ quality: item.quality ?? 85, effort: 5 }).toFile(`${outBase}-${variantWidth}.webp`);
+      variants.push(variantWidth);
+      total += variant.size;
+    }
+    variants.push(info.width);
+    manifest[`/media/${item.out}.webp`] = { width: info.width, height: info.height, bytes: info.size, alt: item.alt, slide: item.slide, role: item.role, source: item.source, sourceSize: `${meta.width}x${meta.height}`, variants };
     total += info.size;
-    console.log(`[img] ${item.out}.webp ${info.width}x${info.height} ${(info.size / 1024).toFixed(0)}KB  ← ${name} (${meta.width}x${meta.height})`);
+    console.log(`[img] ${item.out}.webp ${info.width}x${info.height} ${(info.size / 1024).toFixed(0)}KB  ← ${name} (${meta.width}x${meta.height}) 변형 ${variants.join('/')}`);
     continue;
   }
 
