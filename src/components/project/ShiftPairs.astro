@@ -1,0 +1,37 @@
+---
+/**
+ * 전환 블록 — 사이트 시그니처. 원본 포트폴리오의 "문제 → 해결" 쌍과 "기존 문제점 / 접근 방식" 구조를 한 가지 언어로 통일한다.
+ * 왼쪽(문제)은 Slate 50 면, 오른쪽(접근)은 왼쪽 3px Sky 700 막대. 사이는 선이 아니라 여백.
+ */
+interface Props {
+  pairs: readonly { before: string; after: string }[];
+  beforeLabel?: string;
+  afterLabel?: string;
+}
+const { pairs, beforeLabel = '기존', afterLabel = '전환' } = Astro.props;
+---
+
+<div class="shift" role="list">
+  <div class="shift-head" aria-hidden="true"><span>{beforeLabel}</span><span>{afterLabel}</span></div>
+  {pairs.map((pair) => (
+    <div class="shift-row" role="listitem">
+      <p class="shift-before">{pair.before}</p>
+      <p class="shift-after">{pair.after}</p>
+    </div>
+  ))}
+</div>
+
+<style>
+  .shift { display: grid; gap: var(--space-3); }
+  .shift-head { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); color: var(--text-muted); font-family: var(--font-mono); font-size: var(--font-size-utility); }
+  .shift-head span:last-child { padding-left: calc(var(--space-4) + 3px); color: var(--text-accent); }
+  .shift-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); align-items: stretch; }
+  .shift-row p { margin: 0; padding: var(--space-4) var(--space-5); font-weight: 600; line-height: 1.5; }
+  .shift-before { background: var(--bg-page); color: var(--text-secondary); border-radius: var(--radius-md); }
+  .shift-after { border-left: 3px solid var(--accent-bar); background: var(--bg-surface); color: var(--text-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+  @media (max-width: 44rem) {
+    .shift-head { display: none; }
+    .shift-row { grid-template-columns: 1fr; gap: var(--space-2); }
+    .shift-after { border-left-width: 3px; }
+  }
+</style>

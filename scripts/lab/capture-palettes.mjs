@@ -17,10 +17,12 @@ import { createStaticServer } from '../../tests/e2e/static-server.ts';
 const PORT = 4322;
 const OUT = `lab-results/palettes${process.env.LAB_OUT_SUFFIX ?? ''}`; // test-results/는 Playwright가 매 실행마다 비우므로 별도 폴더 사용
 const THEMES = (process.env.LAB_THEMES ?? 'default').split(','); // 시안 테마는 제거됨(2026-10-15). 기본 1회 캡처
-const ROUTES = [
-  { name: 'home', path: '/' },
-  { name: 'lawmate', path: '/projects/lawmate/' },
-];
+const ROUTES = process.env.LAB_ROUTES
+  ? process.env.LAB_ROUTES.split(',').map((entry) => { const [name, path] = entry.split(':'); return { name, path }; })
+  : [
+    { name: 'home', path: '/' },
+    { name: 'lawmate', path: '/projects/lawmate/' },
+  ];
 const VIEWPORTS = [
   { name: '1440', width: 1440, height: 900 },
   { name: '768', width: 768, height: 1024 },
@@ -51,6 +53,13 @@ try {
           }, theme);
         }
         await page.evaluate(() => document.fonts.ready);
+        // lazy 이미지를 전부 불러오도록 끝까지 스크롤한 뒤 맨 위로
+        await page.evaluate(async () => {
+          const step = window.innerHeight * 0.8;
+          for (let y = 0; y < document.body.scrollHeight; y += step) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 60)); }
+          window.scrollTo(0, 0);
+          await Promise.all(Array.from(document.images).filter((img) => !img.complete).map((img) => new Promise((r) => { img.onload = img.onerror = r; })));
+        });
         await page.waitForTimeout(150);
         await page.screenshot({
           path: `${OUT}/palette-${theme}-${route.name}-${viewport.name}.png`,

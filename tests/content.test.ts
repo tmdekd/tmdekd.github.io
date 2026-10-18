@@ -24,14 +24,16 @@ describe('public portfolio content', () => {
   });
 
   it('contains only public contact fields', () => {
-    expect(profile.contact).toEqual({
+    expect(profile.contact).toMatchObject({
       email: 'moon010103@naver.com',
       github: 'https://github.com/tmdekd',
       velog: 'https://velog.io/@tmdekd/posts',
     });
+    expect(Object.keys(profile.contact).sort()).toEqual(['email', 'github', 'portfolioOriginal', 'velog']);
     expect(profile).not.toHaveProperty('phone');
     expect(profile).not.toHaveProperty('birthDate');
     expect(profile).not.toHaveProperty('address');
+    expect(JSON.stringify(profile)).not.toMatch(/010[- ]?2530[- ]?6958|2001\.01\.03/);
   });
 
   it('marks the public resume as not yet available', () => {

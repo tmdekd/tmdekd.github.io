@@ -4,42 +4,143 @@ subtitle: 독거노인 정서 돌봄 AI 서비스
 order: 1
 period: 2025.08.21 — 2025.08.22
 role: AI Engineer
-platform: Web · AI Chatbot
-result: 짧은 기간 내 AI 기반 챗봇 서비스 구현
+platform: Reactive Web (반응형 웹)
+result: 짧은 기간 내 AI 기반 챗봇 서비스 구현 성공
 summary: 공감형 대화와 심리 상태 분류를 연결해 정서적 돌봄과 보호자 연계를 지원합니다.
 tech: [Gemma 3 4B, PyTorch, FastAPI, Spring Boot, RunPod, OpenAI API]
+skills: [Jupyter, Python, Hugging Face, Gemma3-4b sLLM, Pytorch, Pandas, OpenAI API]
 githubUrl: https://github.com/tmdekd/HonamISHackathon
 heroMedia:
-  type: placeholder
-  alt: NeuroCare 서비스 대표 화면이 들어갈 자리
-  caption: 권장 자료 · 서비스 대화 화면 또는 전체 구성 화면
-  aspectRatio: 16 / 10
-media:
-  - type: placeholder
-    alt: NeuroCare 공감형 대화 데모 영상이 들어갈 자리
-    caption: 필요 자료 · 30–60초 대화 데모 영상
-    aspectRatio: 16 / 9
+  type: image
+  src: /media/projects/neurocare/hero-chatbot.webp
+  alt: NeuroCare 챗봇 상담 화면
+  caption: 챗봇 상담 화면
 draft: false
-problem:
-  - 단순 대화형 챗봇만으로는 사용자의 정서적 안정을 충분히 지원하기 어렵습니다.
-  - 우울·불안·중독 위험을 조기에 발견하고 가족이나 의료진과 연결할 흐름이 필요했습니다.
-  - 사용자의 심리 상태 변화를 지속해서 확인할 수 있는 시각화가 필요했습니다.
-goals:
-  - 고령자의 과거 경험을 자연스럽게 회상하도록 돕는 공감형 대화를 설계합니다.
-  - 심리 상태 분류 결과를 보호자 연계와 리포트로 확장할 수 있는 구조를 만듭니다.
-flow: [사용자 대화, Spring Boot 서비스, FastAPI 심리 질환 분류 모델, RunPod 챗봇 sLLM, 응답 및 상태 기록]
-features:
-  - title: 회상 유도형 공감 대화
-    description: 형식적인 공감 어휘 반복 대신 사용자의 경험을 되짚고 다음 이야기를 이끌어내는 대화로 구성했습니다.
-  - title: 심리 상태 분류
-    description: 대화 흐름과 별도로 심리 질환 분류 모델을 연결해 상태 파악 가능성을 확보했습니다.
-  - title: 보호자 연계 기반
-    description: 향후 상태 시각화와 보호자 리포트로 확장할 수 있도록 서비스 구조를 분리했습니다.
-decisions:
-  - title: 공감 문장보다 회상 흐름
-    description: 자연스러운 공감을 위해 고령자의 근현대 경험 기반 스토리 데이터를 정제해 파인튜닝에 활용했습니다.
-  - title: 대화 데이터 품질 관리
-    description: 불필요한 발화 제거, 대화 길이 필터링, 역할 재구성으로 학습 데이터의 맥락 일관성을 높였습니다.
-reflection: 짧은 해커톤 기간 안에 대화 모델과 분류 모델을 서비스 흐름으로 연결했습니다. 실제 돌봄 서비스로 확장하려면 진단 표현의 안전성, 개인정보 보호, 전문가 연계 기준을 추가로 검증해야 합니다.
----
 
+background:
+  - media: { src: /media/projects/neurocare/evidence-depression.webp, caption: "3명 중 1명 우울증, 명절 후 자살시도 노인 급증" }
+    points:
+      - "우울증 노인은 정상군 대비 자살 시도율이 약 3~4배 높음"
+      - "시간이 지날수록 위험이 누적되어 장기적 관리 필요"
+      - "고독감이 생명 위협으로 이어지는 주요 원인으로 작용"
+      - "지속적인 정서 돌봄 서비스가 요구됨"
+  - media: { src: /media/projects/neurocare/evidence-suicide.webp, caption: "65세 이상 노인 자살 통계 (2019~2023)" }
+    points:
+      - "최근 5년간 노인 자살자 수 총 1만 8천여 명, 연평균 3,600명 발생"
+      - "2023년 한 해에만 3,838명, 하루 평균 10.5명이 스스로 생을 마감"
+      - "고독과 정서적 단절이 주요 원인으로 분석됨"
+  - media: { src: /media/projects/neurocare/evidence-elderly.webp, caption: "2000~2023년 독거노인 비율" }
+    points:
+      - "65세 이상 1인 가구 수가 2000년 54만 명에서 2023년 199만 명으로 4배 증가"
+      - "독거노인 비율이 16.0%에서 21.1%까지 꾸준히 상승"
+      - "고령화와 함께 정서적·사회적 고립 문제가 심화됨"
+
+intent:
+  quote: "단순한 대화형 챗봇을 넘어, 정서적 돌봄 플랫폼으로"
+  pairs:
+    - { before: "단순 대화형 챗봇으로 정서적 안정 부족", after: "공감형 대화로 정서적 안정 제공" }
+    - { before: "우울, 불안, 중독 조기 발견 어려움", after: "우울, 불안, 중독 조기 진단 제공" }
+    - { before: "가족 및 의료진과의 연계 부족, 대응 한계", after: "보호자 연계 및 리포트 제공" }
+    - { before: "사용자의 심리 상태 추적 어려움", after: "사용자의 심리 상태 시각화하여 제공" }
+
+architecture:
+  media: { src: /media/projects/neurocare/architecture.webp }
+  stack:
+    - { label: Frontend, items: [HTML5, CSS3, Tailwind CSS, JavaScript] }
+    - { label: Backend, items: [Spring Boot, Fast API] }
+    - { label: AI, items: [Gemma3-4b, OpenAI API] }
+    - { label: "Infra & Deployment", items: [Runpod] }
+
+featureGroups:
+  - audience: 일반 사용자
+    points:
+      - "챗봇과 대화를 통해 심리 상태 점검 및 정서적 공감 제공"
+      - "날씨 아이콘을 활용해 자신의 심리 상태를 직관적으로 확인 (안정 / 약간 불안 / 우울 / 위험)"
+      - "과거 경험 회상을 자연스럽게 유도하는 맞춤형 대화"
+      - "일상 속 감정 변화를 기록하고 추적"
+    media:
+      - { src: /media/projects/neurocare/hero-chatbot.webp }
+      - { src: /media/projects/neurocare/weather.webp }
+  - audience: 보호자
+    points:
+      - "보호자 모드 연계를 통해 사용자 상태를 원격으로 확인"
+      - "OpenAI API를 활용하여 구조화된 형식으로 최근 대화를 요약 → 사용자의 심리 상태 변화 리포트 제공"
+    media:
+      - { src: /media/projects/neurocare/family-info.webp }
+
+considerations:
+  - question: "공감형 대화를 어떻게 구현할 것인가?"
+    media:
+      - { src: /media/projects/neurocare/consider1-base.webp, caption: "Base — 상황이나 경험에 대한 공감보다는 추측성 문장을 산출" }
+      - { src: /media/projects/neurocare/consider1-finetuned.webp, caption: "Fine-tuning — 자연스럽게 회상을 유도하는 공감형 문장을 산출" }
+    problems:
+      - "파인튜닝하기 전의 기본 SLLM 모델은 추측성 문장과 형식적인 공감 표현에 그침"
+      - "사용자 경험을 깊이 공감하지 못해 신뢰성 부족"
+    approach:
+      - "공감형 어휘 반복 대신, 사용자 경험에 맞춘 회상 유도형 대화 설계"
+      - "데이터셋 정제(불필요 문장 제거, 경험 중심 데이터 활용)로 모델 개선"
+      - "파인튜닝을 통해 '단순 공감 → 자연스러운 회상 유도'로 전환"
+  - question: "데이터 품질을 어떻게 확보할 것인가?"
+    media:
+      - { src: /media/projects/neurocare/consider2-candidate.webp, caption: "후보 — 공감형 어휘 사용, 사용자의 답변에 대한 공감 부족" }
+      - { src: /media/projects/neurocare/consider2-final.webp, caption: "최종 선택 — 노인의 과거 경험 기반, 회상 유도형 대화에 적합" }
+    problemsTitle: 데이터 비교 및 한계점
+    problems:
+      - "'공감형 대화' 데이터는 공감 어휘 반복에 그쳐 형식적이고 얕은 공감 수준에 머무름"
+      - "노인 특성인 과거 경험 회상 선호를 반영하지 못해 진정성 부족"
+      - "단순 공감 중심 접근은 대화를 자연스럽게 이어가기에 한계가 있음"
+    approach:
+      - "단순 공감 어휘 대신, 과거 경험 기반 회상을 유도할 수 있는 데이터를 선택"
+      - "고령자 근현대 경험 구술 데이터를 활용하여 맥락적·서사적 대화 설계"
+      - "데이터 정제: 불필요 발화 제거, 대화 길이 필터링, user/assistant 역할 재구성"
+      - "시스템 프롬프트 삽입으로 회상·공감형 톤을 일관성 있게 유지"
+  - question: "모델의 경량화와 응답 속도를 어떻게 확보할 것인가?"
+    media:
+      - { src: /media/projects/neurocare/consider3-huggingface.webp, caption: "파인튜닝 모델 Hugging Face에 업로드" }
+      - { src: /media/projects/neurocare/consider3-runpod.webp, caption: "RunPod 인프라에 Hugging Face 모델 배포" }
+    problems:
+      - "Gemma3-4B 모델은 상대적으로 작은 사이즈지만, 로컬 PC에서 구동 시 GPU/메모리 한계로 실시간 응답 어려움"
+      - "추론 속도가 느려 사용자 경험 저하 위험 존재"
+      - "해커톤 환경(제한된 자원·시간)에서는 안정적인 배포가 곤란"
+    approach:
+      - "LoRA 기반 파인튜닝 및 양자화로 학습 파라미터를 최소화해 효율성 확보"
+      - "VLLM 추론 엔진 적용 → 메모리 사용량 절감, 응답 속도 향상"
+      - "RunPod Serverless 인프라에 Hugging Face 모델 배포 → 로컬 한계를 벗어나 안정적 추론 가능"
+      - "최적 학습 전략 적용 (배치 크기 조정, LR 2e-4, EarlyStopping)"
+
+demo:
+  media:
+    - type: video
+      src: /media/projects/neurocare/demo-elder.mp4
+      poster: /media/projects/neurocare/demo-elder-poster.webp
+      alt: NeuroCare 시연 영상 — 노인 사용자 김영희 님의 챗봇 상담
+      caption: 노인 사용자 — 챗봇 상담
+    - type: video
+      src: /media/projects/neurocare/demo-guardian.mp4
+      poster: /media/projects/neurocare/demo-guardian-poster.webp
+      alt: NeuroCare 시연 영상 — 보호자 김민수 님의 보호자 모드
+      caption: 보호자 — 보호자 모드
+  note: 원본 포트폴리오의 시연 영상을 그대로 실었습니다.
+
+retrospective:
+  sections:
+    - title: 팀장이라는 자리의 무게
+      body: >-
+        처음 팀장을 맡은 건 아니었지만, 이번에는 AI·LLM을 같이 공부한 동료가 아닌 다른 전공 파트의 팀원들과 협업해야 했다.
+        내가 하고 있는 과정과 선택의 이유를 팀원들이 이해할 수 있도록 설명하고, 배려하며 함께 결정해 나가야 했고, 이 과정에서 팀장이라는 자리의 무게를 다시금 느꼈다.
+    - title: 기술적 선택과 집중
+      body: >-
+        공감형 어휘의 한계를 발견하고 데이터·모델 설계를 과감히 전환했다.
+        로컬 추론 지연 문제도 LoRA 파인튜닝, RunPod Serverless VLLM 배포로 해결하며 짧은 해커톤 속에서도 안정적인 응답 속도를 확보했다.
+        특히 "전체를 먼저 설계하고, 핵심을 우선적으로 고도화한다"는 원칙 아래 데이터 파이프라인을 우선적으로 안정화했고, 모델 학습과 배포를 병렬로 진행하며 시간을 최대한 절약할 수 있었다.
+        이 경험은 한정된 자원과 시간 속에서도 선택과 집중이 어떻게 프로젝트 완성도를 좌우하는지를 몸소 깨닫게 해주었다.
+    - title: 사용자 중심의 구현
+      body: >-
+        노인 사용자에게 중요한 건 단순한 공감이 아니라 "과거 회상을 이끌어내는 질문"임을 확인했다.
+        숫자 지표 대신 날씨 아이콘 같은 직관적 표현을 도입해 작은 디테일이 사용자 경험을 크게 바꿀 수 있음을 배웠다.
+        기능을 줄이고 질문을 다듬는 대신 사용자가 진짜 의미 있는 경험을 하도록 만드는 것이 서비스의 핵심이라는 점을 실감했다.
+        그 과정에서 단순히 기술적인 구현을 잘하는 것도 중요하지만, 데이터의 분석과 사용자 중심의 구현이 사용자에게는 만족도를 가져다 준다는 사실을 배우며, 기술적 구현을 넘어서 사용자 경험 자체를 고민하는 시야를 확장할 수 있었다.
+  links:
+    velog: https://velog.io/@tmdekd/%ED%98%B8%EB%82%A8IS-%ED%95%B4%EC%BB%A4%ED%86%A4-NeuroCare-%EB%8F%85%EA%B1%B0%EB%85%B8%EC%9D%B8-%EC%A0%95%EC%84%9C-%EB%8F%8C%EB%B4%84-AI-%EC%84%9C%EB%B9%84%EC%8A%A4
+    github: https://github.com/tmdekd/HonamISHackathon
+---

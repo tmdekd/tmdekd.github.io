@@ -92,8 +92,10 @@ test('project detail provides breadcrumb and a local case-study table of content
   const tableOfContents = page.getByRole('navigation', { name: '프로젝트 목차' });
   await expect(tableOfContents).toBeVisible();
   await expect(tableOfContents.getByRole('link', { name: '배경' })).toHaveAttribute('href', '#project-background');
-  await expect(tableOfContents.getByRole('link', { name: '서비스 흐름' })).toHaveAttribute('href', '#project-flow');
-  await expect(tableOfContents.getByRole('link', { name: '결과와 회고' })).toHaveAttribute('href', '#project-reflection');
+  await expect(tableOfContents.getByRole('link', { name: '기획 의도' })).toHaveAttribute('href', '#project-intent');
+  await expect(tableOfContents.getByRole('link', { name: '구조' })).toHaveAttribute('href', '#project-structure');
+  await expect(tableOfContents.getByRole('link', { name: '고려사항' })).toHaveAttribute('href', '#project-considerations');
+  await expect(tableOfContents.getByRole('link', { name: '회고' })).toHaveAttribute('href', '#project-retrospective');
 });
 
 test('section navigation marks the visible home and project-detail section', async ({ page }) => {
@@ -152,8 +154,8 @@ test('uses clear Korean profile and skill labels without forced heading breaks',
 test('uses readable Pretendard section labels for core Korean sections', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
-  const labels = page.locator('#projects .section-kicker, #career .section-kicker, #skills > .section-heading .section-kicker, .background-compact .section-kicker');
-  await expect(labels).toHaveText(['프로젝트', '경력', '기술 역량', '이력과 활동']);
+  const labels = page.locator('#projects .section-kicker, #career .section-kicker, #resume .section-kicker, #skills > .section-heading .section-kicker');
+  await expect(labels).toHaveText(['프로젝트', '경력', '이력 사항', '기술 역량']);
   expect(await labels.evaluateAll((elements) => elements.every((element) => {
     const style = getComputedStyle(element);
     const size = Number.parseFloat(style.fontSize);
@@ -228,13 +230,88 @@ test('mobile navigation reveals every portfolio section and restores focus when 
   await expect(menuButton).toBeFocused();
 });
 
-test('placeholder projects use case briefs instead of generic media panels', async ({ page }) => {
+test('project cards show the original hero screenshots with alt text', async ({ page }) => {
   await page.goto('/');
-  const briefs = page.locator('#projects [data-project-brief]');
-  await expect(briefs).toHaveCount(4);
-  await expect(briefs.first()).toContainText('역할');
-  await expect(briefs.first()).toContainText('플랫폼');
-  await expect(briefs.first()).toContainText('핵심 기술');
+  const images = page.locator('#projects .project-card .media-frame img');
+  await expect(images).toHaveCount(4);
+  for (let index = 0; index < 4; index += 1) {
+    const image = images.nth(index);
+    expect((await image.getAttribute('alt'))?.length ?? 0).toBeGreaterThanOrEqual(6);
+    expect(await image.evaluate((element) => (element as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
+  }
+});
+
+test('feature rows put the screenshot left of its text at tablet width', async ({ page }) => {
+  await page.setViewportSize({ width: 768, height: 1024 });
+  await page.goto('/projects/lawmate/');
+  const row = page.locator('#project-features .feature-row').first();
+  await row.scrollIntoViewIfNeeded();
+  await expect.poll(() => row.locator('.feature-shots img').first().evaluate((img) => (img as HTMLImageElement).complete)).toBe(true);
+  const shots = await row.locator('.feature-shots').boundingBox();
+  const copy = await row.locator('.feature-copy').boundingBox();
+  expect(shots && copy).toBeTruthy();
+  expect(shots!.x + shots!.width).toBeLessThanOrEqual(copy!.x + 1);
+  // 같은 행(세로 범위가 겹친다): 글이 화면 옆에 놓이고 아래로 밀리지 않았다
+  expect(copy!.y).toBeLessThan(shots!.y + shots!.height);
+  expect(copy!.y + copy!.height).toBeGreaterThan(shots!.y);
+});
+
+test('evidence rows put the chart left of its notes', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/projects/neurocare/');
+  const row = page.locator('#project-background .evidence-row').first();
+  const media = await row.locator('.evidence-media').boundingBox();
+  const notes = await row.locator('.evidence-notes').boundingBox();
+  expect(media && notes).toBeTruthy();
+  expect(media!.x + media!.width).toBeLessThanOrEqual(notes!.x + 1);
+});
+
+test('consideration layouts follow the MDX flag (wide vs side)', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/projects/yoriwang-jwaryong/');
+  const container = await page.locator('#project-considerations').boundingBox();
+  const wide = await page.locator('.consideration--wide .consideration-media img').first().boundingBox();
+  const side = await page.locator('.consideration--side .consideration-media img').first().boundingBox();
+  expect(container && wide && side).toBeTruthy();
+  expect(wide!.width).toBeGreaterThanOrEqual(container!.width * 0.9);
+  expect(side!.width).toBeLessThan(container!.width * 0.6);
+});
+
+test('retrospective shows three cards side by side on desktop', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/projects/lawmate/');
+  const cards = page.locator('#project-retrospective .retro-cards > article');
+  await expect(cards).toHaveCount(3);
+  const boxes = await Promise.all([0, 1, 2].map((index) => cards.nth(index).boundingBox()));
+  expect(boxes.every((box) => box && Math.abs(box.y - boxes[0]!.y) < 2)).toBe(true);
+});
+
+test('screenshots open in a lightbox and return focus on close', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/projects/lawmate/');
+  const button = page.locator('#project-features .feature-shots .media-zoom').first();
+  await button.scrollIntoViewIfNeeded();
+  await button.click();
+  const dialog = page.locator('#media-lightbox');
+  await expect(dialog).toBeVisible();
+  const src = await dialog.locator('img').getAttribute('src');
+  expect(src).toMatch(/^\/media\/projects\/lawmate\//);
+  await expect(dialog.locator('img')).toHaveJSProperty('complete', true);
+  await page.keyboard.press('Escape');
+  await expect(dialog).toBeHidden();
+  await expect(button).toBeFocused();
+});
+
+test('retrospective links point at velog and github directly, not short links', async ({ page }) => {
+  for (const slug of ['neurocare', 'lawmate', 'vino', 'yoriwang-jwaryong']) {
+    await page.goto(`/projects/${slug}/`);
+    const links = page.locator('#project-retrospective .retro-links a');
+    await expect(links).toHaveCount(2);
+    const hrefs = await links.evaluateAll((anchors) => anchors.map((a) => (a as HTMLAnchorElement).href));
+    expect(hrefs[0]).toMatch(/^https:\/\/velog\.io\/@tmdekd\//);
+    expect(hrefs[1]).toMatch(/^https:\/\/github\.com\/tmdekd\//);
+    expect(hrefs.join(' ')).not.toContain('buly.kr');
+  }
 });
 
 test('project details use Korean metadata and section labels', async ({ page }) => {

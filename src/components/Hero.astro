@@ -13,13 +13,13 @@ const restWords = ['작동하는', '구조로', '만듭니다.'];
 <section id="about" class="hero-band">
   <div class="hero container">
     <div class="hero-copy">
-      <p class="eyebrow" data-hero-anim>Moon Seung Gi · AI Engineer</p>
+      <p class="eyebrow" data-hero-anim>{profile.tagline}</p>
       <h1 class="kinetic-headline">
         <span class="hero-prefix">{prefixWords.map((word, index) => <>{index > 0 && ' '}<span class="w" data-hero-anim>{word}</span></>)}</span>
         {restWords.map((word) => <>{' '}<span class="w" data-hero-anim>{word}</span></>)}
       </h1>
       <span class="kinetic-rule" aria-hidden="true"></span>
-      <p class="hero-description" data-hero-anim>{profile.headline}</p>
+      <p class="hero-description" data-hero-anim>{profile.taglineDetail} {profile.headline}입니다.</p>
       <div class="hero-actions" data-hero-anim>
         <a class="button" href="#projects">프로젝트 보기 ↓</a>
         <button class="button secondary" type="button" data-email-dialog-open>이메일 주소 보기</button>
@@ -27,8 +27,9 @@ const restWords = ['작동하는', '구조로', '만듭니다.'];
     </div>
     <aside class="hero-profile" aria-label="프로필 요약" data-hero-anim>
       <div class="profile-content">
+        <img class="profile-photo" src={profile.photo.src} alt={profile.photo.alt} width={profile.photo.width} height={profile.photo.height} loading="eager" decoding="async" />
         <h2>{profile.name}</h2>
-        <p>{profile.englishName}</p>
+        <p>{profile.englishName} · {profile.role}</p>
         <dl>
           <div><dt>전문 분야</dt><dd>LLM · RAG · Agent</dd></div>
           <div><dt>주요 경험</dt><dd>AI 서비스 기획 · 설계 · 개발</dd></div>
@@ -50,6 +51,7 @@ const restWords = ['작동하는', '구조로', '만듭니다.'];
   .hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
   .hero-profile { border-top: 1px solid var(--border-on-inverse); }
   .profile-content { padding: var(--space-5) 0 0; }
+  .profile-photo { display: block; width: 6.5rem; height: auto; margin-bottom: var(--space-4); border-radius: var(--radius-md); border: 1px solid var(--border-on-inverse); }
   .profile-content h2 { margin-bottom: 0; font-size: 1.6rem; }
   .profile-content > p { color: var(--text-hero-muted); }
   .profile-content dl { margin: var(--space-5) 0 0; }

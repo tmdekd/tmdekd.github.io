@@ -1,0 +1,492 @@
+{
+  "/media/profile.webp": {
+    "width": 350,
+    "height": 385,
+    "bytes": 8000,
+    "alt": "문승기 증명사진",
+    "slide": 2,
+    "role": "profile",
+    "source": "pptx:image10.png",
+    "sourceSize": "350x385"
+  },
+  "/media/projects/neurocare/hero-chatbot.webp": {
+    "width": 480,
+    "height": 906,
+    "bytes": 31112,
+    "alt": "NeuroCare 챗봇 상담 화면",
+    "slide": 5,
+    "role": "hero",
+    "source": "assets:NeuroCare/yeonghee_chatbot.png",
+    "sourceSize": "480x906"
+  },
+  "/media/projects/neurocare/family-info.webp": {
+    "width": 543,
+    "height": 908,
+    "bytes": 48902,
+    "alt": "NeuroCare 보호자 모드의 가족 정보와 심리 상태 요약 화면",
+    "slide": 5,
+    "role": "feature",
+    "source": "assets:NeuroCare/unnamed.png",
+    "sourceSize": "543x908"
+  },
+  "/media/projects/neurocare/weather.webp": {
+    "width": 496,
+    "height": 906,
+    "bytes": 13100,
+    "alt": "NeuroCare 내 날씨 화면: 심리 상태를 날씨 아이콘으로 표시",
+    "slide": 9,
+    "role": "feature",
+    "source": "assets:NeuroCare/yeonghee_weather.png",
+    "sourceSize": "496x906"
+  },
+  "/media/projects/neurocare/evidence-depression.webp": {
+    "width": 845,
+    "height": 565,
+    "bytes": 18382,
+    "alt": "우울증 노인과 정상군의 누적 자살 시도율 비교 그래프",
+    "slide": 6,
+    "role": "evidence",
+    "source": "assets:NeuroCare/1.png",
+    "sourceSize": "845x565"
+  },
+  "/media/projects/neurocare/evidence-suicide.webp": {
+    "width": 2000,
+    "height": 1317,
+    "bytes": 133770,
+    "alt": "65세 이상 노인 자살 통계 2019–2023: 연평균 3,609명, 2023년 하루 평균 10.5명",
+    "slide": 6,
+    "role": "evidence",
+    "source": "assets:NeuroCare/2.png",
+    "sourceSize": "2048x1349"
+  },
+  "/media/projects/neurocare/evidence-elderly.webp": {
+    "width": 983,
+    "height": 502,
+    "bytes": 27576,
+    "alt": "2000–2023년 독거노인 비율 추이 막대 그래프",
+    "slide": 6,
+    "role": "evidence",
+    "source": "assets:NeuroCare/3.png",
+    "sourceSize": "983x502"
+  },
+  "/media/projects/neurocare/architecture.webp": {
+    "width": 1138,
+    "height": 600,
+    "bytes": 27486,
+    "alt": "NeuroCare 시스템 아키텍처: HTML/CSS/JS, Spring Boot, FastAPI 심리 질환 분류 모델, RunPod 챗봇 sLLM",
+    "slide": 8,
+    "role": "architecture",
+    "source": "pptx:image69.png",
+    "sourceSize": "1138x600"
+  },
+  "/media/projects/neurocare/consider1-base.webp": {
+    "width": 2000,
+    "height": 456,
+    "bytes": 52144,
+    "alt": "파인튜닝 전 Base 모델 응답: 추측성 문장을 산출",
+    "slide": 10,
+    "role": "consideration",
+    "source": "assets:NeuroCare/upscale_250923_7e457a49-cd6a-45df-8237-65750672d6fe_MiriCanvas.png",
+    "sourceSize": "4492x1024"
+  },
+  "/media/projects/neurocare/consider1-finetuned.webp": {
+    "width": 2000,
+    "height": 556,
+    "bytes": 72106,
+    "alt": "파인튜닝 후 모델 응답: 자연스럽게 회상을 유도하는 공감형 문장을 산출",
+    "slide": 10,
+    "role": "consideration",
+    "source": "assets:NeuroCare/upscale_250923_472cf10f-7010-4cb2-bf08-ca10f124d4f1_MiriCanvas.png",
+    "sourceSize": "3674x1022"
+  },
+  "/media/projects/neurocare/consider2-candidate.webp": {
+    "width": 1649,
+    "height": 375,
+    "bytes": 23268,
+    "alt": "후보 데이터셋: 공감형 대화 (AI Hub)",
+    "slide": 11,
+    "role": "consideration",
+    "source": "assets:NeuroCare/공감형.png",
+    "sourceSize": "1649x375"
+  },
+  "/media/projects/neurocare/consider2-final.webp": {
+    "width": 1641,
+    "height": 383,
+    "bytes": 30060,
+    "alt": "최종 선택 데이터셋: 고령자 근현대 경험 기반 스토리 구술 데이터 (AI Hub)",
+    "slide": 11,
+    "role": "consideration",
+    "source": "assets:NeuroCare/고령자.png",
+    "sourceSize": "1641x383"
+  },
+  "/media/projects/neurocare/consider3-huggingface.webp": {
+    "width": 1074,
+    "height": 761,
+    "bytes": 47020,
+    "alt": "파인튜닝 모델을 Hugging Face에 업로드한 화면 (seungdang/gemma3-elderly-structure-response)",
+    "slide": 12,
+    "role": "consideration",
+    "source": "assets:NeuroCare/스크린샷_2025-09-23_193243.png",
+    "sourceSize": "1074x761"
+  },
+  "/media/projects/neurocare/consider3-runpod.webp": {
+    "width": 1570,
+    "height": 675,
+    "bytes": 55764,
+    "alt": "RunPod Serverless 인프라에 Hugging Face 모델을 배포한 엔드포인트 화면",
+    "slide": 12,
+    "role": "consideration",
+    "source": "assets:NeuroCare/sdfsdf.png",
+    "sourceSize": "1570x675"
+  },
+  "/media/projects/neurocare/demo-elder.mp4": {
+    "width": 510,
+    "height": 720,
+    "bytes": 309926,
+    "alt": "NeuroCare 시연 영상: 노인 사용자 김영희 님의 챗봇 상담",
+    "slide": 13,
+    "role": "demo",
+    "source": "assets:NeuroCare/김영희(노인).mp4",
+    "sourceBytes": 3243465,
+    "poster": "/media/projects/neurocare/demo-elder-poster.webp"
+  },
+  "/media/projects/neurocare/demo-elder-poster.webp": {
+    "width": 510,
+    "height": 720,
+    "bytes": 7088,
+    "alt": "NeuroCare 시연 영상: 노인 사용자 김영희 님의 챗봇 상담 포스터",
+    "slide": 13,
+    "role": "poster",
+    "source": "assets:NeuroCare/김영희(노인).mp4"
+  },
+  "/media/projects/neurocare/demo-guardian.mp4": {
+    "width": 510,
+    "height": 720,
+    "bytes": 245930,
+    "alt": "NeuroCare 시연 영상: 보호자 김민수 님의 보호자 모드",
+    "slide": 13,
+    "role": "demo",
+    "source": "assets:NeuroCare/김민수(보호자).mp4",
+    "sourceBytes": 1198477,
+    "poster": "/media/projects/neurocare/demo-guardian-poster.webp"
+  },
+  "/media/projects/neurocare/demo-guardian-poster.webp": {
+    "width": 510,
+    "height": 720,
+    "bytes": 10098,
+    "alt": "NeuroCare 시연 영상: 보호자 김민수 님의 보호자 모드 포스터",
+    "slide": 13,
+    "role": "poster",
+    "source": "assets:NeuroCare/김민수(보호자).mp4"
+  },
+  "/media/projects/lawmate/hero-main.webp": {
+    "width": 1920,
+    "height": 1220,
+    "bytes": 40406,
+    "alt": "LAWMATE 메인 대시보드: 결재 대기 현황, 업무 배정 현황, 사건 현황",
+    "slide": 15,
+    "role": "hero",
+    "source": "assets:LAWMATE/메인_페이지.png",
+    "sourceSize": "1920x1220"
+  },
+  "/media/projects/lawmate/evidence-harvey.webp": {
+    "width": 1812,
+    "height": 1024,
+    "bytes": 178068,
+    "alt": "하비(Harvey) 소개 문서: 법률 산업 특화 생성형 AI 서비스",
+    "slide": 16,
+    "role": "evidence",
+    "source": "assets:LAWMATE/upscale_250925_6f088c05-6965-4cf5-9338-67650fd0b713_MiriCanvas.png",
+    "sourceSize": "1812x1024"
+  },
+  "/media/projects/lawmate/evidence-cases.webp": {
+    "width": 1770,
+    "height": 1170,
+    "bytes": 101570,
+    "alt": "2021–2023년 전체 소송 건수 막대 그래프 (2024 사법연감)",
+    "slide": 16,
+    "role": "evidence",
+    "source": "assets:LAWMATE/upscale_250925_73a8f8c0-a6d4-46ac-b567-d9d2efedfebd_MiriCanvas.png",
+    "sourceSize": "1770x1170"
+  },
+  "/media/projects/lawmate/evidence-civil.webp": {
+    "width": 374,
+    "height": 374,
+    "bytes": 12164,
+    "alt": "2023년 소송 사건 구성 도넛 차트: 민사 68.1%, 형사 26.3%",
+    "slide": 16,
+    "role": "evidence",
+    "source": "pptx:image119.png",
+    "sourceSize": "374x374"
+  },
+  "/media/projects/lawmate/architecture.webp": {
+    "width": 2000,
+    "height": 1076,
+    "bytes": 85642,
+    "alt": "LAWMATE 시스템 아키텍처: AWS ECS·CI/CD 파이프라인, RunPod의 Gemma3-1b·FastAPI·LangGraph·Vector DB, 외부 GPT-4o",
+    "slide": 18,
+    "role": "architecture",
+    "source": "assets:LAWMATE/upscale_250925_fa9d2c14-d5d4-46b5-8909-b4343c7b4ccd_MiriCanvas.png",
+    "sourceSize": "3140x1690"
+  },
+  "/media/projects/lawmate/feature-login.webp": {
+    "width": 1920,
+    "height": 868,
+    "bytes": 14024,
+    "alt": "LAWMATE 로그인 화면",
+    "slide": 19,
+    "role": "feature",
+    "source": "assets:LAWMATE/로그인_화면.png",
+    "sourceSize": "1920x868"
+  },
+  "/media/projects/lawmate/feature-admin.webp": {
+    "width": 1920,
+    "height": 931,
+    "bytes": 61728,
+    "alt": "LAWMATE 관리자 페이지 (Django 관리: 사용자 계정 관리)",
+    "slide": 19,
+    "role": "feature",
+    "source": "assets:LAWMATE/관리자_페이지.png",
+    "sourceSize": "1920x931"
+  },
+  "/media/projects/lawmate/feature-intake.webp": {
+    "width": 1920,
+    "height": 1927,
+    "bytes": 40946,
+    "alt": "LAWMATE 사건 접수 페이지",
+    "slide": 20,
+    "role": "feature",
+    "source": "assets:LAWMATE/사건_접수_페이지.png",
+    "sourceSize": "1920x1927"
+  },
+  "/media/projects/lawmate/feature-team-recommend.webp": {
+    "width": 1209,
+    "height": 570,
+    "bytes": 17782,
+    "alt": "LAWMATE 담당 팀 추천 화면: AI 추천 팀과 가용 팀 목록",
+    "slide": 20,
+    "role": "feature",
+    "source": "assets:LAWMATE/AI_팀_추천_페이지.png",
+    "sourceSize": "1209x570"
+  },
+  "/media/projects/lawmate/feature-strategy.webp": {
+    "width": 1200,
+    "height": 573,
+    "bytes": 37362,
+    "alt": "LAWMATE 사건 상세: 사건 상태 정보와 AI 추천 전략",
+    "slide": 21,
+    "role": "feature",
+    "source": "assets:LAWMATE/AI_추천_전략.png",
+    "sourceSize": "1200x573"
+  },
+  "/media/projects/lawmate/feature-case-search.webp": {
+    "width": 1207,
+    "height": 541,
+    "bytes": 21332,
+    "alt": "LAWMATE 챗봇: 유사 판례 검색",
+    "slide": 22,
+    "role": "feature",
+    "source": "assets:LAWMATE/유사_판례_검색.png",
+    "sourceSize": "1207x541"
+  },
+  "/media/projects/lawmate/feature-case-question.webp": {
+    "width": 1207,
+    "height": 549,
+    "bytes": 25960,
+    "alt": "LAWMATE 챗봇: 판례를 선택하고 관련 질문",
+    "slide": 22,
+    "role": "feature",
+    "source": "assets:LAWMATE/판례를_선택하고_관련_질문.png",
+    "sourceSize": "1207x549"
+  },
+  "/media/projects/lawmate/feature-case-fulltext.webp": {
+    "width": 1214,
+    "height": 549,
+    "bytes": 12494,
+    "alt": "LAWMATE 챗봇: 판례 전문 보기",
+    "slide": 22,
+    "role": "feature",
+    "source": "assets:LAWMATE/판례_전문보기.png",
+    "sourceSize": "1214x549"
+  },
+  "/media/projects/lawmate/consider1-roles.webp": {
+    "width": 1005,
+    "height": 470,
+    "bytes": 19376,
+    "alt": "로펌 역할 구조도: 클라이언트 → 파트너 변호사 → 민사 N팀(시니어·주니어 변호사, 법률사무원)",
+    "slide": 23,
+    "role": "consideration",
+    "source": "pptx:image147.png",
+    "sourceSize": "1005x470"
+  },
+  "/media/projects/lawmate/consider1-jwt.webp": {
+    "width": 1730,
+    "height": 662,
+    "bytes": 46488,
+    "alt": "JWT 토큰 관련 함수와 Django Middleware 인증 흐름 도식",
+    "slide": 24,
+    "role": "consideration",
+    "source": "assets:LAWMATE/최종발표_(3).png",
+    "sourceSize": "1730x662"
+  },
+  "/media/projects/lawmate/consider2-langgraph.webp": {
+    "width": 1718,
+    "height": 992,
+    "bytes": 76690,
+    "alt": "LangGraph 구조도: Start → VectorSearch·SQLSearch → ScoreCalc → Explain → End",
+    "slide": 25,
+    "role": "consideration",
+    "source": "assets:LAWMATE/최종발표_(5).png",
+    "sourceSize": "1718x992"
+  },
+  "/media/projects/lawmate/demo-intake.mp4": {
+    "width": 1280,
+    "height": 602,
+    "bytes": 1238189,
+    "alt": "LAWMATE 시연 영상: 사건 접수 기능",
+    "slide": 26,
+    "role": "demo",
+    "source": "assets:LAWMATE/사건접수_시연영상_(2).mp4",
+    "sourceBytes": 19783617,
+    "poster": "/media/projects/lawmate/demo-intake-poster.webp"
+  },
+  "/media/projects/lawmate/demo-intake-poster.webp": {
+    "width": 1280,
+    "height": 602,
+    "bytes": 5488,
+    "alt": "LAWMATE 시연 영상: 사건 접수 기능 포스터",
+    "slide": 26,
+    "role": "poster",
+    "source": "assets:LAWMATE/사건접수_시연영상_(2).mp4"
+  },
+  "/media/projects/lawmate/demo-chatbot.mp4": {
+    "width": 1280,
+    "height": 720,
+    "bytes": 2676945,
+    "alt": "LAWMATE 시연 영상: 유사 판례 검색 및 Chatbot 질의응답 기능",
+    "slide": 27,
+    "role": "demo",
+    "source": "assets:LAWMATE/챗봇_시연영상.mp4",
+    "sourceBytes": 3202481,
+    "poster": "/media/projects/lawmate/demo-chatbot-poster.webp"
+  },
+  "/media/projects/lawmate/demo-chatbot-poster.webp": {
+    "width": 1280,
+    "height": 720,
+    "bytes": 7604,
+    "alt": "LAWMATE 시연 영상: 유사 판례 검색 및 Chatbot 질의응답 기능 포스터",
+    "slide": 27,
+    "role": "poster",
+    "source": "assets:LAWMATE/챗봇_시연영상.mp4"
+  },
+  "/media/projects/vino/hero-chat.webp": {
+    "width": 1920,
+    "height": 1032,
+    "bytes": 60810,
+    "alt": "VINO 챗봇 화면: 외부 검색(Tavily)을 참조한 응답",
+    "slide": 29,
+    "role": "hero",
+    "source": "assets:VINO/442618199-c6359d21-f2dc-44e4-bb9e-acf6a48653a2.png",
+    "sourceSize": "1920x1032"
+  },
+  "/media/projects/vino/evidence-beginner.webp": {
+    "width": 599,
+    "height": 633,
+    "bytes": 61718,
+    "alt": "와인 매장에서 고민하는 와인 입문자 일러스트",
+    "slide": 30,
+    "role": "evidence",
+    "source": "pptx:image171.png",
+    "sourceSize": "599x633"
+  },
+  "/media/projects/vino/flow.webp": {
+    "width": 2000,
+    "height": 1314,
+    "bytes": 56170,
+    "alt": "VINO 서비스 흐름도: 로그인 → 질문 입력 → 카테고리 분류 → sLLM 응답 → 연관성 평가 → 내부 문서 검색 → 외부 검색(Tavily)",
+    "slide": 32,
+    "role": "flow",
+    "source": "assets:VINO/442555809-0baed123-e378-4c5f-b8f8-ad2c2262a3c3.png",
+    "sourceSize": "4722x3102"
+  },
+  "/media/projects/vino/feature-sllm.webp": {
+    "width": 1920,
+    "height": 1032,
+    "bytes": 74846,
+    "alt": "VINO 챗봇 화면: sLLM이 학습한 데이터 기반 응답 (요약 + 핵심 포인트)",
+    "slide": 33,
+    "role": "feature",
+    "source": "assets:VINO/442618200-0e01b306-30e5-4e70-ba6d-b40f8c3b0a5d.png",
+    "sourceSize": "1920x1032"
+  },
+  "/media/projects/vino/consider1-rag.webp": {
+    "width": 1920,
+    "height": 1032,
+    "bytes": 52642,
+    "alt": "VINO 챗봇 화면: RAG 기반 내부 문서를 참조한 응답",
+    "slide": 34,
+    "role": "consideration",
+    "source": "assets:VINO/442618201-a2237180-a633-46fa-ad56-c5e34e744006.png",
+    "sourceSize": "1920x1032"
+  },
+  "/media/projects/yoriwang-jwaryong/hero-main.webp": {
+    "width": 1920,
+    "height": 1020,
+    "bytes": 67466,
+    "alt": "요리왕 좌룡 메인 화면: 서비스 개요와 맞춤형 AI 요리 추천 챗봇 소개",
+    "slide": 37,
+    "role": "hero",
+    "source": "assets:요리왕 좌룡/main.png",
+    "sourceSize": "1920x1020"
+  },
+  "/media/projects/yoriwang-jwaryong/evidence-fridge.webp": {
+    "width": 599,
+    "height": 633,
+    "bytes": 35322,
+    "alt": "냉장고 앞에서 요리를 고민하는 자취생 일러스트",
+    "slide": 38,
+    "role": "evidence",
+    "source": "pptx:image205.png",
+    "sourceSize": "599x633"
+  },
+  "/media/projects/yoriwang-jwaryong/flow.webp": {
+    "width": 1612,
+    "height": 2216,
+    "bytes": 129190,
+    "alt": "요리왕 좌룡 서비스 흐름도: 사용자 입력 → 요리 질문 여부 → 레시피 응답 생성 → 적절성 판단 → 내부 문서 RAG → 외부 검색 RAG",
+    "slide": 40,
+    "role": "flow",
+    "source": "assets:요리왕 좌룡/흐름도.png",
+    "sourceSize": "1612x2216"
+  },
+  "/media/projects/yoriwang-jwaryong/consider1-grounded.webp": {
+    "width": 1093,
+    "height": 597,
+    "bytes": 38464,
+    "alt": "환각을 줄이기 위한 응답 생성 구조: 파인튜닝된 LLM → 응답 신뢰성 평가 → 근거가 검증된 최종 답변, 내부 문서 RAG와 외부 검색으로 보강",
+    "slide": 42,
+    "role": "consideration",
+    "source": "pptx:image228.png",
+    "sourceSize": "1093x597"
+  },
+  "/media/projects/yoriwang-jwaryong/consider2-sufficiency.webp": {
+    "width": 1153,
+    "height": 630,
+    "bytes": 35762,
+    "alt": "LLM 응답 충분성 판단 기준과 중단 조건 도식",
+    "slide": 43,
+    "role": "consideration",
+    "source": "pptx:image231.png",
+    "sourceSize": "1153x630"
+  },
+  "/media/projects/yoriwang-jwaryong/consider3-simple.webp": {
+    "width": 1121,
+    "height": 612,
+    "bytes": 63348,
+    "alt": "복잡한 대화 조건을 하나의 레시피 결과로 정제하는 과정 일러스트",
+    "slide": 44,
+    "role": "consideration",
+    "source": "pptx:image234.png",
+    "sourceSize": "1121x612"
+  }
+}

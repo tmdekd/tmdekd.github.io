@@ -1,8 +1,20 @@
 ---
+/**
+ * 프로젝트 상세 — 원본 포트폴리오의 쪽 구성(표지 → 제안 배경 → 기획 의도 → 구조 → 주요 기능 → 고려사항 → 시연 → 회고)을 그대로 따른다.
+ * 섹션 번호는 원본 순서이며, 고려사항 제목은 원본의 질문형 문장을 그대로 쓴다.
+ */
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import MediaFrame from '../components/MediaFrame.astro';
-import ProjectBrief from '../components/ProjectBrief.astro';
+import MediaImage from '../components/project/MediaImage.astro';
+import ShiftPairs from '../components/project/ShiftPairs.astro';
+import MediaLightbox from '../components/project/MediaLightbox.astro';
+import { getMedia } from '../data/media';
+import { profile } from '../data/profile';
+
+/** 세로로 긴 화면(휴대폰 캡처·세로 영상)인지 — 높이로 묶어 가로로 나열하기 위해 */
+const isPortrait = (src?: string) => { const m = getMedia(src); return m ? m.height > m.width * 1.15 : false; };
+const showLink = (url: string) => decodeURIComponent(url).replace(/^https?:\/\//, '');
 
 interface Props {
   project: CollectionEntry<'projects'>;
@@ -11,14 +23,26 @@ interface Props {
 }
 const { project, previous, next } = Astro.props;
 const data = project.data;
-const caseStudySections = [
-  { id: 'project-background', label: '배경' },
-  { id: 'project-flow', label: '서비스 흐름' },
-  { id: 'project-features', label: '주요 기능' },
-  { id: 'project-decisions', label: '기술적 판단' },
-  { id: 'project-demo', label: '데모' },
-  { id: 'project-reflection', label: '결과와 회고' },
+/** 제안 배경을 "이미지 있는 항목 + 뒤따르는 글만 있는 항목들" 단위로 묶어 한 행(이미지 좌 · 글 우)으로 만든다 */
+type Evidence = (typeof project.data.background)[number];
+const evidenceRows = project.data.background.reduce<{ media?: Evidence['media']; notes: Evidence[] }[]>((rows, item) => {
+  if (item.media || rows.length === 0) rows.push({ media: item.media, notes: [] });
+  rows[rows.length - 1].notes.push(item);
+  return rows;
+}, []);
+const featureRows = project.data.featureGroups.filter((group) => group.media.length > 0);
+const featureNotes = project.data.featureGroups.filter((group) => group.media.length === 0);
+const structureLabel = data.architecture ? '시스템 아키텍처' : '서비스 흐름 설계';
+const sections = [
+  { id: 'project-background', label: '배경', title: '제안 배경' },
+  { id: 'project-intent', label: '기획 의도', title: '기획 의도' },
+  { id: 'project-structure', label: '구조', title: structureLabel },
+  { id: 'project-features', label: '주요 기능', title: '주요 기능' },
+  { id: 'project-considerations', label: '고려사항', title: '주요 고려사항' },
+  { id: 'project-demo', label: '시연', title: '시연' },
+  { id: 'project-retrospective', label: '회고', title: '회고' },
 ];
+const numbered = (index: number) => String(index + 1).padStart(2, '0');
 ---
 
 <BaseLayout title={`${data.title} · 문승기 포트폴리오`} description={data.summary}>
@@ -48,94 +72,212 @@ const caseStudySections = [
           <div><dt>역할</dt><dd>{data.role}</dd></div>
           <div><dt>플랫폼</dt><dd>{data.platform}</dd></div>
           <div><dt>결과</dt><dd>{data.result}</dd></div>
+          {data.githubUrl && <div><dt>GitHub</dt><dd><a class="meta-link" href={data.githubUrl} target="_blank" rel="noreferrer">{data.githubUrl.replace(/^https?:\/\//, '')}</a></dd></div>}
+          <div><dt>기술</dt><dd><ul class="skill-chips" aria-label="사용 기술">{data.skills.map((skill) => <li>{skill}</li>)}</ul></dd></div>
         </dl>
       </div>
-      {data.heroMedia.type === 'placeholder'
-        ? <ProjectBrief project={project} variant="hero" />
-        : <MediaFrame asset={data.heroMedia} label="대표 미디어" mode="detail" />}
+      <div class="hero-media">
+        <MediaImage src={data.heroMedia.src!} alt={data.heroMedia.alt} caption={data.heroMedia.caption} loading="eager" />
+      </div>
     </div>
     </section>
 
     <nav class="project-toc container" aria-label="프로젝트 목차" data-section-navigation="project">
-      {caseStudySections.map((section) => <a href={`#${section.id}`}>{section.label}</a>)}
+      {sections.map((section) => <a href={`#${section.id}`}>{section.label}</a>)}
     </nav>
 
-    <section id="project-background" class="section container content-grid case-study-section">
-      <div class="section-heading sticky-title">
-        <p class="section-kicker"><span class="section-number">01</span> 배경</p>
-        <h2>무엇을 해결하려 했는가</h2>
-      </div>
-      <div class="content-stack">
-        {data.problem.map((item) => <p class="large-copy">{item}</p>)}
-        <div class="goal-panel">
-          <h3>기획 목표</h3>
-          <ul>{data.goals.map((goal) => <li>{goal}</li>)}</ul>
-        </div>
-      </div>
-    </section>
-
-    <section id="project-flow" class="section architecture-section case-study-section">
-      <div class="container">
-        <div class="section-heading">
-          <p class="section-kicker"><span class="section-number">02</span> 서비스 흐름</p>
-          <h2>서비스 흐름</h2>
-          <p>복잡한 처리 과정은 내부에 두고, 사용자에게는 정제된 하나의 결과를 전달합니다.</p>
-        </div>
-        <ol class="flow-list">
-          {data.flow.map((step, index) => (
-            <li data-reveal="flow-step"><span>{String(index + 1).padStart(2, '0')}</span><strong>{step}</strong></li>
-          ))}
-        </ol>
-      </div>
-    </section>
-
-    <section id="project-features" class="section container case-study-section">
+    <!-- 01 제안 배경 -->
+    <section id="project-background" class="section container case-study-section">
       <div class="section-heading">
-        <p class="section-kicker"><span class="section-number">03</span> 주요 기능</p>
-        <h2>주요 기능</h2>
+        <p class="section-kicker"><span class="section-number">01</span> 배경</p>
+        <h2>{data.title}의 제안 배경</h2>
       </div>
-      <div class="feature-grid">
-        {data.features.map((feature, index) => (
-          <article class="feature-card surface">
-            <span>{String(index + 1).padStart(2, '0')}</span>
-            <h3>{feature.title}</h3>
-            <p>{feature.description}</p>
+      <div class="evidence-rows">
+        {evidenceRows.map((row) => (
+          <article class:list={['evidence-row', { 'evidence-row--illustration': row.notes.length > 1 }]}>
+            {row.media && <div class="evidence-media"><MediaImage src={row.media.src} alt={row.media.alt} caption={row.media.caption} /></div>}
+            <div class="evidence-notes">
+              {row.notes.map((item) => (
+                <div class="evidence">
+                  {item.heading && <h3>{item.heading}</h3>}
+                  {item.points.length > 0 && <ul>{item.points.map((point) => <li>{point}</li>)}</ul>}
+                </div>
+              ))}
+            </div>
           </article>
         ))}
       </div>
     </section>
 
-    <section id="project-decisions" class="section container content-grid case-study-section">
-      <div class="section-heading sticky-title">
-        <p class="section-kicker"><span class="section-number">04</span> 기술적 판단</p>
-        <h2>기술적 판단과 고려사항</h2>
+    <!-- 02 기획 의도 -->
+    <section id="project-intent" class="section section--alt case-study-section">
+      <div class="container">
+        <div class="section-heading">
+          <p class="section-kicker"><span class="section-number">02</span> 기획 의도</p>
+          <h2>{data.title}의 기획 의도</h2>
+        </div>
+        <blockquote class="intent-quote"><p>“{data.intent.quote}”</p></blockquote>
+        <ShiftPairs pairs={data.intent.pairs} beforeLabel="기존" afterLabel="제안" />
       </div>
-      <div class="decision-list">
-        {data.decisions.map((decision) => (
-          <article><h3>{decision.title}</h3><p>{decision.description}</p></article>
+    </section>
+
+    <!-- 03 구조 -->
+    <section id="project-structure" class="section container case-study-section">
+      <div class="section-heading">
+        <p class="section-kicker"><span class="section-number">03</span> 구조</p>
+        <h2>{data.title}의 {structureLabel}</h2>
+      </div>
+      {data.architecture && (
+        <div class="structure-grid">
+          <MediaImage src={data.architecture.media.src} alt={data.architecture.media.alt} caption={data.architecture.media.caption} />
+          <dl class="stack">
+            {data.architecture.stack.map((group) => (
+              <div><dt>{group.label}</dt><dd><ul class="skill-chips">{group.items.map((item) => <li>{item}</li>)}</ul></dd></div>
+            ))}
+          </dl>
+        </div>
+      )}
+      {data.flowDesign && (
+        <div class="structure-grid structure-grid--flow">
+          <MediaImage src={data.flowDesign.media.src} alt={data.flowDesign.media.alt} caption={data.flowDesign.media.caption} />
+          <ol class="principles">
+            {data.flowDesign.principles.map((principle, index) => (
+              <li><span class="principle-num">{index + 1}</span><div><h3>{principle.title}</h3><p>{principle.note}</p></div></li>
+            ))}
+          </ol>
+        </div>
+      )}
+    </section>
+
+    <!-- 04 주요 기능 -->
+    <section id="project-features" class="section section--alt case-study-section">
+      <div class="container">
+        <div class="section-heading">
+          <p class="section-kicker"><span class="section-number">04</span> 주요 기능</p>
+          <h2>{data.title}의 주요 기능</h2>
+        </div>
+        <div class="feature-rows">
+          {featureRows.map((group) => {
+            const portrait = group.media.every((media) => isPortrait(media.src));
+            const [primary, ...more] = group.media;
+            return (
+              <article class="feature-row">
+                <div class:list={['feature-shots', { 'feature-shots--portrait': portrait }]} data-count={group.media.length}>
+                  {portrait ? (
+                    group.media.map((media) => <MediaImage src={media.src} alt={media.alt} caption={media.caption} />)
+                  ) : (
+                    <>
+                      <MediaImage src={primary.src} alt={primary.alt} caption={primary.caption} />
+                      {more.length > 0 && (
+                        <div class="feature-shots__more">
+                          {more.map((media) => <MediaImage src={media.src} alt={media.alt} caption={media.caption} fit="16 / 10" />)}
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+                <div class="feature-copy">
+                  <h3>{group.audience}</h3>
+                  <ul>{group.points.map((point) => <li>{point}</li>)}</ul>
+                </div>
+              </article>
+            );
+          })}
+          {featureNotes.length > 0 && (
+            <div class="feature-text-grid">
+              {featureNotes.map((group) => (
+                <article class="feature-note">
+                  <div class="feature-copy">
+                    <h3>{group.audience}</h3>
+                    <ul>{group.points.map((point) => <li>{point}</li>)}</ul>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 주요 고려사항 -->
+    <section id="project-considerations" class="section container case-study-section">
+      <div class="section-heading">
+        <p class="section-kicker"><span class="section-number">05</span> 고려사항</p>
+        <h2>주요 고려사항</h2>
+      </div>
+      <div class="considerations">
+        {data.considerations.map((item, index) => (
+          <article class:list={['consideration', `consideration--${item.layout}`]}>
+            <header class="consideration-head">
+              <p class="consideration-index">주요 고려사항 {index + 1}</p>
+              <h3 class="consideration-question">{item.question}</h3>
+              {item.quote && <p class="consideration-quote">“{item.quote}”</p>}
+            </header>
+            <div class="consideration-body">
+            {item.media.length > 0 && (
+              <div class="consideration-media" data-count={item.media.length}>
+                {item.media.map((media) => <MediaImage src={media.src} alt={media.alt} caption={media.caption} />)}
+              </div>
+            )}
+            <div class="consideration-text">
+            {item.table && (
+              <dl class="role-table">
+                {item.table.map((row) => <div><dt>{row.label}</dt><dd><ul>{row.items.map((cell) => <li>{cell}</li>)}</ul></dd></div>)}
+              </dl>
+            )}
+            <div class="shift-columns">
+              {item.problems.length > 0 && (
+                <div class="shift-col shift-col--before">
+                  <h4>{item.problemsTitle ?? '기존 문제점'}</h4>
+                  <ul>{item.problems.map((point) => <li>{point}</li>)}</ul>
+                </div>
+              )}
+              {item.approach.length > 0 && (
+                <div class="shift-col shift-col--after">
+                  <h4>{item.approachTitle ?? '접근 방식'}</h4>
+                  <ul>{item.approach.map((point) => <li>{point}</li>)}</ul>
+                </div>
+              )}
+            </div>
+            </div>
+            </div>
+          </article>
         ))}
       </div>
     </section>
 
-    <section id="project-demo" class="section container case-study-section">
-      <div class="section-heading">
-        <p class="section-kicker"><span class="section-number">05</span> 데모</p>
-        <h2>이미지와 영상</h2>
-        <p>현재는 자료가 들어갈 비율과 위치를 먼저 잡아두었습니다. 실제 화면을 전달받으면 이 구조를 유지한 채 교체할 수 있습니다.</p>
-      </div>
-      <div class="media-grid">
-        {data.media.map((asset, index) => <MediaFrame asset={asset} label={`Demo ${String(index + 1).padStart(2, '0')}`} mode="detail" />)}
+    <!-- 06 시연 -->
+    <section id="project-demo" class="section section--alt case-study-section">
+      <div class="container">
+        <div class="section-heading">
+          <p class="section-kicker"><span class="section-number">06</span> 시연</p>
+          <h2>시연 영상</h2>
+          <p>{data.demo.note} <a class="original-link" href={profile.contact.portfolioOriginal} target="_blank" rel="noreferrer">원본 포트폴리오(미리캔버스)에서 보기 ↗</a></p>
+        </div>
+        {data.demo.media.length > 0 ? (
+          <div class:list={['media-grid', { 'media-grid--portrait': data.demo.media.every((asset) => isPortrait(asset.src)) }]} data-count={data.demo.media.length}>
+            {data.demo.media.map((asset, index) => <MediaFrame asset={asset} label={`시연 ${numbered(index)}`} mode="detail" />)}
+          </div>
+        ) : (
+          <p class="demo-empty">{data.githubUrl ? <a href={data.githubUrl} target="_blank" rel="noreferrer">GitHub 저장소에서 실행 방법 보기 ↗</a> : '시연 자료 준비 중'}</p>
+        )}
       </div>
     </section>
 
-    <section id="project-reflection" class="section container reflection case-study-section">
-      <div>
-        <p class="section-kicker"><span class="section-number">06</span> 결과와 회고</p>
-        <h2>결과와 회고</h2>
+    <!-- 07 회고 -->
+    <section id="project-retrospective" class="section container case-study-section">
+      <div class="section-heading">
+        <p class="section-kicker"><span class="section-number">07</span> 회고</p>
+        <h2>{data.title} 회고</h2>
       </div>
-      <div>
-        <strong>{data.result}</strong>
-        <p>{data.reflection}</p>
+      <nav class="retro-links" aria-label="회고 더보기">
+        {data.retrospective.links.velog && <a href={data.retrospective.links.velog} target="_blank" rel="noreferrer"><span>Velog</span>{showLink(data.retrospective.links.velog)} ↗</a>}
+        {data.retrospective.links.github && <a href={data.retrospective.links.github} target="_blank" rel="noreferrer"><span>GitHub</span>{showLink(data.retrospective.links.github)} ↗</a>}
+      </nav>
+      <div class="retro-cards">
+        {data.retrospective.sections.map((note) => (
+          <article><h3>{note.title}</h3><p>{note.body}</p></article>
+        ))}
       </div>
     </section>
 
@@ -144,68 +286,165 @@ const caseStudySections = [
       {next ? <a class="next" href={`/projects/${next.id}/`}><span>다음 프로젝트 →</span><strong>{next.data.title}</strong></a> : <a class="next" href="/#projects"><span>프로젝트 목록 →</span><strong>전체 보기</strong></a>}
     </nav>
   </article>
+  <MediaLightbox />
 </BaseLayout>
 
 <style>
   .project-hero-band { background: var(--bg-hero); color: var(--text-hero); }
-  .project-hero { padding-block: clamp(2.5rem, 6vw, 5rem) var(--space-20); }
+  .project-hero { padding-block: clamp(2.5rem, 6vw, 5rem) var(--space-16); }
   .breadcrumb { margin-bottom: var(--space-12); }
   .breadcrumb ol { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; color: var(--text-hero-muted); font-size: var(--font-size-utility); list-style: none; }
   .breadcrumb li { display: inline-flex; align-items: center; gap: var(--space-2); }
   .breadcrumb li + li::before { color: var(--text-hero-muted); content: '/'; }
   .breadcrumb a { color: var(--text-hero-muted); font-weight: 700; text-decoration: none; }
   .breadcrumb a:hover { color: var(--text-hero); text-decoration: underline; text-underline-offset: 4px; }
-  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(18rem, 0.7fr); gap: var(--space-10); align-items: end; margin-bottom: var(--space-12); }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(18rem, 0.7fr); gap: var(--space-10); align-items: end; margin-bottom: var(--space-10); }
   h1 { margin-bottom: var(--space-3); }
   .detail-index { margin-bottom: var(--space-3); color: var(--text-hero-muted); font-size: 0.9rem; font-weight: 700; }
   .detail-index span, .section-number { margin-right: var(--space-2); font-family: var(--font-mono); font-size: var(--font-size-utility); letter-spacing: 0.06em; }
   .subtitle { margin-bottom: var(--space-5); color: var(--text-hero); font-size: clamp(1.15rem, 2.5vw, 1.6rem); font-weight: 750; }
   .summary { max-width: 46rem; margin-bottom: var(--space-6); color: var(--text-hero-muted); font-size: 1.08rem; }
   .actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
-  .project-toc { position: sticky; z-index: 10; top: calc(var(--header-height) - 1px); display: flex; gap: var(--space-2); overflow-x: auto; margin-bottom: var(--space-8); padding-block: var(--space-3); border-bottom: 1px solid var(--border-hair); background: var(--bg-page); scrollbar-width: thin; }
+  .project-meta { margin: 0; padding: var(--space-6); color: var(--text-primary); }
+  .project-meta div { display: grid; grid-template-columns: 4.5rem 1fr; gap: var(--space-3); padding: var(--space-3) 0; }
+  .project-meta div + div { border-top: 1px solid var(--border-hair); }
+  .meta-link { color: var(--text-accent); font-family: var(--font-mono); font-size: 0.85rem; overflow-wrap: anywhere; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  dt { color: var(--text-muted); font-family: var(--font-sans); font-size: var(--font-size-utility); font-weight: 700; }
+  dd { margin: 0; font-size: 0.9rem; font-weight: 650; }
+  .skill-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+  .skill-chips li { padding: 0.25rem 0.55rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500; line-height: 1.4; }
+  .hero-media { max-width: 64rem; }
+  .hero-media :global(.media-image--portrait) { max-width: 26rem; }
+  .project-toc { position: sticky; z-index: 10; top: calc(var(--header-height) - 1px); display: flex; gap: var(--space-2); overflow-x: auto; margin-bottom: var(--space-4); padding-block: var(--space-3); border-bottom: 1px solid var(--border-hair); background: var(--bg-page); scrollbar-width: thin; }
   .project-toc a { flex: 0 0 auto; padding: 0.45rem 0.7rem; border-radius: var(--radius-sm); color: var(--text-secondary); font-size: var(--font-size-utility); font-weight: 700; text-decoration: none; }
   .project-toc a:hover, .project-toc a[aria-current="location"] { background: var(--navigation-active-bg); color: var(--navigation-active-text); }
   .case-study-section { scroll-margin-top: calc(var(--header-height) + 3.5rem); }
-  .project-meta { margin: 0; padding: var(--space-6); color: var(--text-primary); }
-  .project-meta div { display: grid; grid-template-columns: 5rem 1fr; gap: var(--space-3); padding: var(--space-3) 0; }
-  .project-meta div + div { border-top: 1px solid var(--border-hair); }
-  dt { color: var(--text-muted); font-family: var(--font-sans); font-size: var(--font-size-utility); font-weight: 700; }
-  dd { margin: 0; font-size: 0.9rem; font-weight: 650; }
-  .content-grid { display: grid; grid-template-columns: minmax(16rem, 0.8fr) minmax(0, 1.2fr); gap: clamp(3rem, 8vw, 8rem); }
-  .sticky-title { align-self: start; position: sticky; top: 7rem; }
-  .large-copy { padding-bottom: var(--space-5); border-bottom: 1px solid var(--border-hair); color: var(--text-secondary); font-size: clamp(1.05rem, 2vw, 1.28rem); }
-  .goal-panel { margin-top: var(--space-8); padding: clamp(1.5rem, 4vw, 2.5rem); border-radius: var(--radius-lg); background: var(--bg-accent-soft); }
-  .goal-panel ul { margin-bottom: 0; padding-left: 1.2rem; }
-  /* "서비스 흐름" 밴드: 다크 대신 Slate 50 + 1px 경계 */
-  /* 상세 페이지 바탕(Slate 50)과 교대되도록 흰 면. 흐름 타일은 Slate 50 */
-  .architecture-section { background: var(--bg-section-alt); }
-  .flow-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: var(--space-3); margin: 0; padding: 0; list-style: none; counter-reset: flow; }
-  .flow-list li { min-height: 10rem; padding: var(--space-5); border-left: 3px solid var(--accent-bar); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--bg-page); }
-  .flow-list span { display: block; margin-bottom: var(--space-8); color: var(--text-accent); font-family: var(--font-mono); font-size: var(--font-size-utility); font-weight: 600; }
-  .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
-  .feature-card { min-height: 16rem; padding: var(--space-6); }
-  .feature-card > span { color: var(--text-accent-secondary); font-family: var(--font-mono); font-size: var(--font-size-utility); }
-  .feature-card h3 { margin-top: var(--space-12); }
-  .feature-card p, .decision-list p { color: var(--text-secondary); }
-  .decision-list article { padding: var(--space-8) 0; }
-  .decision-list article + article { border-top: 1px solid var(--border-hair); }
-  .decision-list article:first-child { padding-top: 0; }
+  .section-heading h2 { margin-bottom: 0; }
+
+  /* 01 배경 — 근거 행: 이미지 좌 · 그 이미지에 대한 설명 우 */
+  .evidence-rows { display: grid; gap: clamp(1.5rem, 3vw, 2.5rem); }
+  .evidence-row { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(18rem, 1.1fr); gap: var(--space-8); align-items: center; }
+  .evidence-row + .evidence-row { padding-top: clamp(1.5rem, 3vw, 2.5rem); border-top: 1px solid var(--border-hair); }
+  .evidence-media { max-width: 28rem; min-width: 0; }
+  .evidence-row--illustration { grid-template-columns: minmax(0, 18rem) minmax(0, 1fr); align-items: start; }
+  .evidence-row--illustration .evidence-media { max-width: 18rem; }
+  .evidence-notes { display: grid; gap: var(--space-5); min-width: 0; max-width: 40rem; }
+  .evidence { display: grid; align-content: start; gap: var(--space-3); min-width: 0; }
+  .evidence h3 { font-size: 1.05rem; padding-bottom: var(--space-2); border-bottom: 1px solid var(--border-hair); }
+  .evidence ul { margin: 0; padding-left: 1.1rem; color: var(--text-secondary); font-size: 0.92rem; display: grid; gap: var(--space-2); }
+  .evidence li:first-child:not(:only-child) { list-style: none; margin-left: -1.1rem; color: var(--text-primary); }
+
+  /* 02 기획 의도 */
+  .intent-quote { margin: 0 0 var(--space-8); }
+  .intent-quote p { margin: 0; max-width: 40ch; font-size: clamp(1.35rem, 2.8vw, 2rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.35; text-wrap: balance; }
+
+  /* 03 구조 */
+  .structure-grid { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(16rem, 0.8fr); gap: var(--space-8); align-items: start; }
+  .structure-grid--flow { grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 1fr); }
+  .stack { margin: 0; display: grid; gap: var(--space-4); }
+  .stack div { display: grid; gap: var(--space-2); }
+  .stack dt { padding-bottom: var(--space-2); border-bottom: 1px solid var(--border-hair); color: var(--text-primary); font-size: 0.95rem; }
+  .principles { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--space-4); }
+  .principles li { display: grid; grid-template-columns: 2rem 1fr; gap: var(--space-3); }
+  .principle-num { font-family: var(--font-mono); font-weight: 600; color: var(--text-accent); padding-top: 0.15rem; }
+  .principles h3 { font-size: 1.05rem; margin-bottom: var(--space-1); }
+  .principles p { margin: 0; padding: var(--space-2) var(--space-3); background: var(--bg-page); color: var(--text-secondary); font-size: 0.92rem; border-radius: var(--radius-sm); }
+
+  /* 04 주요 기능 — 기능 행: 핵심 화면 좌 · 그 화면의 기능 설명 우. 보조 화면은 첫 장 아래 작게(크게 보기) */
+  .feature-rows { display: grid; gap: clamp(2rem, 4vw, 3rem); }
+  .feature-row { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(18rem, 1fr); gap: var(--space-8); align-items: center; }
+  .feature-row + .feature-row { padding-top: clamp(2rem, 4vw, 3rem); border-top: 1px solid var(--border-hair); }
+  .feature-shots { display: grid; gap: var(--space-3); min-width: 0; }
+  /* 세로로 긴 첫 화면(예: 사건 접수 1920×1927)은 높이를 34rem으로 제한. width 100%를 유지해 로드 전에도 자리를 잡는다(CLS 0) */
+  .feature-shots:not(.feature-shots--portrait) > :global(.media-image:first-child img) { max-height: 34rem; object-fit: contain; }
+  .feature-shots__more { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+  .feature-shots--portrait { grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); align-items: start; }
+  .feature-shots--portrait :global(.media-image) { --thumb-h: 22rem; }
+  .feature-copy { min-width: 0; max-width: 40rem; }
+  .feature-copy h3 { font-size: 1.15rem; margin-bottom: var(--space-3); padding-bottom: var(--space-2); border-bottom: 1px solid var(--border-hair); }
+  .feature-copy ul { margin: 0; padding-left: 1.1rem; color: var(--text-secondary); font-size: 0.95rem; display: grid; gap: var(--space-2); }
+  .feature-text-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
+  .feature-rows > .feature-row + .feature-text-grid { padding-top: clamp(2rem, 4vw, 3rem); border-top: 1px solid var(--border-hair); }
+  .feature-note { padding: var(--space-5); border-left: 3px solid var(--accent-bar); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--bg-page); }
+  .feature-note .feature-copy { max-width: none; }
+
+  /* 05 고려사항 — wide: 이미지 전폭 → 문제/접근 2열(글이 든 도식·비교). side: 화면·일러스트 좌 · 문제/접근 세로 우 */
+  .considerations { display: grid; gap: clamp(3rem, 6vw, 5rem); }
+  .consideration { display: grid; gap: var(--space-6); }
+  .consideration-head { display: grid; gap: var(--space-4); }
+  .consideration-index { margin: 0 0 calc(var(--space-2) * -1); color: var(--text-accent); font-family: var(--font-mono); font-size: var(--font-size-utility); font-weight: 600; }
+  .consideration-question { margin: 0; max-width: 24ch; font-size: clamp(1.5rem, 3.2vw, 2.4rem); font-weight: 800; letter-spacing: -0.035em; line-height: 1.25; text-wrap: balance; }
+  .consideration-quote { margin: 0; max-width: 60ch; color: var(--text-secondary); font-size: 1.05rem; font-weight: 600; }
+  .consideration-body { display: grid; gap: var(--space-6); align-items: start; }
+  .consideration-text { display: grid; gap: var(--space-6); min-width: 0; }
+  .consideration-media { display: grid; align-items: start; gap: var(--space-4); min-width: 0; }
+  .consideration-media[data-count="2"] { grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); }
+  .consideration--side .consideration-body { grid-template-columns: minmax(0, 0.9fr) minmax(20rem, 1.1fr); gap: var(--space-8); }
+  .consideration--side .consideration-media { position: sticky; top: calc(var(--header-height) + 3.5rem); }
+  .consideration--side .shift-columns { grid-template-columns: 1fr; }
+  .consideration--side .consideration-media :global(.media-image--portrait) { --thumb-h: 40rem; }
+  .role-table { margin: 0; display: grid; gap: var(--space-2); }
+  .role-table div { display: grid; grid-template-columns: 10rem 1fr; gap: var(--space-4); padding: var(--space-3) var(--space-4); border-left: 3px solid var(--accent-bar); background: var(--bg-page); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+  .role-table dt { font-size: 0.95rem; color: var(--text-primary); }
+  .role-table ul { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); margin: 0; padding: 0; list-style: none; font-size: 0.92rem; }
+  .shift-columns { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); align-items: start; }
+  .shift-col { padding: var(--space-5); border-radius: var(--radius-md); }
+  .shift-col h4 { margin: 0 0 var(--space-3); font-size: 0.95rem; }
+  .shift-col ul { margin: 0; padding-left: 1.1rem; font-size: 0.92rem; display: grid; gap: var(--space-2); }
+  .shift-col--before { background: var(--bg-page); color: var(--text-secondary); }
+  .shift-col--before h4 { color: var(--text-primary); }
+  .shift-col--after { border-left: 3px solid var(--accent-bar); background: var(--bg-surface); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+  .shift-col--after h4 { color: var(--text-accent); }
+
+  /* 06 시연 */
   .media-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-5); }
-  .media-grid > :only-child { grid-column: 1 / -1; }
-  .reflection { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: var(--space-12); padding: clamp(2rem, 6vw, 5rem); border: 1px solid var(--border-hair); border-radius: var(--radius-xl); background: var(--bg-surface); }
-  .reflection strong { display: block; margin-bottom: var(--space-4); color: var(--text-accent-secondary-strong); font-size: 1.1rem; }
-  .reflection p { margin-bottom: 0; color: var(--text-secondary); font-size: clamp(1rem, 2vw, 1.2rem); }
+  .media-grid > :only-child { grid-column: 1 / -1; max-width: 56rem; }
+  .media-grid--portrait { grid-template-columns: repeat(auto-fit, minmax(14rem, 22rem)); justify-content: start; }
+  .original-link { color: var(--text-accent); font-weight: 700; }
+  .demo-empty { color: var(--text-secondary); }
+  .demo-empty a { color: var(--text-accent); font-weight: 700; }
+
+  /* 07 회고 — 소제목 3개를 3열 카드로, 링크는 제목 아래 한 줄 */
+  .retro-links { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6); margin: calc(var(--space-6) * -1) 0 var(--space-8); }
+  .retro-links a { display: inline-flex; align-items: baseline; gap: var(--space-2); min-height: 2.75rem; color: var(--text-accent); font-weight: 600; text-decoration: none; overflow-wrap: anywhere; }
+  .retro-links a span { color: var(--text-muted); font-family: var(--font-mono); font-size: var(--font-size-utility); }
+  .retro-links a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .retro-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); align-items: stretch; }
+  .retro-cards article { padding: var(--space-6); border-top: 3px solid var(--accent-bar); background: var(--bg-surface); }
+  .retro-cards h3 { margin-bottom: var(--space-3); font-size: 1.1rem; }
+  .retro-cards p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.8; }
+
   .project-nav { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); padding-block: var(--space-20); }
   .project-nav a { display: grid; padding: var(--space-6); border: 1px solid var(--border-hair); border-radius: var(--radius-lg); background: var(--bg-surface); text-decoration: none; }
   .project-nav a:hover { border-color: var(--accent-primary); }
   .project-nav span { color: var(--text-muted); font-size: var(--font-size-utility); }
   .project-nav strong { margin-top: var(--space-3); font-size: 1.4rem; }
   .project-nav .next { text-align: right; }
+
+  /* 반응형: 글 격자는 48rem, 미디어 격자는 40rem까지 2열을 유지한다(768px에서 1열로 무너지지 않게) */
+  @media (max-width: 60rem) {
+    .structure-grid, .structure-grid--flow { grid-template-columns: minmax(0, 1fr) minmax(14rem, 0.6fr); gap: var(--space-6); }
+    .evidence-row, .feature-row { grid-template-columns: minmax(0, 1.1fr) minmax(16rem, 1fr); gap: var(--space-6); }
+    .feature-text-grid, .retro-cards { grid-template-columns: 1fr; }
+    .consideration--side .consideration-body { grid-template-columns: 1fr; }
+    .consideration--side .consideration-media { position: static; max-width: 40rem; }
+    .consideration--side .shift-columns { grid-template-columns: 1fr 1fr; }
+  }
   @media (max-width: 48rem) {
-    .hero-grid, .content-grid, .reflection { grid-template-columns: 1fr; }
-    .sticky-title { position: static; }
-    .feature-grid, .media-grid { grid-template-columns: 1fr; }
+    .hero-grid, .shift-columns { grid-template-columns: 1fr; }
+    .consideration--side .shift-columns { grid-template-columns: 1fr; }
+    .role-table div { grid-template-columns: 1fr; gap: var(--space-2); }
+    .consideration-question { max-width: none; }
+  }
+  @media (max-width: 44rem) {
+    .structure-grid, .structure-grid--flow, .evidence-row, .evidence-row--illustration, .feature-row { grid-template-columns: 1fr; }
+    .evidence-media, .evidence-row--illustration .evidence-media { max-width: none; }
+    .evidence-notes, .feature-copy { max-width: none; }
+  }
+  @media (max-width: 40rem) {
+    .media-grid, .consideration-media[data-count="2"] { grid-template-columns: 1fr; }
     .media-grid > :only-child { grid-column: auto; }
-    .feature-card { min-height: auto; }
+    .media-grid--portrait { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .feature-shots--portrait { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
 </style>
