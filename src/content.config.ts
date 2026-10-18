@@ -4,7 +4,7 @@ import { z } from 'astro/zod';
 
 /** 시연·대표 미디어 (MediaFrame). aspectRatio가 없으면 media-manifest.json의 폭·높이로 계산한다. */
 const mediaAsset = z.object({
-  type: z.enum(['image', 'video', 'diagram', 'placeholder']),
+  type: z.enum(['image', 'video', 'diagram']),
   src: z.string().optional(),
   poster: z.string().optional(),
   alt: z.string(),
@@ -67,7 +67,8 @@ const projects = defineCollection({
     })),
 
     // 시연
-    demo: z.object({ media: z.array(mediaAsset), note: z.string().optional() }),
+    /** 시연 영상이 없는 프로젝트(VINO·요리왕 좌룡)는 생략 → 시연 섹션을 렌더하지 않는다 */
+    demo: z.object({ media: z.array(mediaAsset), note: z.string().optional() }).optional(),
 
     // 회고
     retrospective: z.object({

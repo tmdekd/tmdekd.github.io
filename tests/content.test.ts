@@ -29,15 +29,16 @@ describe('public portfolio content', () => {
       github: 'https://github.com/tmdekd',
       velog: 'https://velog.io/@tmdekd/posts',
     });
-    expect(Object.keys(profile.contact).sort()).toEqual(['email', 'github', 'portfolioOriginal', 'velog']);
+    expect(Object.keys(profile.contact).sort()).toEqual(['email', 'github', 'portfolioOriginal', 'resume', 'velog']);
     expect(profile).not.toHaveProperty('phone');
     expect(profile).not.toHaveProperty('birthDate');
     expect(profile).not.toHaveProperty('address');
     expect(JSON.stringify(profile)).not.toMatch(/010[- ]?2530[- ]?6958|2001\.01\.03/);
   });
 
-  it('marks the public resume as not yet available', () => {
-    expect(profile.resume.status).toBe('preparing');
+  it('links the resume only to a hosted PDF when one is published', () => {
+    const resume = profile.contact.resume;
+    expect(resume === undefined || /^\/files\/.+\.pdf$/.test(resume)).toBe(true);
   });
 
   it('keeps card video previews poster-only and detailed videos controllable', () => {

@@ -1,6 +1,5 @@
 ---
 import MediaFrame from './MediaFrame.astro';
-import ProjectBrief from './ProjectBrief.astro';
 import type { CollectionEntry } from 'astro:content';
 const { project } = Astro.props as { project: CollectionEntry<'projects'> };
 const data = project.data;
@@ -9,9 +8,7 @@ const data = project.data;
 <article class="project-card" data-period={data.period} data-reveal="project-card">
   <a class="project-card-link" href={`/projects/${project.id}/`} aria-label={`${data.title} 프로젝트 자세히 보기`}>
     <div class="project-card__media">
-      {data.heroMedia.type === 'placeholder'
-        ? <ProjectBrief project={project} />
-        : <MediaFrame asset={data.heroMedia} label={`Project ${String(data.order).padStart(2, '0')}`} mode="card" />}
+      <MediaFrame asset={data.heroMedia} mode="card" />
     </div>
     <div class="project-card__content">
       <h3>{data.title}</h3>
@@ -35,7 +32,6 @@ const data = project.data;
   .project-card { display: grid; grid-row: span 2; grid-template-rows: subgrid; min-width: 0; overflow: hidden; border: 1px solid var(--border-hair); border-radius: var(--radius-lg); background: var(--bg-surface); transition: border-color var(--motion-interactive); }
   .project-card-link { display: grid; grid-row: span 2; grid-template-rows: subgrid; color: inherit; text-decoration: none; }
   .project-card__media { aspect-ratio: 16 / 10; overflow: hidden; background: var(--bg-page); border-bottom: 1px solid var(--border-hair); }
-  .project-card__media:has(.project-brief) { aspect-ratio: auto; }
   .project-card__media :global(.media-frame) { height: 100%; }
   .project-card__content { display: flex; min-width: 0; flex: 1; flex-direction: column; padding: var(--space-6); }
   h3 { margin-bottom: var(--space-1); }

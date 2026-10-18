@@ -1,5 +1,5 @@
 export interface MediaAsset {
-  type: 'image' | 'video' | 'diagram' | 'placeholder';
+  type: 'image' | 'video' | 'diagram';
   src?: string;
   poster?: string;
   alt: string;

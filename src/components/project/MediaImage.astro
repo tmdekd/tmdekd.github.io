@@ -5,7 +5,7 @@
  * - fit: 썸네일 비율(예: '16 / 10') 안에 contain. 격자에서 높이를 맞출 때 쓴다.
  * - 세로로 긴 화면(portrait)은 높이(--thumb-h)로 묶어 가로로 나열할 수 있게 한다.
  */
-import { getMedia } from '../../data/media';
+import { getMedia, srcsetOf, SIZES } from '../../data/media';
 
 interface Props {
   src: string;
@@ -17,8 +17,11 @@ interface Props {
   fit?: string;
   loading?: 'lazy' | 'eager';
   zoom?: boolean;
+  /** srcset 의 sizes. 기본은 행 안 이미지(최대 40rem) */
+  sizes?: string;
 }
-const { src, alt, caption, variant = 'frame', fit, loading = 'lazy', zoom = true } = Astro.props;
+const { src, alt, caption, variant = 'frame', fit, loading = 'lazy', zoom = true, sizes = SIZES.row } = Astro.props;
+const srcset = srcsetOf(src);
 const meta = getMedia(src);
 const altText = alt ?? meta?.alt ?? '';
 const portrait = meta ? meta.height > meta.width * 1.15 : false;
@@ -27,11 +30,11 @@ const portrait = meta ? meta.height > meta.width * 1.15 : false;
 <figure class:list={['media-image', `media-image--${variant}`, { 'media-image--fit': fit, 'media-image--portrait': portrait, 'media-image--zoom': zoom }]} style={fit ? `--fit: ${fit}` : undefined}>
   {zoom ? (
     <button class="media-zoom" type="button" data-lightbox-src={src} data-lightbox-alt={altText} data-lightbox-caption={caption} aria-label={`크게 보기: ${altText}`}>
-      <img src={src} alt={altText} width={meta?.width} height={meta?.height} loading={loading} decoding="async" />
+      <img src={src} srcset={srcset} sizes={srcset ? sizes : undefined} alt={altText} width={meta?.width} height={meta?.height} loading={loading} decoding="async" />
       <span class="zoom-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 4a6 6 0 1 1 0 12 6 6 0 0 1 0-12Zm0 2v8m-4-4h8M15 15l5 5" /></svg></span>
     </button>
   ) : (
-    <img src={src} alt={altText} width={meta?.width} height={meta?.height} loading={loading} decoding="async" />
+    <img src={src} srcset={srcset} sizes={srcset ? sizes : undefined} alt={altText} width={meta?.width} height={meta?.height} loading={loading} decoding="async" />
   )}
   {caption && <figcaption>{caption}</figcaption>}
 </figure>

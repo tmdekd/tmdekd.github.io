@@ -7,7 +7,10 @@
     "slide": 2,
     "role": "profile",
     "source": "pptx:image10.png",
-    "sourceSize": "350x385"
+    "sourceSize": "350x385",
+    "variants": [
+      350
+    ]
   },
   "/media/projects/neurocare/hero-chatbot.webp": {
     "width": 480,
@@ -17,7 +20,10 @@
     "slide": 5,
     "role": "hero",
     "source": "assets:NeuroCare/yeonghee_chatbot.png",
-    "sourceSize": "480x906"
+    "sourceSize": "480x906",
+    "variants": [
+      480
+    ]
   },
   "/media/projects/neurocare/family-info.webp": {
     "width": 543,
@@ -27,7 +33,10 @@
     "slide": 5,
     "role": "feature",
     "source": "assets:NeuroCare/unnamed.png",
-    "sourceSize": "543x908"
+    "sourceSize": "543x908",
+    "variants": [
+      543
+    ]
   },
   "/media/projects/neurocare/weather.webp": {
     "width": 496,
@@ -37,7 +46,10 @@
     "slide": 9,
     "role": "feature",
     "source": "assets:NeuroCare/yeonghee_weather.png",
-    "sourceSize": "496x906"
+    "sourceSize": "496x906",
+    "variants": [
+      496
+    ]
   },
   "/media/projects/neurocare/evidence-depression.webp": {
     "width": 845,
@@ -47,7 +59,11 @@
     "slide": 6,
     "role": "evidence",
     "source": "assets:NeuroCare/1.png",
-    "sourceSize": "845x565"
+    "sourceSize": "845x565",
+    "variants": [
+      800,
+      845
+    ]
   },
   "/media/projects/neurocare/evidence-suicide.webp": {
     "width": 2000,
@@ -57,7 +73,12 @@
     "slide": 6,
     "role": "evidence",
     "source": "assets:NeuroCare/2.png",
-    "sourceSize": "2048x1349"
+    "sourceSize": "2048x1349",
+    "variants": [
+      800,
+      1200,
+      2000
+    ]
   },
   "/media/projects/neurocare/evidence-elderly.webp": {
     "width": 983,
@@ -67,7 +88,11 @@
     "slide": 6,
     "role": "evidence",
     "source": "assets:NeuroCare/3.png",
-    "sourceSize": "983x502"
+    "sourceSize": "983x502",
+    "variants": [
+      800,
+      983
+    ]
   },
   "/media/projects/neurocare/architecture.webp": {
     "width": 1138,
@@ -77,7 +102,11 @@
     "slide": 8,
     "role": "architecture",
     "source": "pptx:image69.png",
-    "sourceSize": "1138x600"
+    "sourceSize": "1138x600",
+    "variants": [
+      800,
+      1138
+    ]
   },
   "/media/projects/neurocare/consider1-base.webp": {
     "width": 2000,
@@ -87,7 +116,12 @@
     "slide": 10,
     "role": "consideration",
     "source": "assets:NeuroCare/upscale_250923_7e457a49-cd6a-45df-8237-65750672d6fe_MiriCanvas.png",
-    "sourceSize": "4492x1024"
+    "sourceSize": "4492x1024",
+    "variants": [
+      800,
+      1200,
+      2000
+    ]
   },
   "/media/projects/neurocare/consider1-finetuned.webp": {
     "width": 2000,
@@ -97,7 +131,12 @@
     "slide": 10,
     "role": "consideration",
     "source": "assets:NeuroCare/upscale_250923_472cf10f-7010-4cb2-bf08-ca10f124d4f1_MiriCanvas.png",
-    "sourceSize": "3674x1022"
+    "sourceSize": "3674x1022",
+    "variants": [
+      800,
+      1200,
+      2000
+    ]
   },
   "/media/projects/neurocare/consider2-candidate.webp": {
     "width": 1649,
@@ -107,7 +146,12 @@
     "slide": 11,
     "role": "consideration",
     "source": "assets:NeuroCare/공감형.png",
-    "sourceSize": "1649x375"
+    "sourceSize": "1649x375",
+    "variants": [
+      800,
+      1200,
+      1649
+    ]
   },
   "/media/projects/neurocare/consider2-final.webp": {
     "width": 1641,
@@ -117,7 +161,12 @@
     "slide": 11,
     "role": "consideration",
     "source": "assets:NeuroCare/고령자.png",
-    "sourceSize": "1641x383"
+    "sourceSize": "1641x383",
+    "variants": [
+      800,
+      1200,
+      1641
+    ]
   },
   "/media/projects/neurocare/consider3-huggingface.webp": {
     "width": 1074,
@@ -127,7 +176,11 @@
     "slide": 12,
     "role": "consideration",
     "source": "assets:NeuroCare/스크린샷_2025-09-23_193243.png",
-    "sourceSize": "1074x761"
+    "sourceSize": "1074x761",
+    "variants": [
+      800,
+      1074
+    ]
   },
   "/media/projects/neurocare/consider3-runpod.webp": {
     "width": 1570,
@@ -137,7 +190,12 @@
     "slide": 12,
     "role": "consideration",
     "source": "assets:NeuroCare/sdfsdf.png",
-    "sourceSize": "1570x675"
+    "sourceSize": "1570x675",
+    "variants": [
+      800,
+      1200,
+      1570
+    ]
   },
   "/media/projects/neurocare/demo-elder.mp4": {
     "width": 510,
@@ -187,7 +245,12 @@
     "slide": 15,
     "role": "hero",
     "source": "assets:LAWMATE/메인_페이지.png",
-    "sourceSize": "1920x1220"
+    "sourceSize": "1920x1220",
+    "variants": [
+      800,
+      1200,
+      1920
+    ]
   },
   "/media/projects/lawmate/evidence-harvey.webp": {
     "width": 1812,
@@ -197,7 +260,12 @@
     "slide": 16,
     "role": "evidence",
     "source": "assets:LAWMATE/upscale_250925_6f088c05-6965-4cf5-9338-67650fd0b713_MiriCanvas.png",
-    "sourceSize": "1812x1024"
+    "sourceSize": "1812x1024",
+    "variants": [
+      800,
+      1200,
+      1812
+    ]
   },
   "/media/projects/lawmate/evidence-cases.webp": {
     "width": 1770,
@@ -207,7 +275,12 @@
     "slide": 16,
     "role": "evidence",
     "source": "assets:LAWMATE/upscale_250925_73a8f8c0-a6d4-46ac-b567-d9d2efedfebd_MiriCanvas.png",
-    "sourceSize": "1770x1170"
+    "sourceSize": "1770x1170",
+    "variants": [
+      800,
+      1200,
+      1770
+    ]
   },
   "/media/projects/lawmate/evidence-civil.webp": {
     "width": 374,
@@ -217,7 +290,10 @@
     "slide": 16,
     "role": "evidence",
     "source": "pptx:image119.png",
-    "sourceSize": "374x374"
+    "sourceSize": "374x374",
+    "variants": [
+      374
+    ]
   },
   "/media/projects/lawmate/architecture.webp": {
     "width": 2000,
@@ -227,7 +303,12 @@
     "slide": 18,
     "role": "architecture",
     "source": "assets:LAWMATE/upscale_250925_fa9d2c14-d5d4-46b5-8909-b4343c7b4ccd_MiriCanvas.png",
-    "sourceSize": "3140x1690"
+    "sourceSize": "3140x1690",
+    "variants": [
+      800,
+      1200,
+      2000
+    ]
   },
   "/media/projects/lawmate/feature-login.webp": {
     "width": 1920,
@@ -237,7 +318,12 @@
     "slide": 19,
     "role": "feature",
     "source": "assets:LAWMATE/로그인_화면.png",
-    "sourceSize": "1920x868"
+    "sourceSize": "1920x868",
+    "variants": [
+      800,
+      1200,
+      1920
+    ]
   },
   "/media/projects/lawmate/feature-admin.webp": {
     "width": 1920,
@@ -247,7 +333,12 @@
     "slide": 19,
     "role": "feature",
     "source": "assets:LAWMATE/관리자_페이지.png",
-    "sourceSize": "1920x931"
+    "sourceSize": "1920x931",
+    "variants": [
+      800,
+      1200,
+      1920
+    ]
   },
   "/media/projects/lawmate/feature-intake.webp": {
     "width": 1920,
@@ -257,7 +348,12 @@
     "slide": 20,
     "role": "feature",
     "source": "assets:LAWMATE/사건_접수_페이지.png",
-    "sourceSize": "1920x1927"
+    "sourceSize": "1920x1927",
+    "variants": [
+      800,
+      1200,
+      1920
+    ]
   },
   "/media/projects/lawmate/feature-team-recommend.webp": {
     "width": 1209,
@@ -267,7 +363,12 @@
     "slide": 20,
     "role": "feature",
     "source": "assets:LAWMATE/AI_팀_추천_페이지.png",
-    "sourceSize": "1209x570"
+    "sourceSize": "1209x570",
+    "variants": [
+      800,
+      1200,
+      1209
+    ]
   },
   "/media/projects/lawmate/feature-strategy.webp": {
     "width": 1200,
@@ -277,7 +378,11 @@
     "slide": 21,
     "role": "feature",
     "source": "assets:LAWMATE/AI_추천_전략.png",
-    "sourceSize": "1200x573"
+    "sourceSize": "1200x573",
+    "variants": [
+      800,
+      1200
+    ]
   },
   "/media/projects/lawmate/feature-case-search.webp": {
     "width": 1207,
@@ -287,7 +392,12 @@
     "slide": 22,
     "role": "feature",
     "source": "assets:LAWMATE/유사_판례_검색.png",
-    "sourceSize": "1207x541"
+    "sourceSize": "1207x541",
+    "variants": [
+      800,
+      1200,
+      1207
+    ]
   },
   "/media/projects/lawmate/feature-case-question.webp": {
     "width": 1207,
@@ -297,7 +407,12 @@
     "slide": 22,
     "role": "feature",
     "source": "assets:LAWMATE/판례를_선택하고_관련_질문.png",
-    "sourceSize": "1207x549"
+    "sourceSize": "1207x549",
+    "variants": [
+      800,
+      1200,
+      1207
+    ]
   },
   "/media/projects/lawmate/feature-case-fulltext.webp": {
     "width": 1214,
@@ -307,7 +422,12 @@
     "slide": 22,
     "role": "feature",
     "source": "assets:LAWMATE/판례_전문보기.png",
-    "sourceSize": "1214x549"
+    "sourceSize": "1214x549",
+    "variants": [
+      800,
+      1200,
+      1214
+    ]
   },
   "/media/projects/lawmate/consider1-roles.webp": {
     "width": 1005,
@@ -317,7 +437,11 @@
     "slide": 23,
     "role": "consideration",
     "source": "pptx:image147.png",
-    "sourceSize": "1005x470"
+    "sourceSize": "1005x470",
+    "variants": [
+      800,
+      1005
+    ]
   },
   "/media/projects/lawmate/consider1-jwt.webp": {
     "width": 1730,
@@ -327,7 +451,12 @@
     "slide": 24,
     "role": "consideration",
     "source": "assets:LAWMATE/최종발표_(3).png",
-    "sourceSize": "1730x662"
+    "sourceSize": "1730x662",
+    "variants": [
+      800,
+      1200,
+      1730
+    ]
   },
   "/media/projects/lawmate/consider2-langgraph.webp": {
     "width": 1718,
@@ -337,7 +466,12 @@
     "slide": 25,
     "role": "consideration",
     "source": "assets:LAWMATE/최종발표_(5).png",
-    "sourceSize": "1718x992"
+    "sourceSize": "1718x992",
+    "variants": [
+      800,
+      1200,
+      1718
+    ]
   },
   "/media/projects/lawmate/demo-intake.mp4": {
     "width": 1280,
@@ -387,7 +521,12 @@
     "slide": 29,
     "role": "hero",
     "source": "assets:VINO/442618199-c6359d21-f2dc-44e4-bb9e-acf6a48653a2.png",
-    "sourceSize": "1920x1032"
+    "sourceSize": "1920x1032",
+    "variants": [
+      800,
+      1200,
+      1920
+    ]
   },
   "/media/projects/vino/evidence-beginner.webp": {
     "width": 599,
@@ -397,7 +536,10 @@
     "slide": 30,
     "role": "evidence",
     "source": "pptx:image171.png",
-    "sourceSize": "599x633"
+    "sourceSize": "599x633",
+    "variants": [
+      599
+    ]
   },
   "/media/projects/vino/flow.webp": {
     "width": 2000,
@@ -407,7 +549,12 @@
     "slide": 32,
     "role": "flow",
     "source": "assets:VINO/442555809-0baed123-e378-4c5f-b8f8-ad2c2262a3c3.png",
-    "sourceSize": "4722x3102"
+    "sourceSize": "4722x3102",
+    "variants": [
+      800,
+      1200,
+      2000
+    ]
   },
   "/media/projects/vino/feature-sllm.webp": {
     "width": 1920,
@@ -417,7 +564,12 @@
     "slide": 33,
     "role": "feature",
     "source": "assets:VINO/442618200-0e01b306-30e5-4e70-ba6d-b40f8c3b0a5d.png",
-    "sourceSize": "1920x1032"
+    "sourceSize": "1920x1032",
+    "variants": [
+      800,
+      1200,
+      1920
+    ]
   },
   "/media/projects/vino/consider1-rag.webp": {
     "width": 1920,
@@ -427,7 +579,12 @@
     "slide": 34,
     "role": "consideration",
     "source": "assets:VINO/442618201-a2237180-a633-46fa-ad56-c5e34e744006.png",
-    "sourceSize": "1920x1032"
+    "sourceSize": "1920x1032",
+    "variants": [
+      800,
+      1200,
+      1920
+    ]
   },
   "/media/projects/yoriwang-jwaryong/hero-main.webp": {
     "width": 1920,
@@ -437,7 +594,12 @@
     "slide": 37,
     "role": "hero",
     "source": "assets:요리왕 좌룡/main.png",
-    "sourceSize": "1920x1020"
+    "sourceSize": "1920x1020",
+    "variants": [
+      800,
+      1200,
+      1920
+    ]
   },
   "/media/projects/yoriwang-jwaryong/evidence-fridge.webp": {
     "width": 599,
@@ -447,7 +609,10 @@
     "slide": 38,
     "role": "evidence",
     "source": "pptx:image205.png",
-    "sourceSize": "599x633"
+    "sourceSize": "599x633",
+    "variants": [
+      599
+    ]
   },
   "/media/projects/yoriwang-jwaryong/flow.webp": {
     "width": 1612,
@@ -457,7 +622,12 @@
     "slide": 40,
     "role": "flow",
     "source": "assets:요리왕 좌룡/흐름도.png",
-    "sourceSize": "1612x2216"
+    "sourceSize": "1612x2216",
+    "variants": [
+      800,
+      1200,
+      1612
+    ]
   },
   "/media/projects/yoriwang-jwaryong/consider1-grounded.webp": {
     "width": 1093,
@@ -467,7 +637,11 @@
     "slide": 42,
     "role": "consideration",
     "source": "pptx:image228.png",
-    "sourceSize": "1093x597"
+    "sourceSize": "1093x597",
+    "variants": [
+      800,
+      1093
+    ]
   },
   "/media/projects/yoriwang-jwaryong/consider2-sufficiency.webp": {
     "width": 1153,
@@ -477,7 +651,11 @@
     "slide": 43,
     "role": "consideration",
     "source": "pptx:image231.png",
-    "sourceSize": "1153x630"
+    "sourceSize": "1153x630",
+    "variants": [
+      800,
+      1153
+    ]
   },
   "/media/projects/yoriwang-jwaryong/consider3-simple.webp": {
     "width": 1121,
@@ -487,6 +665,10 @@
     "slide": 44,
     "role": "consideration",
     "source": "pptx:image234.png",
-    "sourceSize": "1121x612"
+    "sourceSize": "1121x612",
+    "variants": [
+      800,
+      1121
+    ]
   }
 }

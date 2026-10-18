@@ -18,6 +18,8 @@
     "lab:motion": "node scripts/lab/capture-motion.mjs",
     "lab:lighthouse": "node scripts/lab/lighthouse.mjs",
     "lab:section": "node scripts/lab/capture-section.mjs",
+    "lab:og": "node scripts/lab/og-image.mjs",
+    "lab:font-metrics": "node scripts/lab/font-metrics.mjs",
     "media:import": "node scripts/media/import-portfolio-media.mjs"
   },
   "dependencies": {

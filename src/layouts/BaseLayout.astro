@@ -3,6 +3,18 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import EmailDialog from '../components/EmailDialog.astro';
 import '../styles/global.css';
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+/**
+ * 모션 플래그는 첫 페인트 전에 실행돼야 하므로(히어로 요소 숨김) 동기 스크립트여야 한다.
+ * 별도 요청이면 모바일 4G에서 렌더를 ~300ms 막아, 본문을 인라인하고 CSP 에는 그 내용의 sha256 해시만 허용한다(인라인 전면 허용 아님).
+ * 원본은 public/scripts/motion-flag.js 에 그대로 두어 내용과 해시가 항상 같이 갱신된다.
+ */
+// 빌드 시 프로젝트 루트 기준. HTML 파서는 CRLF를 LF로 정규화하므로 해시도 LF 기준으로 계산해야 브라우저와 일치한다
+const motionFlagSource = readFileSync(resolve('public/scripts/motion-flag.js'), 'utf8').replaceAll('\r\n', '\n');
+const motionFlagHash = createHash('sha256').update(motionFlagSource).digest('base64');
 
 interface Props {
   title?: string;
@@ -16,7 +28,7 @@ const {
   title = '문승기 · AI Engineer',
   description = 'LLM·RAG·Agent 서비스와 문서 파싱·검색 시스템을 설계하고 구현하는 AI 엔지니어 문승기의 포트폴리오입니다.',
   home = false,
-  image = '/og-default.svg',
+  image = '/og-default.png',
   noindex = false,
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -30,11 +42,11 @@ const socialImage = new URL(image, Astro.site);
     <meta name="viewport" content="width=device-width" />
     <meta name="theme-color" content="#0f172a" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; media-src 'self' https:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'" />
+    <meta http-equiv="Content-Security-Policy" content={`default-src 'self'; script-src 'self' 'sha256-${motionFlagHash}'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; media-src 'self' https:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'`} />
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta name="generator" content={Astro.generator} />
-    <script is:inline src="/scripts/motion-flag.js"></script>
+    <script is:inline set:html={motionFlagSource}></script>
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta property="og:type" content="website" />
@@ -52,7 +64,7 @@ const socialImage = new URL(image, Astro.site);
     <main id="main-content"><slot /></main>
     <Footer />
     <EmailDialog />
-    <script is:inline src="/scripts/section-navigation.js"></script>
-    <script is:inline src="/scripts/reveal-on-view.js"></script>
+    <script is:inline defer src="/scripts/section-navigation.js"></script>
+    <script is:inline defer src="/scripts/reveal-on-view.js"></script>
   </body>
 </html>

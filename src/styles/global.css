@@ -1,7 +1,21 @@
 @import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
 @import '@fontsource/ibm-plex-mono/400.css';
 @import '@fontsource/ibm-plex-mono/600.css';
+
 @import './tokens.css';
+
+/* Pretendard 로드 전 대체 폰트(맑은 고딕)의 글자 폭·행 높이를 Pretendard에 맞춰 교체 시 레이아웃 이동(CLS)을 없앤다.
+   size-adjust 는 한글 문장 실측 폭 비율(scripts/lab/font-width-check.mjs, 2026-10-18: 1.000~1.022, 평균 1.0116)로 정했다.
+   xAvgCharWidth 기반 값(97.05%)은 라틴 위주라 한글 제목의 줄바꿈이 달라져 오히려 CLS를 냈다.
+   ascent·descent 는 scripts/lab/font-metrics.mjs 의 Pretendard 값(ascent 0.952em, descent 0.241em)을 size-adjust 로 나눈 값. macOS Apple SD Gothic Neo는 근사 공유. */
+@font-face {
+  font-family: 'Pretendard Fallback';
+  src: local('Malgun Gothic'), local('맑은 고딕'), local('Apple SD Gothic Neo');
+  size-adjust: 101.16%;
+  ascent-override: 94.13%;
+  descent-override: 23.84%;
+  line-gap-override: 0%;
+}
 
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
