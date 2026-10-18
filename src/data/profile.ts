@@ -17,8 +17,7 @@ export const profile = {
     email: 'moon010103@naver.com',
     github: 'https://github.com/tmdekd',
     velog: 'https://velog.io/@tmdekd/posts',
-    /** 원본은 QR 코드만 있어 URL 확인 필요. 비어 있으면 Contact에 표시하지 않는다. */
-    notion: '' as string,
+    /** 원본 표지의 Notion QR은 싣지 않기로 함(2026-10-16 결정) */
     /** 미리캔버스에 웹 게시된 원본 포트폴리오(docs/원본 포트폴리오/웹에 게시된 링크.txt) */
     portfolioOriginal: 'https://www.miricanvas.com/v2/ko/design2/v/932e57a4-64e7-45f7-8781-7615642f41be',
   },

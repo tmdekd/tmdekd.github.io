@@ -241,21 +241,55 @@ test('project cards show the original hero screenshots with alt text', async ({ 
   }
 });
 
-test('feature cards stay in two columns at tablet width instead of stacking', async ({ page }) => {
+test('feature rows put the screenshot left of its text at tablet width', async ({ page }) => {
   await page.setViewportSize({ width: 768, height: 1024 });
   await page.goto('/projects/lawmate/');
-  const cards = page.locator('#project-features .feature-card');
-  expect(await cards.count()).toBeGreaterThanOrEqual(4);
-  const first = await cards.nth(0).boundingBox();
-  const second = await cards.nth(1).boundingBox();
-  expect(first && second && Math.abs(first.y - second.y) < 2).toBe(true);
-  expect(second!.x).toBeGreaterThan(first!.x + first!.width - 1);
+  const row = page.locator('#project-features .feature-row').first();
+  await row.scrollIntoViewIfNeeded();
+  await expect.poll(() => row.locator('.feature-shots img').first().evaluate((img) => (img as HTMLImageElement).complete)).toBe(true);
+  const shots = await row.locator('.feature-shots').boundingBox();
+  const copy = await row.locator('.feature-copy').boundingBox();
+  expect(shots && copy).toBeTruthy();
+  expect(shots!.x + shots!.width).toBeLessThanOrEqual(copy!.x + 1);
+  // 같은 행(세로 범위가 겹친다): 글이 화면 옆에 놓이고 아래로 밀리지 않았다
+  expect(copy!.y).toBeLessThan(shots!.y + shots!.height);
+  expect(copy!.y + copy!.height).toBeGreaterThan(shots!.y);
+});
+
+test('evidence rows put the chart left of its notes', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/projects/neurocare/');
+  const row = page.locator('#project-background .evidence-row').first();
+  const media = await row.locator('.evidence-media').boundingBox();
+  const notes = await row.locator('.evidence-notes').boundingBox();
+  expect(media && notes).toBeTruthy();
+  expect(media!.x + media!.width).toBeLessThanOrEqual(notes!.x + 1);
+});
+
+test('consideration layouts follow the MDX flag (wide vs side)', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/projects/yoriwang-jwaryong/');
+  const container = await page.locator('#project-considerations').boundingBox();
+  const wide = await page.locator('.consideration--wide .consideration-media img').first().boundingBox();
+  const side = await page.locator('.consideration--side .consideration-media img').first().boundingBox();
+  expect(container && wide && side).toBeTruthy();
+  expect(wide!.width).toBeGreaterThanOrEqual(container!.width * 0.9);
+  expect(side!.width).toBeLessThan(container!.width * 0.6);
+});
+
+test('retrospective shows three cards side by side on desktop', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/projects/lawmate/');
+  const cards = page.locator('#project-retrospective .retro-cards > article');
+  await expect(cards).toHaveCount(3);
+  const boxes = await Promise.all([0, 1, 2].map((index) => cards.nth(index).boundingBox()));
+  expect(boxes.every((box) => box && Math.abs(box.y - boxes[0]!.y) < 2)).toBe(true);
 });
 
 test('screenshots open in a lightbox and return focus on close', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/projects/lawmate/');
-  const button = page.locator('#project-features .media-zoom').first();
+  const button = page.locator('#project-features .feature-shots .media-zoom').first();
   await button.scrollIntoViewIfNeeded();
   await button.click();
   const dialog = page.locator('#media-lightbox');

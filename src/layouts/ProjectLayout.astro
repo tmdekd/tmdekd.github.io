@@ -23,6 +23,15 @@ interface Props {
 }
 const { project, previous, next } = Astro.props;
 const data = project.data;
+/** 제안 배경을 "이미지 있는 항목 + 뒤따르는 글만 있는 항목들" 단위로 묶어 한 행(이미지 좌 · 글 우)으로 만든다 */
+type Evidence = (typeof project.data.background)[number];
+const evidenceRows = project.data.background.reduce<{ media?: Evidence['media']; notes: Evidence[] }[]>((rows, item) => {
+  if (item.media || rows.length === 0) rows.push({ media: item.media, notes: [] });
+  rows[rows.length - 1].notes.push(item);
+  return rows;
+}, []);
+const featureRows = project.data.featureGroups.filter((group) => group.media.length > 0);
+const featureNotes = project.data.featureGroups.filter((group) => group.media.length === 0);
 const structureLabel = data.architecture ? '시스템 아키텍처' : '서비스 흐름 설계';
 const sections = [
   { id: 'project-background', label: '배경', title: '제안 배경' },
@@ -83,12 +92,18 @@ const numbered = (index: number) => String(index + 1).padStart(2, '0');
         <p class="section-kicker"><span class="section-number">01</span> 배경</p>
         <h2>{data.title}의 제안 배경</h2>
       </div>
-      <div class="evidence-grid" data-count={data.background.length}>
-        {data.background.map((item) => (
-          <article class="evidence">
-            {item.media && <MediaImage src={item.media.src} alt={item.media.alt} caption={item.media.caption} />}
-            {item.heading && <h3>{item.heading}</h3>}
-            {item.points.length > 0 && <ul>{item.points.map((point) => <li>{point}</li>)}</ul>}
+      <div class="evidence-rows">
+        {evidenceRows.map((row) => (
+          <article class:list={['evidence-row', { 'evidence-row--illustration': row.notes.length > 1 }]}>
+            {row.media && <div class="evidence-media"><MediaImage src={row.media.src} alt={row.media.alt} caption={row.media.caption} /></div>}
+            <div class="evidence-notes">
+              {row.notes.map((item) => (
+                <div class="evidence">
+                  {item.heading && <h3>{item.heading}</h3>}
+                  {item.points.length > 0 && <ul>{item.points.map((point) => <li>{point}</li>)}</ul>}
+                </div>
+              ))}
+            </div>
           </article>
         ))}
       </div>
@@ -141,23 +156,45 @@ const numbered = (index: number) => String(index + 1).padStart(2, '0');
           <p class="section-kicker"><span class="section-number">04</span> 주요 기능</p>
           <h2>{data.title}의 주요 기능</h2>
         </div>
-        <div class="feature-groups" data-count={data.featureGroups.length}>
-          {data.featureGroups.map((group) => {
-            const portrait = group.media.length > 0 && group.media.every((media) => isPortrait(media.src));
+        <div class="feature-rows">
+          {featureRows.map((group) => {
+            const portrait = group.media.every((media) => isPortrait(media.src));
+            const [primary, ...more] = group.media;
             return (
-              <article class:list={['feature-card', { 'feature-card--text': group.media.length === 0 }]}>
+              <article class="feature-row">
+                <div class:list={['feature-shots', { 'feature-shots--portrait': portrait }]} data-count={group.media.length}>
+                  {portrait ? (
+                    group.media.map((media) => <MediaImage src={media.src} alt={media.alt} caption={media.caption} />)
+                  ) : (
+                    <>
+                      <MediaImage src={primary.src} alt={primary.alt} caption={primary.caption} />
+                      {more.length > 0 && (
+                        <div class="feature-shots__more">
+                          {more.map((media) => <MediaImage src={media.src} alt={media.alt} caption={media.caption} fit="16 / 10" />)}
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
                 <div class="feature-copy">
                   <h3>{group.audience}</h3>
                   <ul>{group.points.map((point) => <li>{point}</li>)}</ul>
                 </div>
-                {group.media.length > 0 && (
-                  <div class:list={['feature-media', { 'feature-media--portrait': portrait }]} data-count={group.media.length}>
-                    {group.media.map((media) => <MediaImage src={media.src} alt={media.alt} caption={media.caption} fit={portrait ? undefined : '16 / 10'} />)}
-                  </div>
-                )}
               </article>
             );
           })}
+          {featureNotes.length > 0 && (
+            <div class="feature-text-grid">
+              {featureNotes.map((group) => (
+                <article class="feature-note">
+                  <div class="feature-copy">
+                    <h3>{group.audience}</h3>
+                    <ul>{group.points.map((point) => <li>{point}</li>)}</ul>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>
@@ -170,7 +207,7 @@ const numbered = (index: number) => String(index + 1).padStart(2, '0');
       </div>
       <div class="considerations">
         {data.considerations.map((item, index) => (
-          <article class:list={['consideration', { 'consideration--side': item.media.length === 1 }]}>
+          <article class:list={['consideration', `consideration--${item.layout}`]}>
             <header class="consideration-head">
               <p class="consideration-index">주요 고려사항 {index + 1}</p>
               <h3 class="consideration-question">{item.question}</h3>
@@ -233,17 +270,14 @@ const numbered = (index: number) => String(index + 1).padStart(2, '0');
         <p class="section-kicker"><span class="section-number">07</span> 회고</p>
         <h2>{data.title} 회고</h2>
       </div>
-      <div class="retro-grid">
-        <div class="retro-notes">
-          {data.retrospective.sections.map((note) => (
-            <article><h3>{note.title}</h3><p>{note.body}</p></article>
-          ))}
-        </div>
-        <aside class="retro-links surface" aria-label="회고 더보기">
-          <p class="retro-links__title">회고 더보기</p>
-          {data.retrospective.links.velog && <a href={data.retrospective.links.velog} target="_blank" rel="noreferrer"><span>Velog</span>{showLink(data.retrospective.links.velog)} ↗</a>}
-          {data.retrospective.links.github && <a href={data.retrospective.links.github} target="_blank" rel="noreferrer"><span>GitHub</span>{showLink(data.retrospective.links.github)} ↗</a>}
-        </aside>
+      <nav class="retro-links" aria-label="회고 더보기">
+        {data.retrospective.links.velog && <a href={data.retrospective.links.velog} target="_blank" rel="noreferrer"><span>Velog</span>{showLink(data.retrospective.links.velog)} ↗</a>}
+        {data.retrospective.links.github && <a href={data.retrospective.links.github} target="_blank" rel="noreferrer"><span>GitHub</span>{showLink(data.retrospective.links.github)} ↗</a>}
+      </nav>
+      <div class="retro-cards">
+        {data.retrospective.sections.map((note) => (
+          <article><h3>{note.title}</h3><p>{note.body}</p></article>
+        ))}
       </div>
     </section>
 
@@ -287,10 +321,15 @@ const numbered = (index: number) => String(index + 1).padStart(2, '0');
   .case-study-section { scroll-margin-top: calc(var(--header-height) + 3.5rem); }
   .section-heading h2 { margin-bottom: 0; }
 
-  /* 01 배경 */
-  .evidence-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); }
-  .evidence-grid[data-count="4"] { grid-template-columns: minmax(0, 0.9fr) repeat(3, minmax(0, 1fr)); }
-  .evidence { display: grid; align-content: start; gap: var(--space-4); min-width: 0; }
+  /* 01 배경 — 근거 행: 이미지 좌 · 그 이미지에 대한 설명 우 */
+  .evidence-rows { display: grid; gap: clamp(1.5rem, 3vw, 2.5rem); }
+  .evidence-row { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(18rem, 1.1fr); gap: var(--space-8); align-items: center; }
+  .evidence-row + .evidence-row { padding-top: clamp(1.5rem, 3vw, 2.5rem); border-top: 1px solid var(--border-hair); }
+  .evidence-media { max-width: 28rem; min-width: 0; }
+  .evidence-row--illustration { grid-template-columns: minmax(0, 18rem) minmax(0, 1fr); align-items: start; }
+  .evidence-row--illustration .evidence-media { max-width: 18rem; }
+  .evidence-notes { display: grid; gap: var(--space-5); min-width: 0; max-width: 40rem; }
+  .evidence { display: grid; align-content: start; gap: var(--space-3); min-width: 0; }
   .evidence h3 { font-size: 1.05rem; padding-bottom: var(--space-2); border-bottom: 1px solid var(--border-hair); }
   .evidence ul { margin: 0; padding-left: 1.1rem; color: var(--text-secondary); font-size: 0.92rem; display: grid; gap: var(--space-2); }
   .evidence li:first-child:not(:only-child) { list-style: none; margin-left: -1.1rem; color: var(--text-primary); }
@@ -300,7 +339,7 @@ const numbered = (index: number) => String(index + 1).padStart(2, '0');
   .intent-quote p { margin: 0; max-width: 40ch; font-size: clamp(1.35rem, 2.8vw, 2rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.35; text-wrap: balance; }
 
   /* 03 구조 */
-  .structure-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(16rem, 0.8fr); gap: var(--space-8); align-items: start; }
+  .structure-grid { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(16rem, 0.8fr); gap: var(--space-8); align-items: start; }
   .structure-grid--flow { grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 1fr); }
   .stack { margin: 0; display: grid; gap: var(--space-4); }
   .stack div { display: grid; gap: var(--space-2); }
@@ -311,21 +350,25 @@ const numbered = (index: number) => String(index + 1).padStart(2, '0');
   .principles h3 { font-size: 1.05rem; margin-bottom: var(--space-1); }
   .principles p { margin: 0; padding: var(--space-2) var(--space-3); background: var(--bg-page); color: var(--text-secondary); font-size: 0.92rem; border-radius: var(--radius-sm); }
 
-  /* 04 주요 기능 — 대상별 카드 격자. 화면 캡처는 16:10 썸네일(크게 보기), 세로 휴대폰 화면은 높이로 묶어 가로 나열 */
-  .feature-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); gap: var(--space-6); align-items: stretch; }
-  .feature-groups[data-count="1"] { grid-template-columns: minmax(0, 1fr); }
-  .feature-card { display: grid; align-content: start; gap: var(--space-5); min-width: 0; padding: var(--space-5); border: 1px solid var(--border-hair); border-radius: var(--radius-md); background: var(--bg-page); }
-  .feature-copy h3 { font-size: 1.1rem; margin-bottom: var(--space-3); padding-bottom: var(--space-2); border-bottom: 1px solid var(--border-hair); }
-  .feature-copy ul { margin: 0; padding-left: 1.1rem; color: var(--text-secondary); font-size: 0.93rem; display: grid; gap: var(--space-2); }
-  .feature-media { display: grid; gap: var(--space-3); }
-  .feature-media[data-count="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .feature-media[data-count="3"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .feature-media[data-count="3"] > :first-child { grid-column: 1 / -1; }
-  .feature-media--portrait { grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); }
-  .feature-media--portrait > :first-child { grid-column: auto; }
-  .feature-media--portrait :global(.media-image) { --thumb-h: 16rem; }
+  /* 04 주요 기능 — 기능 행: 핵심 화면 좌 · 그 화면의 기능 설명 우. 보조 화면은 첫 장 아래 작게(크게 보기) */
+  .feature-rows { display: grid; gap: clamp(2rem, 4vw, 3rem); }
+  .feature-row { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(18rem, 1fr); gap: var(--space-8); align-items: center; }
+  .feature-row + .feature-row { padding-top: clamp(2rem, 4vw, 3rem); border-top: 1px solid var(--border-hair); }
+  .feature-shots { display: grid; gap: var(--space-3); min-width: 0; }
+  /* 세로로 긴 첫 화면(예: 사건 접수 1920×1927)은 높이를 34rem으로 제한. width 100%를 유지해 로드 전에도 자리를 잡는다(CLS 0) */
+  .feature-shots:not(.feature-shots--portrait) > :global(.media-image:first-child img) { max-height: 34rem; object-fit: contain; }
+  .feature-shots__more { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+  .feature-shots--portrait { grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); align-items: start; }
+  .feature-shots--portrait :global(.media-image) { --thumb-h: 22rem; }
+  .feature-copy { min-width: 0; max-width: 40rem; }
+  .feature-copy h3 { font-size: 1.15rem; margin-bottom: var(--space-3); padding-bottom: var(--space-2); border-bottom: 1px solid var(--border-hair); }
+  .feature-copy ul { margin: 0; padding-left: 1.1rem; color: var(--text-secondary); font-size: 0.95rem; display: grid; gap: var(--space-2); }
+  .feature-text-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
+  .feature-rows > .feature-row + .feature-text-grid { padding-top: clamp(2rem, 4vw, 3rem); border-top: 1px solid var(--border-hair); }
+  .feature-note { padding: var(--space-5); border-left: 3px solid var(--accent-bar); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--bg-page); }
+  .feature-note .feature-copy { max-width: none; }
 
-  /* 05 고려사항 — 도식 1장이면 도식 + 문제/접근(세로)을 나란히, 2장(비교)이면 위에 2열 */
+  /* 05 고려사항 — wide: 이미지 전폭 → 문제/접근 2열(글이 든 도식·비교). side: 화면·일러스트 좌 · 문제/접근 세로 우 */
   .considerations { display: grid; gap: clamp(3rem, 6vw, 5rem); }
   .consideration { display: grid; gap: var(--space-6); }
   .consideration-head { display: grid; gap: var(--space-4); }
@@ -336,7 +379,7 @@ const numbered = (index: number) => String(index + 1).padStart(2, '0');
   .consideration-text { display: grid; gap: var(--space-6); min-width: 0; }
   .consideration-media { display: grid; align-items: start; gap: var(--space-4); min-width: 0; }
   .consideration-media[data-count="2"] { grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); }
-  .consideration--side .consideration-body { grid-template-columns: minmax(0, 1.15fr) minmax(20rem, 1fr); gap: var(--space-8); }
+  .consideration--side .consideration-body { grid-template-columns: minmax(0, 0.9fr) minmax(20rem, 1.1fr); gap: var(--space-8); }
   .consideration--side .consideration-media { position: sticky; top: calc(var(--header-height) + 3.5rem); }
   .consideration--side .shift-columns { grid-template-columns: 1fr; }
   .consideration--side .consideration-media :global(.media-image--portrait) { --thumb-h: 40rem; }
@@ -361,16 +404,15 @@ const numbered = (index: number) => String(index + 1).padStart(2, '0');
   .demo-empty { color: var(--text-secondary); }
   .demo-empty a { color: var(--text-accent); font-weight: 700; }
 
-  /* 07 회고 */
-  .retro-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(14rem, 0.6fr); gap: var(--space-10); align-items: start; }
-  .retro-notes { display: grid; gap: var(--space-8); }
-  .retro-notes h3 { display: inline-block; margin-bottom: var(--space-3); padding: 0.25rem 0.7rem; border: 1px solid var(--border-subtle); border-radius: 999px; font-size: 0.95rem; }
-  .retro-notes p { margin: 0; color: var(--text-secondary); font-size: 0.98rem; line-height: 1.8; }
-  .retro-links { padding: var(--space-5); display: grid; gap: var(--space-3); }
-  .retro-links__title { margin: 0; font-weight: 700; }
-  .retro-links a { display: grid; gap: 2px; color: var(--text-accent); font-weight: 600; text-decoration: none; overflow-wrap: anywhere; }
+  /* 07 회고 — 소제목 3개를 3열 카드로, 링크는 제목 아래 한 줄 */
+  .retro-links { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6); margin: calc(var(--space-6) * -1) 0 var(--space-8); }
+  .retro-links a { display: inline-flex; align-items: baseline; gap: var(--space-2); min-height: 2.75rem; color: var(--text-accent); font-weight: 600; text-decoration: none; overflow-wrap: anywhere; }
   .retro-links a span { color: var(--text-muted); font-family: var(--font-mono); font-size: var(--font-size-utility); }
   .retro-links a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .retro-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); align-items: stretch; }
+  .retro-cards article { padding: var(--space-6); border-top: 3px solid var(--accent-bar); background: var(--bg-surface); }
+  .retro-cards h3 { margin-bottom: var(--space-3); font-size: 1.1rem; }
+  .retro-cards p { margin: 0; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.8; }
 
   .project-nav { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); padding-block: var(--space-20); }
   .project-nav a { display: grid; padding: var(--space-6); border: 1px solid var(--border-hair); border-radius: var(--radius-lg); background: var(--bg-surface); text-decoration: none; }
@@ -381,25 +423,28 @@ const numbered = (index: number) => String(index + 1).padStart(2, '0');
 
   /* 반응형: 글 격자는 48rem, 미디어 격자는 40rem까지 2열을 유지한다(768px에서 1열로 무너지지 않게) */
   @media (max-width: 60rem) {
-    .evidence-grid, .evidence-grid[data-count="4"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .structure-grid, .structure-grid--flow { grid-template-columns: minmax(0, 1fr) minmax(14rem, 0.6fr); gap: var(--space-6); }
+    .evidence-row, .feature-row { grid-template-columns: minmax(0, 1.1fr) minmax(16rem, 1fr); gap: var(--space-6); }
+    .feature-text-grid, .retro-cards { grid-template-columns: 1fr; }
     .consideration--side .consideration-body { grid-template-columns: 1fr; }
     .consideration--side .consideration-media { position: static; max-width: 40rem; }
     .consideration--side .shift-columns { grid-template-columns: 1fr 1fr; }
   }
   @media (max-width: 48rem) {
-    .hero-grid, .shift-columns, .retro-grid { grid-template-columns: 1fr; }
+    .hero-grid, .shift-columns { grid-template-columns: 1fr; }
     .consideration--side .shift-columns { grid-template-columns: 1fr; }
     .role-table div { grid-template-columns: 1fr; gap: var(--space-2); }
     .consideration-question { max-width: none; }
   }
   @media (max-width: 44rem) {
-    .structure-grid, .structure-grid--flow { grid-template-columns: 1fr; }
+    .structure-grid, .structure-grid--flow, .evidence-row, .evidence-row--illustration, .feature-row { grid-template-columns: 1fr; }
+    .evidence-media, .evidence-row--illustration .evidence-media { max-width: none; }
+    .evidence-notes, .feature-copy { max-width: none; }
   }
   @media (max-width: 40rem) {
-    .evidence-grid, .evidence-grid[data-count="4"], .media-grid, .consideration-media[data-count="2"] { grid-template-columns: 1fr; }
+    .media-grid, .consideration-media[data-count="2"] { grid-template-columns: 1fr; }
     .media-grid > :only-child { grid-column: auto; }
     .media-grid--portrait { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .feature-media--portrait { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .feature-shots--portrait { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
 </style>

@@ -55,6 +55,8 @@ const projects = defineCollection({
     // 주요 고려사항: 질문형 제목 + 기존 문제점 / 접근 방식
     considerations: z.array(z.object({
       question: z.string(),
+      /** wide: 이미지 전폭 → 문제/접근 2열(글이 든 도식·비교). side: 화면·일러스트를 왼쪽에, 문제/접근을 오른쪽에 */
+      layout: z.enum(['wide', 'side']).default('wide'),
       quote: z.string().optional(),
       media: z.array(mediaRef).default([]),
       problemsTitle: z.string().optional(),
