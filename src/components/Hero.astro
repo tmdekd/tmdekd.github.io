@@ -49,9 +49,8 @@ const restWords = ['작동하는', '구조로', '만듭니다.'];
   .kinetic-rule { display: block; width: 6rem; height: 4px; margin: calc(var(--space-8) * -1) 0 var(--space-8); background: var(--accent-bar); transform-origin: left center; }
   .hero-description { max-width: 43rem; margin-bottom: var(--space-8); color: var(--text-hero-muted); font-size: clamp(1.05rem, 2vw, 1.25rem); }
   .hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
-  .hero-profile { border-top: 1px solid var(--border-on-inverse); }
-  .profile-content { padding: var(--space-5) 0 0; }
-  .profile-photo { display: block; width: 6.5rem; height: auto; margin-bottom: var(--space-4); border-radius: var(--radius-md); border: 1px solid var(--border-on-inverse); }
+  .profile-content { padding: 0; }
+  .profile-photo { display: block; width: 9rem; height: auto; margin-bottom: var(--space-5); border-radius: var(--radius-md); border: 1px solid var(--border-on-inverse); }
   .profile-content h2 { margin-bottom: 0; font-size: 1.6rem; }
   .profile-content > p { color: var(--text-hero-muted); }
   .profile-content dl { margin: var(--space-5) 0 0; }
@@ -62,6 +61,7 @@ const restWords = ['작동하는', '구조로', '만듭니다.'];
   @media (max-width: 54rem) {
     .hero { grid-template-columns: 1fr; min-height: auto; }
     .hero-profile { max-width: 30rem; }
+    .profile-photo { width: 7.5rem; }
     .hero-prefix { white-space: normal; }
   }
 </style>

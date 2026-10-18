@@ -7,8 +7,10 @@ const data = project.data;
 
 <article class="project-card" data-period={data.period} data-reveal="project-card">
   <a class="project-card-link" href={`/projects/${project.id}/`} aria-label={`${data.title} 프로젝트 자세히 보기`}>
-    <div class="project-card__media">
-      <MediaFrame asset={data.heroMedia} mode="card" />
+    <div class:list={['project-card__media', { 'project-card__media--pair': data.cardMedia }]}>
+      {data.cardMedia
+        ? data.cardMedia.map((asset) => <MediaFrame asset={asset} mode="card" />)
+        : <MediaFrame asset={data.heroMedia} mode="card" />}
     </div>
     <div class="project-card__content">
       <h3>{data.title}</h3>
@@ -33,6 +35,9 @@ const data = project.data;
   .project-card-link { display: grid; grid-row: span 2; grid-template-rows: subgrid; color: inherit; text-decoration: none; }
   .project-card__media { aspect-ratio: 16 / 10; overflow: hidden; background: var(--bg-page); border-bottom: 1px solid var(--border-hair); }
   .project-card__media :global(.media-frame) { height: 100%; }
+  /* 세로 화면 2장: 같은 높이로 나란히 */
+  .project-card__media--pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); padding: var(--space-3); }
+  .project-card__media--pair :global(.media-frame img) { height: 100%; object-fit: contain; }
   .project-card__content { display: flex; min-width: 0; flex: 1; flex-direction: column; padding: var(--space-6); }
   h3 { margin-bottom: var(--space-1); }
   .subtitle { margin-bottom: var(--space-3); color: var(--text-accent); font-weight: 700; }

@@ -75,7 +75,8 @@ test('project cards expose each case study through one unified link', async ({ p
     const card = cards.nth(index);
     await expect(card.locator('a.project-card-link')).toHaveCount(1);
     await expect(card.locator('a')).toHaveCount(1);
-    await expect(card.locator('[data-project-brief], .media-frame')).toHaveCount(1);
+    await expect(card.locator('.project-card__media')).toHaveCount(1);
+    expect(await card.locator('.media-frame').count()).toBeGreaterThanOrEqual(1);
     await expect(card.locator('.project-card__content')).toBeVisible();
   }
 });
@@ -233,8 +234,9 @@ test('mobile navigation reveals every portfolio section and restores focus when 
 test('project cards show the original hero screenshots with alt text', async ({ page }) => {
   await page.goto('/');
   const images = page.locator('#projects .project-card .media-frame img');
-  await expect(images).toHaveCount(4);
-  for (let index = 0; index < 4; index += 1) {
+  await expect(page.locator('#projects .project-card')).toHaveCount(4);
+  expect(await images.count()).toBeGreaterThanOrEqual(4);
+  for (let index = 0; index < await images.count(); index += 1) {
     const image = images.nth(index);
     expect((await image.getAttribute('alt'))?.length ?? 0).toBeGreaterThanOrEqual(6);
     expect(await image.evaluate((element) => (element as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);

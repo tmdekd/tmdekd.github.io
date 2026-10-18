@@ -37,6 +37,8 @@ const projects = defineCollection({
     githubUrl: z.url().optional(),
     demoUrl: z.url().optional(),
     heroMedia: mediaAsset,
+    /** 홈 카드에 2장을 나란히 보일 때(세로 휴대폰 화면 등). 없으면 heroMedia 1장 */
+    cardMedia: z.array(mediaAsset).max(2).optional(),
     draft: z.boolean(),
 
     // 제안 배경: 근거 카드
