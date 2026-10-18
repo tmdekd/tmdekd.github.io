@@ -339,13 +339,15 @@ const numbered = (index: number) => String(index + 1).padStart(2, '0');
   .intent-quote p { margin: 0; max-width: 40ch; font-size: clamp(1.35rem, 2.8vw, 2rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.35; text-wrap: balance; }
 
   /* 03 구조 */
-  .structure-grid { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(16rem, 0.8fr); gap: var(--space-8); align-items: start; }
-  .structure-grid--flow { grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 1fr); }
-  .stack { margin: 0; display: grid; gap: var(--space-4); }
-  .stack div { display: grid; gap: var(--space-2); }
-  .stack dt { padding-bottom: var(--space-2); border-bottom: 1px solid var(--border-hair); color: var(--text-primary); font-size: 0.95rem; }
-  .principles { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--space-4); }
-  .principles li { display: grid; grid-template-columns: 2rem 1fr; gap: var(--space-3); }
+  /* 03 구조 — 도식을 전폭으로 두고, 스택 그룹·설계 원칙은 도식의 범례처럼 바로 아래 4열 띠로 */
+  /* 구조 파트(도식 + 범례 띠)를 컨테이너 폭의 80%로 가운데 정렬해 도식과 뱃지 영역의 폭을 맞춘다(사용자 결정 2026-10-18). 60rem 이하는 전폭 */
+  .structure-grid { display: grid; gap: var(--space-6); width: 80%; margin-inline: auto; }
+  .structure-grid > :global(.media-image) { width: 100%; max-width: none; --thumb-h: 40rem; }
+  .stack { margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-5); padding-top: var(--space-5); border-top: 1px solid var(--border-hair); }
+  .stack div { display: grid; align-content: start; gap: var(--space-2); min-width: 0; }
+  .stack dt { color: var(--text-primary); font-size: 0.95rem; }
+  .principles { margin: 0; padding: var(--space-5) 0 0; list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-5); border-top: 1px solid var(--border-hair); }
+  .principles li { display: grid; grid-template-columns: 2rem 1fr; gap: var(--space-3); min-width: 0; }
   .principle-num { font-family: var(--font-mono); font-weight: 600; color: var(--text-accent); padding-top: 0.15rem; }
   .principles h3 { font-size: 1.05rem; margin-bottom: var(--space-1); }
   .principles p { margin: 0; padding: var(--space-2) var(--space-3); background: var(--bg-page); color: var(--text-secondary); font-size: 0.92rem; border-radius: var(--radius-sm); }
@@ -423,7 +425,8 @@ const numbered = (index: number) => String(index + 1).padStart(2, '0');
 
   /* 반응형: 글 격자는 48rem, 미디어 격자는 40rem까지 2열을 유지한다(768px에서 1열로 무너지지 않게) */
   @media (max-width: 60rem) {
-    .structure-grid, .structure-grid--flow { grid-template-columns: minmax(0, 1fr) minmax(14rem, 0.6fr); gap: var(--space-6); }
+    .stack, .principles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .structure-grid { width: 100%; }
     .evidence-row, .feature-row { grid-template-columns: minmax(0, 1.1fr) minmax(16rem, 1fr); gap: var(--space-6); }
     .feature-text-grid, .retro-cards { grid-template-columns: 1fr; }
     .consideration--side .consideration-body { grid-template-columns: 1fr; }
@@ -437,12 +440,12 @@ const numbered = (index: number) => String(index + 1).padStart(2, '0');
     .consideration-question { max-width: none; }
   }
   @media (max-width: 44rem) {
-    .structure-grid, .structure-grid--flow, .evidence-row, .evidence-row--illustration, .feature-row { grid-template-columns: 1fr; }
+    .evidence-row, .evidence-row--illustration, .feature-row { grid-template-columns: 1fr; }
     .evidence-media, .evidence-row--illustration .evidence-media { max-width: none; }
     .evidence-notes, .feature-copy { max-width: none; }
   }
   @media (max-width: 40rem) {
-    .media-grid, .consideration-media[data-count="2"] { grid-template-columns: 1fr; }
+    .media-grid, .consideration-media[data-count="2"], .stack, .principles { grid-template-columns: 1fr; }
     .media-grid > :only-child { grid-column: auto; }
     .media-grid--portrait { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .feature-shots--portrait { grid-template-columns: repeat(2, minmax(0, 1fr)); }
