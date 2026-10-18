@@ -10,7 +10,7 @@ export const profile = {
   /** 원본 표지 인사말 */
   tagline: '사용자가 체감하는 변화를 만드는 AI 엔지니어',
   taglineDetail: '데이터 기반 가설·실험으로 속도·정확도·비용을 개선합니다.',
-  headline: 'LLM·RAG·Agent 서비스와 문서 파싱·검색 시스템을 설계하고 구현하는 AI 엔지니어',
+  headline: 'LLM·RAG·Agent 서비스와 문서 파싱·검색 시스템을 직접 설계하고 만듭니다.',
   introduction:
     '복잡한 업무 문제를 구조화하고, 검색과 추론이 실제 서비스 흐름으로 이어지도록 설계합니다. 모델 성능만이 아니라 데이터 품질, 평가, 운영까지 함께 봅니다.',
   contact: {
@@ -29,7 +29,7 @@ export const profile = {
       team: '기술연구소',
       role: 'AI 개발자',
       period: '2026.04 — 현재',
-      description: '전력산업 연구개발 과제·사업의 기획 및 수주 과정에 참여하며, 폐쇄망 환경을 고려한 AI 서비스의 기획·설계·개발을 수행하고 있습니다.',
+      description: '전력산업 R&D 과제를 기획하고 수주하는 과정에 참여하고, 폐쇄망 환경을 고려한 AI 서비스의 수주부터 개발까지의 전과정을 수행하고 있습니다.',
       highlights: [] as readonly string[],
     },
     {
@@ -37,7 +37,7 @@ export const profile = {
       team: 'AI 연구개발',
       role: 'LLM 엔지니어 인턴',
       period: '2025.10 — 2026.03',
-      description: 'LLM 기반 서비스 구현과 연구개발 업무를 수행했습니다.',
+      description: 'LLM 서비스를 만들고 RAG 파이프라인을 설계·평가했습니다.',
       highlights: ['LLM 기반 RAG 파이프라인 설계 및 평가', 'LLM · RAG · Vector DB · Evaluation'],
     },
   ],

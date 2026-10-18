@@ -19,7 +19,7 @@ const restWords = ['작동하는', '구조로', '만듭니다.'];
         {restWords.map((word) => <>{' '}<span class="w" data-hero-anim>{word}</span></>)}
       </h1>
       <span class="kinetic-rule" aria-hidden="true"></span>
-      <p class="hero-description" data-hero-anim>{profile.taglineDetail} {profile.headline}입니다.</p>
+      <p class="hero-description" data-hero-anim>{profile.taglineDetail} {profile.headline}</p>
       <div class="hero-actions" data-hero-anim>
         <a class="button" href="#projects">프로젝트 보기 ↓</a>
         <button class="button secondary" type="button" data-email-dialog-open>이메일 주소 보기</button>
@@ -50,7 +50,7 @@ const restWords = ['작동하는', '구조로', '만듭니다.'];
   .hero-description { max-width: 43rem; margin-bottom: var(--space-8); color: var(--text-hero-muted); font-size: clamp(1.05rem, 2vw, 1.25rem); }
   .hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
   .profile-content { padding: 0; }
-  .profile-photo { display: block; width: 9rem; height: auto; margin-bottom: var(--space-5); border-radius: var(--radius-md); border: 1px solid var(--border-on-inverse); }
+  .profile-photo { display: block; width: 12rem; height: auto; margin: 0 auto var(--space-5); border-radius: var(--radius-md); border: 1px solid var(--border-on-inverse); }
   .profile-content h2 { margin-bottom: 0; font-size: 1.6rem; }
   .profile-content > p { color: var(--text-hero-muted); }
   .profile-content dl { margin: var(--space-5) 0 0; }
@@ -61,7 +61,7 @@ const restWords = ['작동하는', '구조로', '만듭니다.'];
   @media (max-width: 54rem) {
     .hero { grid-template-columns: 1fr; min-height: auto; }
     .hero-profile { max-width: 30rem; }
-    .profile-photo { width: 7.5rem; }
+    .profile-photo { width: 9.5rem; }
     .hero-prefix { white-space: normal; }
   }
 </style>

@@ -192,7 +192,7 @@ test('uses Contact as the footer label and omits availability status', async ({ 
 
 test('summarizes Bytech AI service work for a closed network environment', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByText('전력산업 연구개발 과제·사업의 기획 및 수주 과정에 참여하며, 폐쇄망 환경을 고려한 AI 서비스의 기획·설계·개발을 수행하고 있습니다.')).toBeVisible();
+  await expect(page.getByText('전력산업 R&D 과제를 기획하고 수주하는 과정에 참여하고, 폐쇄망 환경을 고려한 AI 서비스의 수주부터 개발까지의 전과정을 수행하고 있습니다.')).toBeVisible();
 });
 
 test('opens email guidance and copies the address from the dialog', async ({ page, context }) => {
