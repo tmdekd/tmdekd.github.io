@@ -152,17 +152,18 @@ test('uses clear Korean profile and skill labels without forced heading breaks',
   expect(await page.locator('.section-heading h2').evaluateAll((headings) => headings.some((heading) => heading.querySelector('br')))).toBe(false);
 });
 
-test('orders the home newest-first: career before projects, intern projects inside the Acryl entry', async ({ page }) => {
+test('orders the home newest-first: career before projects, intern projects above the project cards', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('#primary-navigation a')).toHaveText(['소개', '경력', '프로젝트', '기술', '이력', 'Contact']);
   const sections = await page.locator('#career, #projects, #skills, #resume').evaluateAll((elements) => elements.map((element) => element.id));
   expect(sections).toEqual(['career', 'projects', 'skills', 'resume']);
-  const acryl = page.locator('#career .timeline article').nth(1);
-  await expect(acryl.locator('h3')).toHaveText('아크릴');
-  await expect(acryl.locator('.intern-list li')).toHaveCount(4);
-  await expect(acryl.locator('.intern-list li strong').first()).toHaveText('Recipe AI');
-  await expect(page.locator('#projects .intern-list')).toHaveCount(0);
-  await expect(page.locator('#career .timeline article').first().locator('.intern-list')).toHaveCount(0);
+  const intern = page.locator('#projects .intern-projects');
+  await expect(intern.locator('.intern-list li')).toHaveCount(4);
+  await expect(intern.locator('.intern-list li strong').first()).toHaveText('Recipe AI');
+  await expect(intern.locator('.intern-head p')).toContainText('아크릴');
+  const internIsAboveCards = await intern.evaluate((element) => element.nextElementSibling?.classList.contains('project-grid') === true);
+  expect(internIsAboveCards).toBe(true);
+  await expect(page.locator('#career .intern-list')).toHaveCount(0);
 });
 
 test('uses readable Pretendard section labels for core Korean sections', async ({ page }) => {
