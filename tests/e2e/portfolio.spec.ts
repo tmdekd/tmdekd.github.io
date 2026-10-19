@@ -166,6 +166,15 @@ test('orders the home newest-first: career before projects, intern projects abov
   await expect(page.locator('#career .intern-list')).toHaveCount(0);
 });
 
+test('footer links the resume to the published MiriCanvas page in a new tab', async ({ page }) => {
+  await page.goto('/');
+  const resume = page.locator('#contact').getByRole('link', { name: /이력서 보기/ });
+  await expect(resume).toHaveAttribute('href', /^https:\/\/www\.miricanvas\.com\//);
+  await expect(resume).toHaveAttribute('target', '_blank');
+  await expect(resume).not.toHaveAttribute('download', /.*/);
+  await expect(page.locator('#contact')).not.toContainText('준비 중');
+});
+
 test('uses readable Pretendard section labels for core Korean sections', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');

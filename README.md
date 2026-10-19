@@ -21,18 +21,18 @@ e2e는 설치된 Chrome(`channel: 'chrome'`)을 사용합니다.
 
 ## 구조
 
-- 홈 섹션 순서: 히어로 → 프로젝트(4건 + 인턴 프로젝트 제목 목록) → 일하는 방식 → 경력 → 이력 사항 → 기술 역량 → Contact
-- 프로젝트 상세: 배경 → 기획 의도 → 구조 → 주요 기능 → 고려사항 → (시연: 영상이 있을 때만) → 회고
+- 홈 섹션 순서(최신순): 히어로 → 경력 → 프로젝트(인턴 프로젝트 제목 블록 + 카드 4건) → 기술 역량 → 일하는 방식 → 이력 사항 → Contact
+- 프로젝트 상세: 표지(글·메타 왼쪽, 대표 이미지 오른쪽) → 배경 → 기획 의도 → 구조 → 주요 기능 → 고려사항 → (시연: 영상이 있을 때만) → 회고
 - 콘텐츠
-  - 프로젝트 상세: `src/content/projects/*.mdx` (스키마 `src/content.config.ts`)
-  - 프로필·경력·이력·기술: `src/data/profile.ts`
+  - 프로젝트 상세: `src/content/projects/*.mdx` (스키마 `src/content.config.ts`). 홈 카드에 화면 2장을 나란히 보이려면 `cardMedia`
+  - 프로필·경력·이력·기술·연락처: `src/data/profile.ts` (이력서는 미리캔버스 게시 링크 `contact.resume`)
   - 미디어 폭·높이·대체 텍스트: `src/data/media-manifest.json` (자동 생성, `src/data/media.ts`로 조회)
 - 레이아웃·컴포넌트
   - 홈: `src/pages/index.astro`, `src/components/Hero.astro`, `ProjectCard.astro`, `Footer.astro`
   - 상세: `src/layouts/ProjectLayout.astro`, `src/components/project/*` (MediaImage, ShiftPairs, MediaLightbox)
   - 미디어 프레임(이미지·영상): `src/components/MediaFrame.astro`
 - 디자인 토큰: `src/styles/tokens.css` — 색·간격·서체는 토큰으로만 관리합니다(컴포넌트에 하드코딩 금지).
-- 모션: `motion/mini` + `src/scripts/motion/reduced.ts` 게이트. `prefers-reduced-motion`이면 완성 화면을 즉시 보여 줍니다. 인라인 스크립트는 CSP(`script-src 'self'`) 때문에 쓰지 않습니다.
+- 모션: `motion/mini` + `src/scripts/motion/reduced.ts` 게이트. `prefers-reduced-motion`이면 완성 화면을 즉시 보여 줍니다. 인라인 스크립트는 첫 페인트 전에 실행돼야 하는 `public/scripts/motion-flag.js` 하나뿐이며, 빌드 시 그 내용의 sha256 해시를 CSP에 넣습니다. 나머지는 외부 파일 + `defer`입니다.
 
 ## 콘텐츠 규칙
 

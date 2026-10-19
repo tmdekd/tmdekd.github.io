@@ -36,9 +36,9 @@ describe('public portfolio content', () => {
     expect(JSON.stringify(profile)).not.toMatch(/010[- ]?2530[- ]?6958|2001\.01\.03/);
   });
 
-  it('links the resume only to a hosted PDF when one is published', () => {
+  it('links the resume to the published MiriCanvas page when one is set', () => {
     const resume = profile.contact.resume;
-    expect(resume === undefined || /^\/files\/.+\.pdf$/.test(resume)).toBe(true);
+    expect(resume === undefined || /^https:\/\/www\.miricanvas\.com\/v2\/ko\/design2\/v\/[0-9a-f-]+$/.test(resume)).toBe(true);
   });
 
   it('keeps card video previews poster-only and detailed videos controllable', () => {
