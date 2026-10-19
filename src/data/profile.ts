@@ -2,6 +2,14 @@
  * 프로필 데이터. 원본 포트폴리오(docs/원본 포트폴리오, 2025) 1·2·3·4·46쪽의 내용을 빠짐없이 옮겼다.
  * 공개 사이트 정책(2026-10-16 결정): 전화번호·생년월일은 싣지 않는다. 사진은 싣는다.
  */
+/** 원본 INDEX 05–08: 인턴 기간에 참여한 프로젝트(제목만 공개). 경력의 아크릴 항목 아래에 표시 */
+const internProjects: readonly { number: string; title: string; subtitle: string }[] = [
+  { number: '05', title: 'Recipe AI', subtitle: '업무 보조 유사 레시피 검색 AI 서비스' },
+  { number: '06', title: 'AI 돌봄 보고서', subtitle: '건강·주거 데이터를 활용한 AI 기반 돌봄 지원' },
+  { number: '07', title: '푸드스코어링', subtitle: '개인 맞춤형 음식 취향 및 영양 점수 산출 서비스' },
+  { number: '08', title: 'ARPA-H', subtitle: '항생제 중재 및 관리 멀티 에이전트' },
+];
+
 export const profile = {
   name: '문승기',
   englishName: 'Moon Seung Gi',
@@ -31,6 +39,7 @@ export const profile = {
       period: '2026.04 — 현재',
       description: '전력산업 R&D 과제를 기획하고 수주하는 과정에 참여하고, 폐쇄망 환경을 고려한 AI 서비스의 수주부터 개발까지의 전과정을 수행하고 있습니다.',
       highlights: [] as readonly string[],
+      projects: undefined as typeof internProjects | undefined,
     },
     {
       company: '아크릴',
@@ -39,15 +48,10 @@ export const profile = {
       period: '2025.10 — 2026.03',
       description: 'LLM 서비스를 만들고 RAG 파이프라인을 설계·평가했습니다.',
       highlights: ['LLM 기반 RAG 파이프라인 설계 및 평가', 'LLM · RAG · Vector DB · Evaluation'],
+      projects: internProjects,
     },
   ],
-  /** 원본 INDEX 05–08: 인턴 기간에 참여한 프로젝트(제목만 공개) */
-  internProjects: [
-    { number: '05', title: 'Recipe AI', subtitle: '업무 보조 유사 레시피 검색 AI 서비스' },
-    { number: '06', title: 'AI 돌봄 보고서', subtitle: '건강·주거 데이터를 활용한 AI 기반 돌봄 지원' },
-    { number: '07', title: '푸드스코어링', subtitle: '개인 맞춤형 음식 취향 및 영양 점수 산출 서비스' },
-    { number: '08', title: 'ARPA-H', subtitle: '항생제 중재 및 관리 멀티 에이전트' },
-  ],
+  internProjects,
   workflow: [
     { number: '01', title: '문제 분석', description: '사용자와 업무의 문제를 기능보다 먼저 정의합니다.' },
     { number: '02', title: '구조 설계', description: '데이터·검색·추론·응답 흐름을 연결해 설계합니다.' },

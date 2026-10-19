@@ -152,11 +152,24 @@ test('uses clear Korean profile and skill labels without forced heading breaks',
   expect(await page.locator('.section-heading h2').evaluateAll((headings) => headings.some((heading) => heading.querySelector('br')))).toBe(false);
 });
 
+test('orders the home newest-first: career before projects, intern projects inside the Acryl entry', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('#primary-navigation a')).toHaveText(['소개', '경력', '프로젝트', '기술', '이력', 'Contact']);
+  const sections = await page.locator('#career, #projects, #skills, #resume').evaluateAll((elements) => elements.map((element) => element.id));
+  expect(sections).toEqual(['career', 'projects', 'skills', 'resume']);
+  const acryl = page.locator('#career .timeline article').nth(1);
+  await expect(acryl.locator('h3')).toHaveText('아크릴');
+  await expect(acryl.locator('.intern-list li')).toHaveCount(4);
+  await expect(acryl.locator('.intern-list li strong').first()).toHaveText('Recipe AI');
+  await expect(page.locator('#projects .intern-list')).toHaveCount(0);
+  await expect(page.locator('#career .timeline article').first().locator('.intern-list')).toHaveCount(0);
+});
+
 test('uses readable Pretendard section labels for core Korean sections', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
-  const labels = page.locator('#projects .section-kicker, #career .section-kicker, #resume .section-kicker, #skills > .section-heading .section-kicker');
-  await expect(labels).toHaveText(['프로젝트', '경력', '이력 사항', '기술 역량']);
+  const labels = page.locator('#career .section-kicker, #projects .section-kicker, #skills > .section-heading .section-kicker, #resume .section-kicker');
+  await expect(labels).toHaveText(['경력', '프로젝트', '기술 역량', '이력 사항']);
   expect(await labels.evaluateAll((elements) => elements.every((element) => {
     const style = getComputedStyle(element);
     const size = Number.parseFloat(style.fontSize);
@@ -239,7 +252,8 @@ test('project cards show the original hero screenshots with alt text', async ({ 
   for (let index = 0; index < await images.count(); index += 1) {
     const image = images.nth(index);
     expect((await image.getAttribute('alt'))?.length ?? 0).toBeGreaterThanOrEqual(6);
-    expect(await image.evaluate((element) => (element as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
+    await image.scrollIntoViewIfNeeded(); // 카드가 경력 아래로 내려가 lazy 로딩 대상이 됨
+    await expect.poll(() => image.evaluate((element) => (element as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
   }
 });
 

@@ -11,53 +11,11 @@ const getProjectStartDate = (period: string) => period.match(/^(\d{4})\.(\d{2})\
 const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
   (a, b) => getProjectStartDate(b.data.period) - getProjectStartDate(a.data.period),
 );
-const internCareer = profile.career.find((item) => item.company === '아크릴');
 const coreSkills = new Set<string>(profile.coreSkills);
 ---
 
 <BaseLayout home>
   <Hero />
-
-  <section id="projects" class="section projects-section">
-    <div class="container">
-      <div class="section-heading">
-        <div>
-          <p class="section-kicker">프로젝트</p>
-          <h2>문제를 정의하여 서비스로 연결</h2>
-        </div>
-      </div>
-      <div class="project-grid">
-        {projects.map((project) => <ProjectCard project={project} />)}
-      </div>
-      <div class="intern-projects">
-        <div class="intern-head">
-          <h3>인턴 기간 참여 프로젝트</h3>
-          <p>{internCareer?.company} · {internCareer?.role} · {internCareer?.period}.</p>
-        </div>
-        <ol class="intern-list">
-          {profile.internProjects.map((item) => (
-            <li><span class="intern-num">{item.number}</span><strong>{item.title}</strong><span class="intern-sub">{item.subtitle}</span></li>
-          ))}
-        </ol>
-      </div>
-    </div>
-  </section>
-
-  <section class="intro-band section--alt">
-    <div class="container intro-grid">
-      <p class="section-kicker">일하는 방식</p>
-      <p class="intro-copy">{profile.introduction}</p>
-      <div class="workflow-grid">
-        {profile.workflow.map((item) => (
-          <article data-reveal="workflow">
-            <span>{item.number}</span>
-            <h3>{item.title}</h3>
-            <p>{item.description}</p>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
 
   <section class="section">
     <div id="career" class="container career-section">
@@ -80,6 +38,16 @@ const coreSkills = new Set<string>(profile.coreSkills);
             <p class="career-role">{item.team} · {item.role}</p>
             <p>{item.description}</p>
             {item.highlights.length > 0 && <ul class="career-highlights">{item.highlights.map((line) => <li>{line}</li>)}</ul>}
+            {item.projects && (
+              <div class="timeline-projects">
+                <h4>참여 프로젝트</h4>
+                <ol class="intern-list">
+                  {item.projects.map((project) => (
+                    <li><span class="intern-num">{project.number}</span><strong>{project.title}</strong><span class="intern-sub">{project.subtitle}</span></li>
+                  ))}
+                </ol>
+              </div>
+            )}
           </div>
         </article>
       ))}
@@ -87,25 +55,16 @@ const coreSkills = new Set<string>(profile.coreSkills);
     </div>
   </section>
 
-  <section class="section section--alt">
-    <div id="resume" class="container">
+  <section id="projects" class="section section--alt">
+    <div class="container">
       <div class="section-heading">
-        <p class="section-kicker">이력 사항</p>
-        <h2>학력, 활동, 자격과 수상.</h2>
+        <div>
+          <p class="section-kicker">프로젝트</p>
+          <h2>문제를 정의하여 서비스로 연결</h2>
+        </div>
       </div>
-      <div class="resume-grid">
-        <div class="resume-col">
-          <h3>Education</h3>
-          <ul>{profile.education.map((item) => <li><span class="resume-date">{item.period}</span><span>{item.title}</span></li>)}</ul>
-        </div>
-        <div class="resume-col">
-          <h3>Activities</h3>
-          <ul>{profile.activities.map((item) => <li><span class="resume-date">{item.period}</span><span>{item.title}</span></li>)}</ul>
-        </div>
-        <div class="resume-col">
-          <h3>Certification / Awards</h3>
-          <ul>{profile.awards.map((item) => <li><span class="resume-date">{item.date}</span><span>{item.title}</span></li>)}</ul>
-        </div>
+      <div class="project-grid">
+        {projects.map((project) => <ProjectCard project={project} />)}
       </div>
     </div>
   </section>
@@ -129,15 +88,53 @@ const coreSkills = new Set<string>(profile.coreSkills);
     </div>
     </div>
   </section>
+
+  <section class="intro-band section--alt">
+    <div class="container intro-grid">
+      <p class="section-kicker">일하는 방식</p>
+      <p class="intro-copy">{profile.introduction}</p>
+      <div class="workflow-grid">
+        {profile.workflow.map((item) => (
+          <article data-reveal="workflow">
+            <span>{item.number}</span>
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div id="resume" class="container">
+      <div class="section-heading">
+        <p class="section-kicker">이력 사항</p>
+        <h2>학력, 활동, 자격과 수상.</h2>
+      </div>
+      <div class="resume-grid">
+        <div class="resume-col">
+          <h3>Education</h3>
+          <ul>{profile.education.map((item) => <li><span class="resume-date">{item.period}</span><span>{item.title}</span></li>)}</ul>
+        </div>
+        <div class="resume-col">
+          <h3>Activities</h3>
+          <ul>{profile.activities.map((item) => <li><span class="resume-date">{item.period}</span><span>{item.title}</span></li>)}</ul>
+        </div>
+        <div class="resume-col">
+          <h3>Certification / Awards</h3>
+          <ul>{profile.awards.map((item) => <li><span class="resume-date">{item.date}</span><span>{item.title}</span></li>)}</ul>
+        </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-  .projects-section { background: var(--bg-page); }
   .keep { white-space: nowrap; }
   .project-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(2rem, 5vw, 4rem) var(--space-8); }
-  .intern-projects { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(2rem, 5vw, 5rem); margin-top: clamp(3rem, 6vw, 5rem); padding: var(--space-6) var(--space-6); border-left: 3px solid var(--accent-bar); background: var(--bg-surface); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
-  .intern-head h3 { margin-bottom: var(--space-2); font-size: 1.15rem; }
-  .intern-head p { margin: 0; color: var(--text-secondary); font-size: 0.92rem; }
+  /* 경력 타임라인(아크릴) 안의 인턴 프로젝트 목록: 제목·부제만 */
+  .timeline-projects { margin-top: var(--space-5); }
+  .timeline-projects h4 { margin-bottom: var(--space-2); color: var(--text-muted); font-family: var(--font-sans); font-size: var(--font-size-utility); font-weight: 700; }
   .intern-list { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--space-2); }
   .intern-list li { display: grid; grid-template-columns: 2rem minmax(0, 11rem) 1fr; gap: var(--space-3); align-items: baseline; padding-block: var(--space-2); }
   .intern-list li + li { border-top: 1px solid var(--border-hair); }
@@ -182,7 +179,7 @@ const coreSkills = new Set<string>(profile.coreSkills);
   .skill-card li.is-core { display: flex; align-items: center; gap: var(--space-2); color: var(--text-primary); font-weight: 750; }
   .skill-card li.is-core::before { content: ""; width: 14px; height: 3px; background: var(--accent-bar); flex: 0 0 auto; }
   @media (max-width: 54rem) {
-    .career-section, .intern-projects { grid-template-columns: 1fr; }
+    .career-section { grid-template-columns: 1fr; }
     .workflow-grid { grid-template-columns: repeat(2, 1fr); }
     .skill-grid, .resume-grid { grid-template-columns: 1fr; }
     .skill-card { min-height: auto; }
