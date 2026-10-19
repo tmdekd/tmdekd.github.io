@@ -15,6 +15,8 @@ import { resolve } from 'node:path';
 // 빌드 시 프로젝트 루트 기준. HTML 파서는 CRLF를 LF로 정규화하므로 해시도 LF 기준으로 계산해야 브라우저와 일치한다
 const motionFlagSource = readFileSync(resolve('public/scripts/motion-flag.js'), 'utf8').replaceAll('\r\n', '\n');
 const motionFlagHash = createHash('sha256').update(motionFlagSource).digest('base64');
+/** 서체 전략 A(자체 호스팅 서브셋 1파일)일 때만 미리 불러온다 */
+const preloadSubsetFont = process.env.FONT_STRATEGY === 'a';
 
 interface Props {
   title?: string;
@@ -49,6 +51,7 @@ const socialImage = new URL(image, Astro.site);
     <script is:inline set:html={motionFlagSource}></script>
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {preloadSubsetFont && <link rel="preload" as="font" type="font/woff2" href="/fonts/PretendardVariable-subset.woff2" crossorigin />}
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="ko_KR" />
     <meta property="og:title" content={title} />

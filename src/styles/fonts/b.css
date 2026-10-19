@@ -1,0 +1,10 @@
+/* 서체 전략 B: 데스크톱은 현재와 같고, 휴대폰(54rem 이하, Hero 브레이크포인트와 동일)은 기기 한글 서체만 쓴다.
+   --font-sans 에 Pretendard 가 없으면 @font-face 는 매칭되지 않아 폰트 파일을 전혀 내려받지 않는다.
+   Android 는 generic sans-serif 가 Noto Sans CJK 로 해석된다("Noto Sans KR" 로컬 이름은 맞지 않음). */
+@import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
+
+@media (max-width: 54rem) {
+  :root {
+    --font-sans: "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", system-ui, -apple-system, sans-serif;
+  }
+}

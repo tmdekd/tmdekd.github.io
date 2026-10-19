@@ -1,4 +1,5 @@
-@import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
+/* 서체 전략(FONT_STRATEGY, astro.config.mjs alias → src/styles/fonts/<전략>.css). 시안 비교 후 정리 예정 */
+@import '@font-strategy';
 @import '@fontsource/ibm-plex-mono/400.css';
 @import '@fontsource/ibm-plex-mono/600.css';
 
