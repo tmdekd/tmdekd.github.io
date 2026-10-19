@@ -314,7 +314,7 @@ const sectionNo = (id: string) => numbered(sections.findIndex((section) => secti
   dt { font-family: var(--font-sans); font-size: var(--font-size-utility); font-weight: 700; }
   dd { margin: 0; }
   .skill-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
-  .skill-chips li { padding: 0.3rem 0.6rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.8rem; font-weight: 500; line-height: 1.4; }
+  .skill-chips li { padding: 0.3rem 0.6rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: var(--font-size-utility); font-weight: 500; line-height: 1.4; }
   .project-meta .skill-chips li { border-color: var(--border-on-inverse); }
   .hero-media { grid-area: media; align-self: center; min-width: 0; }
   .hero-media :global(.media-image--portrait) { max-width: 22rem; margin-inline: auto; }
@@ -378,7 +378,7 @@ const sectionNo = (id: string) => numbered(sections.findIndex((section) => secti
   .considerations { display: grid; gap: clamp(3rem, 6vw, 5rem); }
   .consideration { display: grid; gap: var(--space-6); }
   .consideration-head { display: grid; gap: var(--space-4); }
-  .consideration-index { margin: 0 0 calc(var(--space-2) * -1); color: var(--text-accent); font-family: var(--font-mono); font-size: var(--font-size-utility); font-weight: 600; }
+  .consideration-index { margin: 0 0 calc(var(--space-2) * -1); color: var(--text-accent); font-family: var(--font-sans); font-size: var(--font-size-utility); font-weight: 700; }
   .consideration-question { margin: 0; max-width: 24ch; font-size: clamp(1.5rem, 3.2vw, 2.4rem); font-weight: 800; letter-spacing: -0.035em; line-height: 1.25; text-wrap: balance; }
   .consideration-quote { margin: 0; max-width: 60ch; color: var(--text-secondary); font-size: 1.05rem; font-weight: 600; }
   .consideration-body { display: grid; gap: var(--space-6); align-items: start; }

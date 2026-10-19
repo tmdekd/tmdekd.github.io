@@ -63,7 +63,7 @@
   --font-size-display: clamp(2.75rem, 7vw, 6rem);
   --font-size-heading: clamp(2rem, 4.2vw, 3.5rem);
   --font-size-card-title: clamp(1.25rem, 2.2vw, 1.75rem);
-  --font-size-utility: 0.8125rem;
+  --font-size-utility: 0.875rem; /* 라벨·날짜·칩·캡션 공통(2026-10-19: 0.8125 → 0.875) */
   --font-size-section-kicker: clamp(1.125rem, 1.4vw, 1.25rem);
   --font-weight-section-kicker: 700;
 
