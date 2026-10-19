@@ -3,8 +3,9 @@
    Android 는 generic sans-serif 가 Noto Sans CJK 로 해석된다("Noto Sans KR" 로컬 이름은 맞지 않음). */
 @import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
 
+/* tokens.css 의 :root 가 이 파일보다 뒤에 오므로 특이도를 한 단계 높여 덮어쓴다(시안용, 채택 시 tokens.css 로 이동) */
 @media (max-width: 54rem) {
-  :root {
+  :root:root {
     --font-sans: "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", system-ui, -apple-system, sans-serif;
   }
 }

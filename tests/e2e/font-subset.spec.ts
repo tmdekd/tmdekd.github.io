@@ -1,6 +1,13 @@
 import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import { expect, test } from '@playwright/test';
 import { codepointsOf, collectSiteText } from '../../scripts/fonts/subset-pretendard.mjs';
+import { createStaticServer } from './static-server';
+
+const PORT = 4323;
+const server = createStaticServer(join(process.cwd(), 'dist'));
+test.beforeAll(async () => { await new Promise<void>((resolve) => server.listen(PORT, '127.0.0.1', resolve)); });
+test.afterAll(async () => { await new Promise<void>((resolve) => server.close(() => resolve())); });
 
 /**
  * 서체 전략 시안 검증(FONT_STRATEGY 로 빌드한 dist 기준).
@@ -13,8 +20,9 @@ async function fontRequests(page: import('@playwright/test').Page, path: string,
   const urls: string[] = [];
   page.on('request', (request) => { if (request.url().endsWith('.woff2')) urls.push(request.url()); });
   await page.setViewportSize({ width, height: 900 });
-  await page.goto(path, { waitUntil: 'networkidle' });
+  await page.goto(`http://127.0.0.1:${PORT}${path}`, { waitUntil: 'load' }); // 영상 preload 때문에 networkidle 은 오래 걸릴 수 있다
   await page.evaluate(() => document.fonts.ready);
+  await page.waitForTimeout(500);
   return urls;
 }
 
