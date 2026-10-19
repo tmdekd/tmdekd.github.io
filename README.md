@@ -32,6 +32,7 @@ e2e는 설치된 Chrome(`channel: 'chrome'`)을 사용합니다.
   - 상세: `src/layouts/ProjectLayout.astro`, `src/components/project/*` (MediaImage, ShiftPairs, MediaLightbox)
   - 미디어 프레임(이미지·영상): `src/components/MediaFrame.astro`
 - 디자인 토큰: `src/styles/tokens.css` — 색·간격·서체는 토큰으로만 관리합니다(컴포넌트에 하드코딩 금지).
+- 서체: Pretendard Variable은 사이트가 쓰는 글자만 담은 자체 호스팅 1파일(`public/fonts/`, 약 88KB)입니다. 문장을 새로 쓰면 `npm run build` 뒤 `npm run fonts:subset`으로 다시 만들고 한 번 더 빌드합니다. e2e가 서브셋에 없는 글자를 잡아 줍니다. 숫자·영문 라벨은 IBM Plex Mono.
 - 모션: `motion/mini` + `src/scripts/motion/reduced.ts` 게이트. `prefers-reduced-motion`이면 완성 화면을 즉시 보여 줍니다. 인라인 스크립트는 첫 페인트 전에 실행돼야 하는 `public/scripts/motion-flag.js` 하나뿐이며, 빌드 시 그 내용의 sha256 해시를 CSP에 넣습니다. 나머지는 외부 파일 + `defer`입니다.
 
 ## 콘텐츠 규칙
@@ -64,6 +65,7 @@ npm run lab:section                    # 섹션 요소 캡처. LAB_SECTION="#pro
 npm run lab:motion                     # 히어로 모션 프레임 캡처
 npm run lab:og                         # public/og-default.png 재생성 (표지 문장, Pretendard)
 npm run lab:font-metrics               # Pretendard 대체 폰트(맑은 고딕) 메트릭 맞춤값 계산 → global.css 의 'Pretendard Fallback'
+npm run fonts:subset                   # dist·스크립트 문자열에서 쓰는 글자를 모아 public/fonts/PretendardVariable-subset.woff2 재생성 (빌드 후 실행, 이후 재빌드)
 ```
 
 결과는 `lab-results/`(git 제외)에 저장됩니다.

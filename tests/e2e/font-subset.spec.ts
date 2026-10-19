@@ -10,11 +10,9 @@ test.beforeAll(async () => { await new Promise<void>((resolve) => server.listen(
 test.afterAll(async () => { await new Promise<void>((resolve) => server.close(() => resolve())); });
 
 /**
- * 서체 전략 시안 검증(FONT_STRATEGY 로 빌드한 dist 기준).
- * A: dist 의 모든 글자가 서브셋에 있어야 하고, 상세 페이지가 내려받는 woff2 는 Pretendard 1 + Plex Mono 2 뿐이어야 한다.
- * B: 390px(휴대폰)에서는 Pretendard woff2 를 하나도 내려받지 않아야 한다.
+ * 자체 호스팅 Pretendard 서브셋 검증: dist 의 모든 글자가 서브셋(public/fonts/pretendard-subset.glyphs.json)에 있어야 하고,
+ * 상세 페이지가 내려받는 woff2 는 Pretendard 1 + Plex Mono 2 뿐이어야 한다. 새 문장을 쓰고 서브셋을 다시 만들지 않으면 여기서 실패한다(`npm run fonts:subset`).
  */
-const STRATEGY = process.env.FONT_STRATEGY ?? 'current';
 
 async function fontRequests(page: import('@playwright/test').Page, path: string, width: number) {
   const urls: string[] = [];
@@ -26,9 +24,7 @@ async function fontRequests(page: import('@playwright/test').Page, path: string,
   return urls;
 }
 
-test.describe('font strategy A: single self-hosted subset', () => {
-  test.skip(STRATEGY !== 'a', 'FONT_STRATEGY=a 로 빌드했을 때만');
-
+test.describe('self-hosted Pretendard subset', () => {
   test('the subset covers every character the built site uses', async () => {
     const glyphs = JSON.parse(await readFile('public/fonts/pretendard-subset.glyphs.json', 'utf8')) as { codepoints: number[] };
     const have = new Set(glyphs.codepoints);
@@ -41,16 +37,5 @@ test.describe('font strategy A: single self-hosted subset', () => {
     expect(urls.filter((url) => url.includes('PretendardVariable-subset'))).toHaveLength(1);
     expect(urls.filter((url) => /pretendard/i.test(url) && !url.includes('subset'))).toEqual([]);
     expect(urls.length).toBeLessThanOrEqual(3);
-  });
-});
-
-test.describe('font strategy B: system font on phones', () => {
-  test.skip(STRATEGY !== 'b', 'FONT_STRATEGY=b 로 빌드했을 때만');
-
-  test('phones download no Pretendard files, desktop still does', async ({ page }) => {
-    const phone = await fontRequests(page, '/projects/lawmate/', 390);
-    expect(phone.filter((url) => /pretendard/i.test(url))).toEqual([]);
-    const desktop = await fontRequests(page, '/projects/lawmate/', 1440);
-    expect(desktop.filter((url) => /pretendard/i.test(url)).length).toBeGreaterThan(0);
   });
 });
