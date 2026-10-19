@@ -20,6 +20,7 @@
     "lab:section": "node scripts/lab/capture-section.mjs",
     "lab:og": "node scripts/lab/og-image.mjs",
     "lab:font-metrics": "node scripts/lab/font-metrics.mjs",
+    "fonts:subset": "node scripts/fonts/subset-pretendard.mjs",
     "media:import": "node scripts/media/import-portfolio-media.mjs"
   },
   "dependencies": {
@@ -37,6 +38,7 @@
     "adm-zip": "0.5.16",
     "lighthouse": "13.4.1",
     "sharp": "0.34.5",
+    "subset-font": "^2.9.0",
     "typescript": "6.0.3",
     "vitest": "5.0.0"
   }
