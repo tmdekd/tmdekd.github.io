@@ -159,7 +159,8 @@ const coreSkills = new Set<string>(profile.coreSkills);
   .timeline article + article { border-top: 1px solid var(--border-hair); }
   .timeline article:first-child { padding-top: var(--space-2); }
   .timeline-marker span { color: var(--text-accent-secondary); font-family: var(--font-mono); font-size: var(--font-size-utility); }
-  .timeline-period { color: var(--text-muted); font-family: var(--font-mono); font-size: var(--font-size-utility); }
+  /* 날짜 + '현재' 같은 한글이 섞이므로 Pretendard, 숫자 폭은 고정 */
+  .timeline-period { color: var(--text-muted); font-family: var(--font-sans); font-size: var(--font-size-utility); font-weight: 600; font-variant-numeric: tabular-nums; }
   .timeline-content h3 { margin-bottom: var(--space-1); }
   .career-role { color: var(--text-secondary); font-weight: 700; }
   .timeline-content p { color: var(--text-secondary); }
@@ -167,7 +168,7 @@ const coreSkills = new Set<string>(profile.coreSkills);
   .career-highlights { margin: var(--space-3) 0 0; padding-left: 1.1rem; color: var(--text-secondary); font-size: 0.92rem; display: grid; gap: var(--space-1); }
 
   .resume-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(2rem, 4vw, 3.5rem); }
-  .resume-col h3 { margin-bottom: var(--space-3); padding-bottom: var(--space-2); border-bottom: 1px solid var(--border-hair); font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600; letter-spacing: 0; color: var(--text-accent); }
+  .resume-col h3 { margin-bottom: var(--space-3); padding-bottom: var(--space-2); border-bottom: 1px solid var(--border-hair); font-family: var(--font-mono); font-size: var(--font-size-utility); font-weight: 600; letter-spacing: 0; color: var(--text-accent); }
   .resume-col ul { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--space-3); }
   .resume-col li { display: grid; gap: 2px; font-size: 0.95rem; font-weight: 600; }
   .resume-date { color: var(--text-muted); font-family: var(--font-mono); font-size: var(--font-size-utility); font-weight: 400; }

@@ -23,7 +23,7 @@ const { pairs, beforeLabel = '기존', afterLabel = '전환' } = Astro.props;
 
 <style>
   .shift { display: grid; gap: var(--space-3); }
-  .shift-head { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); color: var(--text-muted); font-family: var(--font-mono); font-size: var(--font-size-utility); }
+  .shift-head { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); color: var(--text-muted); font-family: var(--font-sans); font-size: var(--font-size-utility); font-weight: 600; }
   .shift-head span:last-child { padding-left: calc(var(--space-4) + 3px); color: var(--text-accent); }
   .shift-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); align-items: stretch; }
   .shift-row p { margin: 0; padding: var(--space-4) var(--space-5); font-weight: 600; line-height: 1.5; }
